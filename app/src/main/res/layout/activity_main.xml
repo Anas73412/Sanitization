@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:weightSum="5"
+            android:layout_height="match_parent">
+           <RelativeLayout
+               android:layout_weight="3"
+               android:layout_width="0dp"
+               android:layout_height="match_parent">
+               <in.binplus.sanitization.Fonts.LatoBLack
+                   android:text="@string/app_name"
+                   android:paddingLeft="@dimen/space_10"
+                   android:layout_centerInParent="true"
+                   android:textSize="@dimen/space_20"
+                   android:textColor="@color/black"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"/>
+           </RelativeLayout>
+            <LinearLayout
+                android:layout_gravity="right"
+                android:gravity="right"
+                android:layout_weight="2"
+                android:layout_width="0dp"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:layout_marginLeft="@dimen/space_10"
+                    android:layout_marginRight="@dimen/space_10"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/share"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"/>
+
+                <ImageView
+                    android:layout_marginLeft="@dimen/space_10"
+                    android:layout_marginRight="@dimen/space_10"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/icons8_info_48px"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"/>
+
+            </LinearLayout>
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+    <androidx.cardview.widget.CardView
+        android:layout_marginTop="@dimen/space_10"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:visibility="gone"
+            android:weightSum="3"
+
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="40dp">
+
+            <RelativeLayout
+                android:background="@color/white"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:paddingTop="@dimen/space_5"
+                android:paddingBottom="@dimen/space_5"
+                android:layout_height="match_parent">
+
+                <Button
+                    android:layout_centerInParent="true"
+                    android:textAllCaps="false"
+                    android:text="Packages"
+                    android:background="@drawable/btn_cornor_border"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:paddingTop="@dimen/space_5"
+                android:paddingBottom="@dimen/space_5"
+                android:layout_height="match_parent">
+
+                <Button
+                    android:layout_centerInParent="true"
+                    android:textAllCaps="false"
+                    android:text="Packages"
+                    android:background="@drawable/btn_cornor_border"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </RelativeLayout>
+            <RelativeLayout
+
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:paddingTop="@dimen/space_5"
+                android:paddingBottom="@dimen/space_5"
+                android:layout_height="match_parent">
+
+                <Button
+                    android:layout_centerInParent="true"
+                    android:textAllCaps="false"
+                    android:text="Packages"
+                    android:background="@drawable/btn_cornor_border"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </RelativeLayout>
+
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:tabTextColor="@color/black"
+        app:tabSelectedTextColor="@color/colorAccent"
+        app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget"
+        app:background="@color/white"
+        app:tabMode="fixed"
+        app:tabGravity="fill"/>
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+</LinearLayout>
