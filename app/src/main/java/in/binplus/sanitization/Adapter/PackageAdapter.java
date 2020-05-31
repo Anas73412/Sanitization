@@ -43,9 +43,9 @@ public class PackageAdapter extends RecyclerView.Adapter<PackageAdapter.ViewHold
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         PackageModel model=list.get(position);
-        holder.tv_pck_name.setText(model.getTitle());
-        holder.tv_amount.setText(activity.getResources().getString(R.string.currency)+" "+model.getAmount());
-        holder.tv_desc.setText(model.getDesc());
+        holder.tv_pck_name.setText(model.getPlan_name());
+        holder.tv_amount.setText(activity.getResources().getString(R.string.currency)+" "+model.getPlan_price());
+        holder.tv_desc.setText(model.getProduct_name());
 
         switch (position%4)
         {

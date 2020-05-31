@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_centerInParent="true"
+    android:background="@android:color/transparent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+   >
+<RelativeLayout
+    android:layout_width="wrap_content"
+
+    android:layout_height="wrap_content">
+    <RelativeLayout
+        android:id="@+id/rel_loader"
+        android:padding="@dimen/space_20"
+        android:layout_centerInParent="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+    <com.agrawalsuneet.dotsloader.loaders.LinearDotsLoader
+        android:id="@+id/light_loader"
+        style="?android:attr/progressBarStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+app:loader_noOfDots="6"
+        app:loader_dotsDist="@dimen/space_5"
+        app:loader_showRunningShadow="true"
+        app:loader_circleRadius="@dimen/space_10"
+        app:loader_selectedColor="@color/colorAccent"
+        app:loader_defaultColor="@color/all"
+        android:layout_centerVertical="true"
+app:rotatingcircular_dotsColor="@color/colorAccent"
+
+
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Loading.."
+
+
+        android:id="@+id/textView6"
+        android:layout_marginLeft="@dimen/space_10"
+        android:textSize="16dp"
+       android:visibility="gone"
+        android:textColor="@color/white"
+     />
+    </RelativeLayout>
+</RelativeLayout>
+</RelativeLayout>

@@ -1,12 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".Fragments.PackagesFragment">
-<androidx.recyclerview.widget.RecyclerView
-    android:id="@+id/rv_package"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"/>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <com.daimajia.slider.library.SliderLayout
+                android:layout_alignParentTop="true"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_margin="@dimen/space_10"
 
-</LinearLayout>
+               app:indicator_visibility="visible"
+                android:scrollIndicators="bottom"
+                android:id="@+id/slider"/>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_package"
+                android:layout_below="@+id/slider"
+                android:layout_above="@+id/banner"
+                android:layout_marginLeft="@dimen/space_10"
+                android:layout_marginRight="@dimen/space_10"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <com.daimajia.slider.library.SliderLayout
+                android:layout_width="match_parent"
+                android:layout_height="180dp"
+                android:layout_margin="@dimen/space_10"
+
+                android:layout_alignParentBottom="true"
+                android:id="@+id/banner"/>
+        </LinearLayout>
+    </ScrollView>
+
+
+
+</RelativeLayout>
