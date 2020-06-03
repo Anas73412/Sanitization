@@ -5,14 +5,17 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -34,12 +37,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import in.binplus.sanitization.Adapter.FAQAdapter;
 import in.binplus.sanitization.Adapter.PackageAdapter;
 import in.binplus.sanitization.AppController;
 import in.binplus.sanitization.Config.BaseUrl;
 import in.binplus.sanitization.Config.Module;
 import in.binplus.sanitization.CustomSlider;
 import in.binplus.sanitization.Model.BannerModel;
+import in.binplus.sanitization.Model.FAQModel;
 import in.binplus.sanitization.Model.PackageModel;
 import in.binplus.sanitization.PackageDetails;
 import in.binplus.sanitization.R;
@@ -56,13 +61,16 @@ import static in.binplus.sanitization.AppController.TAG;
 public class PackagesFragment extends Fragment {
 
     PackageAdapter packageAdapter;
+    FAQAdapter faqAdapter;
     ArrayList<PackageModel> list;
     ArrayList<BannerModel>banner_list;
-    RecyclerView rv_package;
+    ArrayList<FAQModel>faq_list;
+    RecyclerView rv_package ,rv_faq;
     SliderLayout home_slider ,home_banner;
-
+TextView txt_contact,txt_message ,txt_about,txt_version;
     Module module ;
     LoadingBar loadingBar ;
+    String url = "https://www.binplus.in/";
 
     public PackagesFragment() {
         // Required empty public constructor
@@ -101,15 +109,29 @@ public class PackagesFragment extends Fragment {
 
     private void initViews(View view) {
         rv_package=view.findViewById(R.id.rv_package);
+        rv_faq=view.findViewById(R.id.rv_faq);
         home_slider = view.findViewById(R.id.slider);
         home_banner = view.findViewById(R.id.banner);
+        txt_about= view.findViewById(R.id.txt_about);
+       txt_contact = view.findViewById(R.id.txt_contact);
+        txt_message = view.findViewById(R.id.txt_message);
+        txt_version = view.findViewById(R.id.txt_version);
+        txt_contact.setText(Html.fromHtml(url));
         loadingBar = new LoadingBar(getActivity());
         list=new ArrayList<>();
         banner_list = new ArrayList<>();
-
+        faq_list = new ArrayList<>();
         module = new Module(getActivity());
 
-        rv_package.setLayoutManager(new LinearLayoutManager(getActivity()));
+        rv_package.setLayoutManager(new GridLayoutManager(getActivity(),2));
+        rv_faq.setLayoutManager(new LinearLayoutManager(getActivity()));
+        faq_list.add(new FAQModel("How is it beneficial",""));
+        faq_list.add(new FAQModel("Cost for Sanitization",""));
+        faq_list.add(new FAQModel("Duration for the process",""));
+        faq_list.add(new FAQModel("What are the precautions to be taken",""));
+        faqAdapter = new FAQAdapter(getActivity(),faq_list);
+        rv_faq.setAdapter(faqAdapter);
+
 
         makeGetSliderRequest();
         getplans();

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_height="wrap_content" android:layout_width="match_parent">
+    <androidx.cardview.widget.CardView
+    app:cardCornerRadius="@dimen/space_5"
+    app:cardElevation="@dimen/space_5"
+    android:layout_margin="@dimen/space_2"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <RelativeLayout
+        android:id="@+id/rel_package"
+        android:layout_width="match_parent"
+
+
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="match_parent"
+            android:layout_height="155dp"
+            android:alpha=".4"
+            android:background="#8E24AA"/>
+
+    <LinearLayout
+        android:id="@+id/lin_container"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+
+        android:layout_height="wrap_content">
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/sanitiz"
+            android:layout_margin="@dimen/space_5"/>
+        <LinearLayout
+            android:orientation="vertical"
+
+            android:layout_marginBottom="@dimen/space_5"
+            android:layout_marginLeft="@dimen/space_20"
+            android:layout_marginRight="@dimen/space_20"
+            android:backgroundTint="@color/colorAccent"
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <in.binplus.sanitization.Fonts.LatoBLack
+                android:textColor="@color/white"
+                android:text="Package 1"
+                android:id="@+id/tv_pck_name"
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <in.binplus.sanitization.Fonts.LatoBLack
+                android:textColor="@color/white"
+                android:text="200"
+                android:id="@+id/tv_amount"
+                android:textSize="20dp"
+                android:textStyle="bold"
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <in.binplus.sanitization.Fonts.LatoBLack
+                android:textColor="@color/white"
+                android:text="Package 1"
+                android:id="@+id/tv_desc"
+
+                android:textSize="@dimen/space_11"
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/icons8_right_arrow_30px"
+            android:layout_gravity="end"
+            android:layout_marginRight="@dimen/space_5"/>
+
+    </LinearLayout>
+    </RelativeLayout>
+
+    </androidx.cardview.widget.CardView></RelativeLayout>

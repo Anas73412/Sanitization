@@ -5,6 +5,7 @@ import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -33,7 +34,7 @@ public class PackageAdapter extends RecyclerView.Adapter<PackageAdapter.ViewHold
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view= LayoutInflater.from(activity).inflate(R.layout.row_packages,null);
+        View view= LayoutInflater.from(activity).inflate(R.layout.row_pack,null);
         ViewHolder viewHolder=new ViewHolder(view);
         return viewHolder;
     }
@@ -47,20 +48,24 @@ public class PackageAdapter extends RecyclerView.Adapter<PackageAdapter.ViewHold
         holder.tv_amount.setText(activity.getResources().getString(R.string.currency)+" "+model.getPlan_price());
         holder.tv_desc.setText(model.getProduct_name());
 
-        switch (position%4)
+      switch (position%4)
         {
-            case 0:holder.lin_container.getBackground().setTint(activity.getResources().getColor(R.color.color_1));
-                holder.rel_next.getBackground().setTint(activity.getResources().getColor(R.color.color_3));
+            case 0:
+//                holder.lin_container.getBackground().setTint(activity.getResources().getColor(R.color.color_1));
+                holder.iv_back.getBackground().setTint(activity.getResources().getColor(R.color.color_3));
                 break;
 
-            case 1:holder.lin_container.getBackground().setTint(activity.getResources().getColor(R.color.color_2));
-                holder.rel_next.getBackground().setTint(activity.getResources().getColor(R.color.color_4));
+            case 1:
+//                holder.lin_container.getBackground().setTint(activity.getResources().getColor(R.color.color_2));
+                holder.iv_back.getBackground().setTint(activity.getResources().getColor(R.color.color_4));
                 break;
-            case 2:holder.lin_container.getBackground().setTint(activity.getResources().getColor(R.color.color_3));
-                holder.rel_next.getBackground().setTint(activity.getResources().getColor(R.color.color_1));
+            case 2:
+//                holder.lin_container.getBackground().setTint(activity.getResources().getColor(R.color.color_3));
+                holder.iv_back.getBackground().setTint(activity.getResources().getColor(R.color.color_1));
                 break;
-            case 3:holder.lin_container.getBackground().setTint(activity.getResources().getColor(R.color.color_4));
-                holder.rel_next.getBackground().setTint(activity.getResources().getColor(R.color.color_2));
+            case 3:
+//                holder.lin_container.getBackground().setTint(activity.getResources().getColor(R.color.color_4));
+                holder.iv_back.getBackground().setTint(activity.getResources().getColor(R.color.color_2));
                 break;
         }
     }
@@ -72,12 +77,14 @@ public class PackageAdapter extends RecyclerView.Adapter<PackageAdapter.ViewHold
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         LinearLayout lin_container;
+        ImageView iv_back;
         TextView tv_pck_name,tv_amount,tv_desc;
-        RelativeLayout rel_next;
+        RelativeLayout rel_pack;
         public ViewHolder(@NonNull View v) {
             super(v);
             lin_container=v.findViewById(R.id.lin_container);
-            rel_next=v.findViewById(R.id.rel_next);
+            rel_pack=v.findViewById(R.id.rel_package);
+            iv_back=v.findViewById(R.id.iv_back);
             tv_pck_name=v.findViewById(R.id.tv_pck_name);
             tv_amount=v.findViewById(R.id.tv_amount);
             tv_desc=v.findViewById(R.id.tv_desc);

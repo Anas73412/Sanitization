@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/space_5"
+        >
+        <in.binplus.sanitization.Fonts.LatoBLack
+            android:textColor="@color/black"
+            android:text="Package 1"
+            android:id="@+id/tv_faq"
+            android:textSize="@dimen/space_15"
+            android:drawableRight="@drawable/icons8_chevron_right_16px"
+            android:drawableTint="@color/black"
+            android:drawablePadding="@dimen/space_10"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>
