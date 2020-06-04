@@ -12,13 +12,5 @@
         android:src="@drawable/logo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
-    <in.binplus.sanitization.Fonts.LatoBLack
-        android:textSize="15dp"
-        android:textColor="@color/colorAccent"
-        android:gravity="center_horizontal"
-        android:text="Developed By \n Binplus Technologies (P) Limited"
-        android:layout_marginBottom="30dp"
-        android:layout_alignParentBottom="true"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+
 </RelativeLayout>

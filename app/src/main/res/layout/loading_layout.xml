@@ -9,30 +9,28 @@
    >
 <RelativeLayout
     android:layout_width="wrap_content"
-
     android:layout_height="wrap_content">
     <RelativeLayout
         android:id="@+id/rel_loader"
         android:padding="@dimen/space_20"
+        android:background="@android:color/transparent"
         android:layout_centerInParent="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
-    <com.agrawalsuneet.dotsloader.loaders.LinearDotsLoader
-        android:id="@+id/light_loader"
-        style="?android:attr/progressBarStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-app:loader_noOfDots="6"
-        app:loader_dotsDist="@dimen/space_5"
-        app:loader_showRunningShadow="true"
-        app:loader_circleRadius="@dimen/space_10"
-        app:loader_selectedColor="@color/colorAccent"
-        app:loader_defaultColor="@color/all"
-        android:layout_centerVertical="true"
-app:rotatingcircular_dotsColor="@color/colorAccent"
-
-
-        />
+        <com.agrawalsuneet.loaderspack.loaders.CircularSticksLoader
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            app:circularsticks_animDuration="1000"
+            app:circularsticks_firstShadowColor="#7FBAED"
+            app:circularsticks_innerCircleRadius="30dp"
+            app:circularsticks_noOfSticks="32"
+            app:circularsticks_outerCircleRadius="50dp"
+            app:circularsticks_secondShadowColor="#6A9ECA"
+            app:circularsticks_selectedStickColor="@color/colorAccent"
+            app:circularsticks_showRunningShadow="true"
+            app:circularsticks_stickColor="@color/all"
+          />
 
     <TextView
         android:layout_width="wrap_content"

@@ -20,7 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <in.binplus.sanitization.Fonts.LatoBLack
+        <in.sanitization.sanitization.Fonts.LatoBLack
             android:textColor="@color/white"
             android:text="Package 1"
             android:id="@+id/tv_pck_name"
@@ -28,7 +28,7 @@
             android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
-        <in.binplus.sanitization.Fonts.LatoBLack
+        <in.sanitization.sanitization.Fonts.LatoBLack
             android:textColor="@color/white"
             android:text="200"
             android:id="@+id/tv_amount"
@@ -38,7 +38,7 @@
             android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
-        <in.binplus.sanitization.Fonts.LatoBLack
+        <in.sanitization.sanitization.Fonts.LatoBLack
             android:textColor="@color/white"
             android:text="Package 1"
             android:id="@+id/tv_desc"

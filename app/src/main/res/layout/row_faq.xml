@@ -8,7 +8,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/space_5"
         >
-        <in.binplus.sanitization.Fonts.LatoBLack
+        <in.sanitization.sanitization.Fonts.LatoBLack
             android:textColor="@color/black"
             android:text="Package 1"
             android:id="@+id/tv_faq"

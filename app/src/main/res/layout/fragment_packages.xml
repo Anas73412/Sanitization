@@ -1,85 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:padding="@dimen/space_10"
+    android:background="@color/white"
     tools:context=".Fragments.PackagesFragment">
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-            <com.daimajia.slider.library.SliderLayout
-                android:layout_alignParentTop="true"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_margin="@dimen/space_10"
-
-               app:indicator_visibility="visible"
-                android:scrollIndicators="bottom"
-                android:id="@+id/slider"/>
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                app:cardCornerRadius="@dimen/space_5"
-                android:layout_marginLeft="@dimen/space_5"
-                android:layout_marginRight="@dimen/space_5"
-                android:padding="@dimen/space_5"
-                android:layout_height="wrap_content">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-                    <TextView
-
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text=" About Us "
-                        android:textColor="@color/colorAccent"
-                        android:textSize="20dp"
-                        android:textStyle="bold"
-
-                        />
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/space_1"
-                        android:background="@color/gray"
-                        android:layout_margin="@dimen/space_5"
-                       />
-                    <TextView
-                        android:id="@+id/txt_about"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingLeft="@dimen/space_5"
-                        android:paddingRight="@dimen/space_5"
-                        android:text="@string/about_us"
-                       android:paddingBottom="@dimen/space_5"
-
-
-
-
-                        />
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            app:cardCornerRadius="@dimen/space_5"
-            android:layout_marginTop="@dimen/space_5"
-            android:layout_marginLeft="@dimen/space_5"
-            android:layout_marginRight="@dimen/space_5"
-            android:padding="@dimen/space_5"
-            android:layout_height="wrap_content">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+<!--    <androidx.cardview.widget.CardView-->
+<!--        android:layout_width="match_parent"-->
+<!--        app:cardCornerRadius="@dimen/space_5"-->
+<!--        android:layout_marginTop="@dimen/space_5"-->
+<!--        android:layout_marginLeft="@dimen/space_5"-->
+<!--        android:layout_marginRight="@dimen/space_5"-->
+<!--        android:padding="@dimen/space_5"-->
+<!--        android:layout_height="wrap_content">-->
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="vertical">-->
             <TextView
 
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text=" Our Packages "
+                android:gravity="center"
                 android:textColor="@color/colorAccent"
                 android:textSize="20dp"
                 android:textStyle="bold"
@@ -93,216 +38,12 @@
                 />
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_package"
-
                 android:layout_width="match_parent"
                 android:layout_margin="@dimen/space_5"
                 android:layout_height="wrap_content"/>
-        </LinearLayout>
-        </androidx.cardview.widget.CardView>
-
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                app:cardCornerRadius="@dimen/space_5"
-                android:layout_marginTop="@dimen/space_5"
-                android:layout_marginLeft="@dimen/space_5"
-                android:layout_marginRight="@dimen/space_5"
-                android:padding="@dimen/space_5"
-                android:layout_height="wrap_content">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-                <TextView
-
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text=" Contact Us "
-                    android:textColor="@color/colorAccent"
-                    android:textSize="20dp"
-                    android:textStyle="bold"
-
-                    />
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/space_1"
-                    android:background="@color/gray"
-                    android:layout_margin="@dimen/space_5"
-                    />
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-                    <ImageView
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:layout_margin="@dimen/space_10"
-                        android:tint="@color/colorAccent"
-                        android:src="@drawable/icons8_mouse_right_click_128px"/>
-                    <TextView
-                        android:id="@+id/txt_contact"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingLeft="@dimen/space_5"
-                        android:paddingRight="@dimen/space_5"
-                        android:text=" About Us "
-                        android:autoLink="web"
-                        android:textColor="@color/black"
-                        android:textSize="16dp"
-                        android:paddingBottom="@dimen/space_5"
-
-
-                        />
-                </LinearLayout>
-
-            </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-            <com.daimajia.slider.library.SliderLayout
-                android:layout_width="match_parent"
-                android:layout_height="180dp"
-                android:layout_margin="@dimen/space_10"
-
-                android:layout_alignParentBottom="true"
-                android:id="@+id/banner"/>
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            app:cardCornerRadius="@dimen/space_5"
-            android:layout_marginTop="@dimen/space_5"
-            android:layout_marginLeft="@dimen/space_5"
-            android:layout_marginRight="@dimen/space_5"
-            android:padding="@dimen/space_5"
-            android:layout_height="wrap_content">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                >
-                <ImageView
-                    android:id="@+id/m_img"
-                    android:layout_width="80dp"
-                    android:src="@drawable/icons8_commercial_200px"
-                    android:layout_alignParentLeft="true"
-                    android:layout_centerVertical="true"
-                    android:layout_height="80dp"/>
-                <TextView
-                    android:id="@+id/txt_message"
-                    android:layout_toRightOf="@+id/m_img"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="@dimen/space_5"
-                    android:paddingRight="@dimen/space_5"
-                    android:text="@string/message"
-                    android:layout_alignParentRight="true"
-
-                    android:textSize="14dp"
-                    />
-
-            </RelativeLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/space_1"
-                android:background="@color/gray"
-                android:layout_margin="@dimen/space_5"
-                />
-            <ImageView
-                android:src="@drawable/banner1"
-                android:layout_width="match_parent"
-                android:scaleType="fitXY"
-                android:layout_height="100dp"/>
-        </LinearLayout>
-        </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                app:cardCornerRadius="@dimen/space_5"
-                android:layout_marginTop="@dimen/space_5"
-                android:layout_marginLeft="@dimen/space_5"
-                android:layout_marginRight="@dimen/space_5"
-                android:padding="@dimen/space_5"
-                android:layout_height="wrap_content">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-                    <TextView
-
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-
-
-                        android:text=" Frequently asked Questions"
-                        android:textColor="@color/colorAccent"
-                        android:textSize="20dp"
-                        android:textStyle="bold"
-
-                        />
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/space_1"
-                        android:background="@color/gray"
-                        android:layout_margin="@dimen/space_5"
-                        />
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rv_faq"
-
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            app:cardCornerRadius="@dimen/space_5"
-            android:layout_marginTop="@dimen/space_10"
-            android:layout_marginLeft="@dimen/space_5"
-            android:layout_marginRight="@dimen/space_5"
-            android:layout_marginBottom="@dimen/space_10"
-            android:padding="@dimen/space_5"
-            android:layout_height="wrap_content">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <TextView
-
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/space_20"
-                android:gravity="center"
-                android:text="@string/app_name"
-              android:textStyle="bold"
-                android:textSize="18dp"
-
-
-                />
-            <TextView
-                android:id="@+id/txt_version"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingLeft="@dimen/space_5"
-                android:paddingRight="@dimen/space_5"
-                android:text="v 1.1 "
-                android:gravity="center"
-                android:textSize="14dp"
-
-
-                />
-            <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:src="@drawable/logo"
-                android:layout_gravity="center"/>
-        </LinearLayout>
-        </androidx.cardview.widget.CardView>
-        </LinearLayout>
-    </ScrollView>
+<!--        </LinearLayout>-->
+<!--    </androidx.cardview.widget.CardView>-->
 
 
 
-</RelativeLayout>
+</LinearLayout>
