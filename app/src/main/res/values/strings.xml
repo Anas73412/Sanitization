@@ -1,7 +1,9 @@
 <resources>
-    <string name="app_name">Sanitization</string>
+    <string name="app_name">A2ZIndia</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="currency">\u20B9</string>
+    <string name="message">Friends, this is just the beginning. Our objective is to transform quality of life, infrastructure and services. Together we shall build the India of your dreams green and safe. In this, We seek your blessings and continued support.</string>
+    <string name="about_us">Sanitizing &amp; Disinfecting is a breakthrough technology that redefines the concept of a healthy living space. We offer all natural sanitizing and deodorizing with our state of the art Genesis system and Shield microbial barrier application which creates an uninhabitable environment for germs. We proudly service commercial and residential locations such as hotels, hospitals, daycare, senior care facilities, schools, athletic facilities and more. Best of all, we come to your location on a date and time that is convenient for you.</string>
 </resources>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/packages"
+        android:icon="@drawable/pppp"
+        android:title="Packages"
+        android:checked="true"
+  />
+
+    <item
+        android:id="@+id/Services"
+        android:icon="@drawable/serviuce"
+        android:title="Services"
+       />
+</menu>

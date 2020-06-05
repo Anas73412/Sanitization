@@ -11,7 +11,7 @@
             android:layout_centerVertical="true"
             android:layout_width="wrap_content"
             android:layout_height="30dp"/>
-        <in.binplus.sanitization.Fonts.LatoBLack
+        <in.sanitization.sanitization.Fonts.LatoBLack
             android:text=""
             android:layout_toRightOf="@id/iv_back"
             android:layout_centerVertical="true"
