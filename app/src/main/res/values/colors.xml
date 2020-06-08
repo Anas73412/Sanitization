@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#FFF</color>
     <color name="colorPrimaryDark">#7EBAED</color>
-    <color name="colorAccent">#018BFF</color>
+    <color name="colorAccent">#FFF</color>
     <color name="white">#ffffff</color>
     <color name="gray">#E3E3E3</color>
     <color name="black">#000000</color>
@@ -23,6 +23,10 @@
     <color name="contact">#A09F9F</color>
     <color name="all">#f2f3f4</color>
     <color name="tot">#2E7731</color>
+    <color name="gdnt_top">#F45A1E</color>
+    <color name="gdnt_bottom">#F3841F</color>
+    <color name="bg_color">#DDDBDB</color>
+
 
 
 </resources>

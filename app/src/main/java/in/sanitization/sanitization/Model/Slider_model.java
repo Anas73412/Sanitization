@@ -3,56 +3,65 @@ package in.sanitization.sanitization.Model;
 
 public class Slider_model {
 
-    String id;
-    String title;
-    String slug;
-    String parent;
-    String leval;
-    String description;
-    String image;
-    String arb_title;
-    String status;
+    String slider_id,slider_title,slider_image,slider_plan,status,is_delete;
 
-
-    public String getId(){
-        return id;
+    public Slider_model() {
     }
 
-    public String getTitle(){
-        return title;
+    public Slider_model(String slider_id, String slider_title, String slider_image, String slider_plan, String status, String is_delete) {
+        this.slider_id = slider_id;
+        this.slider_title = slider_title;
+        this.slider_image = slider_image;
+        this.slider_plan = slider_plan;
+        this.status = status;
+        this.is_delete = is_delete;
     }
 
-    public String getSlug(){
-        return slug;
+    public String getSlider_id() {
+        return slider_id;
     }
 
-    public String getParent(){
-        return parent;
+    public void setSlider_id(String slider_id) {
+        this.slider_id = slider_id;
     }
 
-    public String getLeval(){
-        return leval;
+    public String getSlider_title() {
+        return slider_title;
     }
 
-    public String getArb_title() {
-        return arb_title;
+    public void setSlider_title(String slider_title) {
+        this.slider_title = slider_title;
     }
 
-    public void setArb_title(String arb_title) {
-        this.arb_title = arb_title;
+    public String getSlider_image() {
+        return slider_image;
     }
 
-    public String getDescription(){
-        return description;
+    public void setSlider_image(String slider_image) {
+        this.slider_image = slider_image;
     }
 
-    public String getImage(){
-        return image;
+    public String getSlider_plan() {
+        return slider_plan;
     }
 
-    public String getStatus(){
+    public void setSlider_plan(String slider_plan) {
+        this.slider_plan = slider_plan;
+    }
+
+    public String getStatus() {
         return status;
     }
 
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
+    public String getIs_delete() {
+        return is_delete;
+    }
+
+    public void setIs_delete(String is_delete) {
+        this.is_delete = is_delete;
+    }
 }

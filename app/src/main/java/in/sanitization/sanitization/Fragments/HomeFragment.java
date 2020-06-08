@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import android.text.Html;
 import android.util.Log;
@@ -27,6 +28,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import in.sanitization.sanitization.Adapter.CarausalAdapter;
 import in.sanitization.sanitization.Adapter.FAQAdapter;
 import in.sanitization.sanitization.AppController;
 import in.sanitization.sanitization.Config.BaseUrl;
@@ -34,6 +36,7 @@ import in.sanitization.sanitization.Config.Module;
 import in.sanitization.sanitization.CustomSlider;
 import in.sanitization.sanitization.Model.BannerModel;
 import in.sanitization.sanitization.Model.FAQModel;
+import in.sanitization.sanitization.Model.Slider_model;
 import in.sanitization.sanitization.R;
 import in.sanitization.sanitization.util.LoadingBar;
 
@@ -48,8 +51,11 @@ public class HomeFragment extends Fragment {
     LoadingBar loadingBar ;
     String url = "contact us";
     FAQAdapter faqAdapter;
+    ArrayList<Slider_model> carList;
     ArrayList<BannerModel>banner_list;
     ArrayList<FAQModel>faq_list;
+    ViewPager viewPager;
+    CarausalAdapter carausalAdapter;
     public HomeFragment() {
         // Required empty public constructor
     }
@@ -72,10 +78,12 @@ public class HomeFragment extends Fragment {
         txt_contact = view.findViewById(R.id.txt_contact);
         txt_message = view.findViewById(R.id.txt_message);
         txt_version = view.findViewById(R.id.txt_version);
+        viewPager = view.findViewById(R.id.viewPager);
         txt_contact.setText(Html.fromHtml(url));
         loadingBar = new LoadingBar(getActivity());
 
         banner_list = new ArrayList<>();
+        carList = new ArrayList<>();
         faq_list = new ArrayList<>();
         module = new Module(getActivity());
 
@@ -90,8 +98,8 @@ public class HomeFragment extends Fragment {
 
 
         makeGetSliderRequest();
-
         makeGetBannerSliderRequest();
+
     }
 
     private void makeGetSliderRequest() {
@@ -105,7 +113,16 @@ public class HomeFragment extends Fragment {
                         try {
                             ArrayList<HashMap<String, String>> listarray = new ArrayList<>();
                             for (int i = 0; i < response.length(); i++) {
+
                                 JSONObject jsonObject = (JSONObject) response.get(i);
+                                Slider_model model=new Slider_model();
+                                model.setSlider_id(jsonObject.getString("slider_id"));
+                                model.setSlider_title(jsonObject.getString("slider_title"));
+                                model.setSlider_image(jsonObject.getString("slider_image"));
+                                model.setSlider_plan(jsonObject.getString("slider_plan"));
+                                model.setStatus(jsonObject.getString("status"));
+                                model.setIs_delete(jsonObject.getString("is_delete"));
+                               carList.add(model);
                                 HashMap<String, String> url_maps = new HashMap<String, String>();
                                 url_maps.put("slider_title", jsonObject.getString("slider_title"));
                                 url_maps.put("sub_cat", jsonObject.getString("slider_plan"));
@@ -144,7 +161,10 @@ public class HomeFragment extends Fragment {
                                     }
                                 });
 
-
+                                Log.e("assad",""+carList.size());
+                                carausalAdapter =new CarausalAdapter(carList,getActivity());
+                                viewPager.setAdapter(carausalAdapter);
+                                viewPager.setPadding(10,0,50,0);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -182,10 +202,6 @@ public class HomeFragment extends Fragment {
                                 url_maps.put("banner_image", BaseUrl.IMG_SLIDER_URL + jsonObject.getString("banner_image"));
                                 url_maps.put("status",jsonObject.getString("status"));
                                 url_maps.put("is_delete",jsonObject.getString("is_delete"));
-
-
-                                //   Toast.makeText(context,""+modelList.get(position).getProduct_image(),Toast.LENGTH_LONG).show();
-
                                 listarray.add(url_maps);
                             }
                             for (final HashMap<String, String> name : listarray) {

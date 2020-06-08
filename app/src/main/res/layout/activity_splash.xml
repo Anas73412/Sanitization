@@ -3,11 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@color/white"
+    android:background="@drawable/white_ripple"
     android:layout_height="match_parent"
     tools:context=".SplashActivity">
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:layout_centerInParent="true"
         android:src="@drawable/logo"
         android:layout_width="match_parent"

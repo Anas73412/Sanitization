@@ -6,4 +6,17 @@
     <string name="currency">\u20B9</string>
     <string name="message">Friends, this is just the beginning. Our objective is to transform quality of life, infrastructure and services. Together we shall build the India of your dreams green and safe. In this, We seek your blessings and continued support.</string>
     <string name="about_us">Sanitizing &amp; Disinfecting is a breakthrough technology that redefines the concept of a healthy living space. We offer all natural sanitizing and deodorizing with our state of the art Genesis system and Shield microbial barrier application which creates an uninhabitable environment for germs. We proudly service commercial and residential locations such as hotels, hospitals, daycare, senior care facilities, schools, athletic facilities and more. Best of all, we come to your location on a date and time that is convenient for you.</string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_slideshow">Slideshow</string>
+
+    <string name="home_second">Home Second</string>
 </resources>

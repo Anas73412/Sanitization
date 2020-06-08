@@ -2,6 +2,7 @@ package in.sanitization.sanitization.Config;
 
 import android.content.Context;
 import android.view.View;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkError;
@@ -18,6 +19,7 @@ public class Module {
     public Module(Context context) {
         this.context = context;
     }
+
 
     public String VolleyErrorMessage(VolleyError error)
     {
@@ -51,5 +53,9 @@ public class Module {
                 view.setEnabled(true);
             }
         }, 1000);
+    }
+    public void showToast(String s)
+    {
+        Toast.makeText(context,""+s,Toast.LENGTH_SHORT).show();
     }
 }
