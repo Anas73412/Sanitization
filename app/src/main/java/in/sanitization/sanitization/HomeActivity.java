@@ -19,6 +19,8 @@ import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 
+import in.sanitization.sanitization.Fragments.ABoutUsFragment;
+import in.sanitization.sanitization.Fragments.ContactFragment;
 import in.sanitization.sanitization.Fragments.HomeFragment;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
@@ -93,6 +95,19 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         Bundle args = new Bundle();
         if (id == R.id.nav_home) {
             fm = new HomeFragment();
+        }
+        else if (id == R.id.nav_contact)
+        {
+            fm = new ContactFragment();
+        }
+        else if (id == R.id.nav_about)
+        {
+            fm = new ABoutUsFragment();
+        }
+        else if (id == R.id.nav_privacy)
+        {
+
+
         }
         if (fm != null) {
             FragmentManager fragmentManager = getSupportFragmentManager();

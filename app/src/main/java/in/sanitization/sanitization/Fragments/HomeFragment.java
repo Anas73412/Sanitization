@@ -3,6 +3,7 @@ package in.sanitization.sanitization.Fragments;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
@@ -15,29 +16,38 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import in.sanitization.sanitization.Adapter.CarausalAdapter;
 import in.sanitization.sanitization.Adapter.FAQAdapter;
+import in.sanitization.sanitization.Adapter.PackageAdapter;
 import in.sanitization.sanitization.AppController;
 import in.sanitization.sanitization.Config.BaseUrl;
 import in.sanitization.sanitization.Config.Module;
 import in.sanitization.sanitization.CustomSlider;
 import in.sanitization.sanitization.Model.BannerModel;
 import in.sanitization.sanitization.Model.FAQModel;
+import in.sanitization.sanitization.Model.PackageModel;
 import in.sanitization.sanitization.Model.Slider_model;
 import in.sanitization.sanitization.R;
+import in.sanitization.sanitization.util.CustomVolleyJsonArrayRequest;
 import in.sanitization.sanitization.util.LoadingBar;
 
 /**
@@ -52,10 +62,15 @@ public class HomeFragment extends Fragment {
     String url = "contact us";
     FAQAdapter faqAdapter;
     ArrayList<Slider_model> carList;
+    ArrayList<Slider_model> bannerList;
     ArrayList<BannerModel>banner_list;
     ArrayList<FAQModel>faq_list;
-    ViewPager viewPager;
+    ViewPager viewPager ,viewPager2;
     CarausalAdapter carausalAdapter;
+
+    PackageAdapter packageAdapter;
+    ArrayList<PackageModel> list;
+     RecyclerView rv_package ;
     public HomeFragment() {
         // Required empty public constructor
     }
@@ -73,19 +88,24 @@ public class HomeFragment extends Fragment {
 
         rv_faq=view.findViewById(R.id.rv_faq);
         home_slider = view.findViewById(R.id.slider);
-        home_banner = view.findViewById(R.id.banner);
+//        home_banner = view.findViewById(R.id.banner);
         txt_about= view.findViewById(R.id.txt_about);
         txt_contact = view.findViewById(R.id.txt_contact);
         txt_message = view.findViewById(R.id.txt_message);
         txt_version = view.findViewById(R.id.txt_version);
         viewPager = view.findViewById(R.id.viewPager);
+        viewPager2 = view.findViewById(R.id.viewPager2);
         txt_contact.setText(Html.fromHtml(url));
         loadingBar = new LoadingBar(getActivity());
 
         banner_list = new ArrayList<>();
         carList = new ArrayList<>();
+        bannerList = new ArrayList<>();
         faq_list = new ArrayList<>();
         module = new Module(getActivity());
+        list=new ArrayList<>();
+        rv_package=view.findViewById(R.id.rv_package);
+
 
 
         rv_faq.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -96,7 +116,7 @@ public class HomeFragment extends Fragment {
         faqAdapter = new FAQAdapter(getActivity(),faq_list);
         rv_faq.setAdapter(faqAdapter);
 
-
+        getplans();
         makeGetSliderRequest();
         makeGetBannerSliderRequest();
 
@@ -196,6 +216,14 @@ public class HomeFragment extends Fragment {
                             ArrayList<HashMap<String, String>> listarray = new ArrayList<>();
                             for (int i = 0; i < response.length(); i++) {
                                 JSONObject jsonObject = (JSONObject) response.get(i);
+                             Slider_model model=new Slider_model();
+                                model.setSlider_id(jsonObject.getString("banner_id"));
+                                model.setSlider_title(jsonObject.getString("banner_title"));
+                                model.setSlider_image(jsonObject.getString("banner_image"));
+                                model.setSlider_plan(jsonObject.getString("banner_plan"));
+                                model.setStatus(jsonObject.getString("status"));
+                                model.setIs_delete(jsonObject.getString("is_delete"));
+                                bannerList.add(model);
                                 HashMap<String, String> url_maps = new HashMap<String, String>();
                                 url_maps.put("banner_title", jsonObject.getString("banner_title"));
                                 url_maps.put("banner_plan", jsonObject.getString("banner_plan"));
@@ -210,7 +238,7 @@ public class HomeFragment extends Fragment {
                                 textSliderView.bundle(new Bundle());
                                 textSliderView.getBundle().putString("extra", name.get("banner_title"));
                                 textSliderView.getBundle().putString("extra", name.get("banner_plan"));
-                                home_banner.addSlider(textSliderView);
+//                                home_banner.addSlider(textSliderView);
                                 final String plan = (String) textSliderView.getBundle().get("extra");
                                 textSliderView.setOnSliderClickListener(new BaseSliderView.OnSliderClickListener() {
                                     @Override
@@ -223,6 +251,11 @@ public class HomeFragment extends Fragment {
                                 });
 
                             }
+
+                            Log.e("bannnerlist",""+bannerList.size());
+                            carausalAdapter =new CarausalAdapter(bannerList,getActivity());
+                            viewPager2.setAdapter(carausalAdapter);
+                            viewPager2.setPadding(10,0,50,0);
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -242,6 +275,51 @@ public class HomeFragment extends Fragment {
             }
         });
         AppController.getInstance().addToRequestQueue(req);
+
+    }
+    private void getplans() {
+        loadingBar.show();
+        list.clear();
+        Map<String, String> params = new HashMap<String, String>();
+
+        CustomVolleyJsonArrayRequest jsonObjReq = new CustomVolleyJsonArrayRequest(Request.Method.POST,
+                BaseUrl.GET_PLANS, params, new Response.Listener<JSONArray>() {
+
+            @Override
+            public void onResponse(JSONArray response) {
+                Log.d("plans", response.toString());
+                loadingBar.dismiss();
+
+                if (response != null && response.length() > 0) {
+
+
+                    Gson gson = new Gson();
+                    Type listType = new TypeToken<List<PackageModel>>() {
+                    }.getType();
+                    list = gson.fromJson(response.toString(), listType);
+                    packageAdapter = new PackageAdapter(getActivity(),list);
+                    rv_package.setAdapter(packageAdapter);
+                    rv_package.setLayoutManager(new GridLayoutManager(getActivity(),2));
+                    packageAdapter.notifyDataSetChanged();
+
+                }
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                loadingBar.dismiss();
+                String msg=module.VolleyErrorMessage(error);
+
+                if(!msg.equals(""))
+                {
+                    Toast.makeText(getActivity(),""+msg,Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
+        // Adding request to request queue
+        AppController.getInstance().addToRequestQueue(jsonObjReq,"plans");
 
     }
 }
