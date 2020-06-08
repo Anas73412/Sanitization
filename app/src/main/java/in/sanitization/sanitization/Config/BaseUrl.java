@@ -10,4 +10,8 @@ public class BaseUrl {
     public static final String SIGN_UP =BASE_URL+"index.php/api/signup";
     public static final String LOGIN =BASE_URL+"index.php/api/login";
     public static final String SEND_QUERY =BASE_URL+"index.php/api/contact_us";
+    public static final String ABOUT_US=BASE_URL+"index.php/api/aboutus";
+    public static final String CONTACT =BASE_URL+"index.php/api/contact";
+    public static final String TERMS=BASE_URL+"index.php/api/terms";
+    public static final String PRIVACY=BASE_URL+"index.php/api/terms";
 }

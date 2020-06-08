@@ -21,6 +21,7 @@
                 android:layout_width="150dp"
                 android:layout_height="150dp"/>
             <in.sanitization.sanitization.Fonts.LatoBLack
+                android:id="@+id/text_title"
                 android:layout_width="wrap_content"
                 android:text="About Us"
                 android:textAllCaps="false"
@@ -48,7 +49,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
                 <TextView
-
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text=" About Us "
