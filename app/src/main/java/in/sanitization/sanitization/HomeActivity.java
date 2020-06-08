@@ -27,7 +27,7 @@ import in.sanitization.sanitization.Fragments.TermsFragment;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     NavigationView navigationView;
-    DrawerLayout drawerLayout;
+    DrawerLayout drawer;
     Toolbar toolbar;
     Activity ctx=HomeActivity.this;
 
@@ -39,7 +39,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitle(getResources().getString(R.string.app_name));
-        final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+       drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         final ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -121,7 +121,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                     .addToBackStack(null).commit();
 
         }
-        drawerLayout.closeDrawer(GravityCompat.START);
+        drawer.closeDrawer(GravityCompat.START);
 
         return true;
     }
