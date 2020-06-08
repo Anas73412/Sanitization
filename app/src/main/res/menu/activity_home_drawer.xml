@@ -7,14 +7,14 @@
         android:checkableBehavior="single">
         <item
             android:id="@+id/nav_home"
-            android:icon="@drawable/icons8_home_48px"
+            android:icon="@drawable/icons8_home_page_500px"
             android:title="@string/menu_home" />
     </group>
     <group android:id="@+id/group_contact"
         android:checkableBehavior="single">
         <item
             android:id="@+id/nav_contact"
-            android:icon="@drawable/icons8_contacts_80px"
+            android:icon="@drawable/icons8_email_500px"
             android:title="Contact Us" />
     </group>
     <group android:id="@+id/group_about"
@@ -22,7 +22,7 @@
 
         <item
             android:id="@+id/nav_about"
-            android:icon="@drawable/icons8_about_80px"
+            android:icon="@drawable/icons8_info_500px_1"
             android:title="About Us" />
     </group>
 
@@ -30,15 +30,22 @@
         android:checkableBehavior="single">
         <item
             android:id="@+id/nav_privacy"
-            android:icon="@drawable/icons8_privacy_64px"
+            android:icon="@drawable/icons8_security_document_500px_1"
             android:title="Privacy Policy" />
+    </group>
+    <group android:id="@+id/group_terms"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_terms"
+            android:icon="@drawable/icons8_edit_delivery_terms_500px"
+            android:title="Terms &amp; Conditions" />
     </group>
 
     <group android:id="@+id/group_logout"
         android:checkableBehavior="single">
         <item
             android:id="@+id/nav_logout"
-            android:icon="@drawable/icons8_logout_rounded_up_64px"
+            android:icon="@drawable/icons8_shutdown_500px"
             android:title="Logout" />
     </group>
 

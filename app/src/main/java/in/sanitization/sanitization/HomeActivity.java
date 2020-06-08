@@ -22,6 +22,8 @@ import com.google.android.material.navigation.NavigationView;
 import in.sanitization.sanitization.Fragments.ABoutUsFragment;
 import in.sanitization.sanitization.Fragments.ContactFragment;
 import in.sanitization.sanitization.Fragments.HomeFragment;
+import in.sanitization.sanitization.Fragments.PrivacyFragment;
+import in.sanitization.sanitization.Fragments.TermsFragment;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     NavigationView navigationView;
@@ -106,9 +108,13 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         }
         else if (id == R.id.nav_privacy)
         {
-
-
+            fm = new PrivacyFragment();
         }
+        else if (id == R.id.nav_terms)
+        {
+            fm = new TermsFragment();
+        }
+
         if (fm != null) {
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.frame, fm)

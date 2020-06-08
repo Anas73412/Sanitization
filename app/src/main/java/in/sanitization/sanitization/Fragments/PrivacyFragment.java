@@ -14,11 +14,11 @@ import in.sanitization.sanitization.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ABoutUsFragment extends Fragment {
+public class PrivacyFragment extends Fragment {
 
     private TextView textView;
 
-    public ABoutUsFragment() {
+    public PrivacyFragment() {
         // Required empty public constructor
     }
 
@@ -27,7 +27,7 @@ public class ABoutUsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view =  inflater.inflate(R.layout.fragment_a_bout_us, container, false);
+        View view =  inflater.inflate(R.layout.fragment_contact, container, false);
         textView = view.findViewById(R.id.text);
         return view;
     }

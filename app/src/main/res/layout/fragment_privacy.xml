@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="in.sanitization.sanitization.Fragments.ABoutUsFragment">
+    tools:context="in.sanitization.sanitization.Fragments.PrivacyFragment">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -13,7 +13,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:background="@drawable/semi_cirlce2"
+            android:background="@drawable/semi_circle_layout"
             android:layout_height="300dp">
             <ImageView
                 android:layout_centerInParent="true"
@@ -22,7 +22,7 @@
                 android:layout_height="150dp"/>
             <in.sanitization.sanitization.Fonts.LatoBLack
                 android:layout_width="wrap_content"
-                android:text="About Us"
+                android:text="Privacy Policy"
                 android:textAllCaps="false"
                 android:textSize="@dimen/space_25"
                 android:textColor="@color/white"
@@ -30,8 +30,8 @@
 
                 android:layout_marginBottom="@dimen/space_30"
                 android:layout_alignParentBottom="true"
-                android:layout_alignParentLeft="true"
-                android:layout_marginLeft="40dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="40dp"
                 android:layout_height="wrap_content"/>
         </RelativeLayout>
 
