@@ -28,11 +28,13 @@
                 android:textColor="@color/colorAccent"
                 android:textSize="20dp"
                 android:textStyle="bold"
+                android:visibility="gone"
 
                 />
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/space_1"
+                android:visibility="gone"
                 android:background="@color/gray"
                 android:layout_margin="@dimen/space_5"
                 />

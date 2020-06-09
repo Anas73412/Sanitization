@@ -11,10 +11,14 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
@@ -52,33 +56,90 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         HomeFragment fm=new HomeFragment();
         final Bundle bundle=new Bundle();
         addFragment(fm,bundle);
+
+        getSupportFragmentManager().addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
+            @Override
+            public void onBackStackChanged() {
+                try {
+                    InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                    android.app.Fragment fr = getFragmentManager().findFragmentById(R.id.contentPanel);
+
+                    final String fm_name = fr.getClass().getSimpleName();
+                    Log.e("backstack: ", ": " + fm_name);
+                    if (fm_name.contentEquals("HomeFragment")) {
+                        drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+                        toggle.setDrawerIndicatorEnabled(true);
+                        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+                        toggle.syncState();
+
+                    } else if (fm_name.contentEquals("PackagesFragment")) {
+                        drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+
+                        toggle.setDrawerIndicatorEnabled(false);
+                        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                        toggle.syncState();
+
+                        toggle.setToolbarNavigationClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                               Fragment fm = new HomeFragment();
+                             FragmentManager fragmentManager = getSupportFragmentManager();
+                                fragmentManager.beginTransaction().replace(R.id.contentPanel, fm)
+                                        .addToBackStack(null).commit();
+                            }
+                        });
+                    } else {
+
+                        drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+
+                        toggle.setDrawerIndicatorEnabled(false);
+                        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                        toggle.syncState();
+
+                        toggle.setToolbarNavigationClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+
+                                onBackPressed();
+                            }
+                        });
+                    }
+
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     @Override
     public void onBackPressed() {
-        //        super.onBackPressed();
-        AlertDialog.Builder builder=new AlertDialog.Builder(ctx);
-        builder.setTitle("Confirmation");
-        builder.setMessage("Are you sure want to exit?");
-        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    finishAffinity();
-                }
-
-            }
-        })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        dialog.dismiss();
-                    }
-                });
-        AlertDialog dialog=builder.create();
-        dialog.show();
+                super.onBackPressed();
+//        AlertDialog.Builder builder=new AlertDialog.Builder(ctx);
+//        builder.setTitle("Confirmation");
+//        builder.setMessage("Are you sure want to exit?");
+//        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+//                    finishAffinity();
+//                }
+//
+//            }
+//        })
+//                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//
+//                        dialog.dismiss();
+//                    }
+//                });
+//        AlertDialog dialog=builder.create();
+//        dialog.show();
     }
+
+
 
     public void addFragment(Fragment fm, Bundle args)
     {

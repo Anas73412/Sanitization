@@ -73,13 +73,14 @@ public class PackageAdapter extends RecyclerView.Adapter<PackageAdapter.ViewHold
     @Override
     public int getItemCount()
     {
-        if (list.size()<4) {
-            return list.size();
-        }
-        else
-        {
-            return  4 ;
-        }
+//        if (list.size()<4) {
+//            return list.size();
+//        }
+//        else
+//        {
+//            return  4 ;
+//        }
+        return list.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

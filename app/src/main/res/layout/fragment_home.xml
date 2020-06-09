@@ -37,12 +37,40 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
             </RelativeLayout>
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:padding="@dimen/space_5"
+                android:layout_height="wrap_content">
+
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_package"
                 android:layout_width="match_parent"
-                android:layout_margin="@dimen/space_5"
+                android:nestedScrollingEnabled="false"
+                tools:itemCount="4"
+                android:layout_height="320dp"/>
+                <Button
+                    android:id="@+id/view_more"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:text=" View More "
+                    android:background="@drawable/bg_rounded_button"
+                   android:layout_gravity="end"
+                    android:textAlignment="center"
+                    android:gravity="center"
+                    android:textAllCaps="false"
+                    android:paddingLeft="@dimen/space_10"
+                    android:paddingEnd="@dimen/space_10"
+                    android:drawableEnd="@drawable/icons8_right_arrow_30px"
+                    android:drawableTint="@color/white"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/space_12"
 
-                android:layout_height="350dp"/>
+
+
+                    />
+            </LinearLayout>
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 app:cardCornerRadius="@dimen/space_5"

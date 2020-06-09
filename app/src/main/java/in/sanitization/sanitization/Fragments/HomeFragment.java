@@ -1,8 +1,10 @@
 package in.sanitization.sanitization.Fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -46,17 +48,19 @@ import in.sanitization.sanitization.Model.BannerModel;
 import in.sanitization.sanitization.Model.FAQModel;
 import in.sanitization.sanitization.Model.PackageModel;
 import in.sanitization.sanitization.Model.Slider_model;
+import in.sanitization.sanitization.PackageDetails;
 import in.sanitization.sanitization.R;
 import in.sanitization.sanitization.util.CustomVolleyJsonArrayRequest;
 import in.sanitization.sanitization.util.LoadingBar;
+import in.sanitization.sanitization.util.RecyclerTouchListener;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements View.OnClickListener {
     RecyclerView rv_faq;
     SliderLayout home_slider ,home_banner;
-    TextView txt_contact,txt_message ,txt_about,txt_version;
+    TextView txt_contact,txt_message ,txt_about,txt_version,txt_view_more;
     Module module ;
     LoadingBar loadingBar ;
     String url = "contact us";
@@ -93,6 +97,7 @@ public class HomeFragment extends Fragment {
         txt_contact = view.findViewById(R.id.txt_contact);
         txt_message = view.findViewById(R.id.txt_message);
         txt_version = view.findViewById(R.id.txt_version);
+        txt_view_more = view.findViewById(R.id.view_more);
         viewPager = view.findViewById(R.id.viewPager);
         viewPager2 = view.findViewById(R.id.viewPager2);
         txt_contact.setText(Html.fromHtml(url));
@@ -105,7 +110,7 @@ public class HomeFragment extends Fragment {
         module = new Module(getActivity());
         list=new ArrayList<>();
         rv_package=view.findViewById(R.id.rv_package);
-
+        txt_view_more.setOnClickListener(this);
 
 
         rv_faq.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -119,6 +124,26 @@ public class HomeFragment extends Fragment {
         getplans();
         makeGetSliderRequest();
         makeGetBannerSliderRequest();
+
+        rv_package.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), rv_package, new RecyclerTouchListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                PackageModel model = list.get(position);
+                Intent intent = new Intent(getActivity(), PackageDetails.class);
+                intent.putExtra("plan_id",model.getPlan_id());
+                intent.putExtra("plan_name",model.getPlan_name());
+                intent.putExtra("plan_price",model.getPlan_price());
+                intent.putExtra("plan_image",model.getPlan_image());
+                intent.putExtra("plan_status",model.getPlan_status());
+                intent.putExtra("plan_product",model.getProduct_name());
+                startActivity(intent);
+            }
+
+            @Override
+            public void onLongItemClick(View view, int position) {
+
+            }
+        }));
 
     }
 
@@ -321,5 +346,17 @@ public class HomeFragment extends Fragment {
         // Adding request to request queue
         AppController.getInstance().addToRequestQueue(jsonObjReq,"plans");
 
+    }
+
+    @Override
+    public void onClick(View v) {
+        int i = v.getId();
+        if (i == R.id.view_more)
+        {
+            Fragment fm = new PackagesFragment();
+            FragmentManager fragmentManager =getActivity().getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.frame, fm)
+                    .addToBackStack(null).commit();
+        }
     }
 }
