@@ -84,12 +84,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             else
             {
                 loginUser(number,pass);
+                Intent intent=new Intent(ctx,HomeActivity.class);
+                startActivity(intent);
             }
 
         }
         else if(v.getId() == R.id.tv_create)
         {
-            Intent intent=new Intent(ctx,RegistrationActivity.class);
+            Intent intent=new Intent(ctx,Verfication_activity.class);
             startActivity(intent);
         }
     }

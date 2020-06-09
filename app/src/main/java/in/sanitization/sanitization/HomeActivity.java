@@ -13,6 +13,7 @@ import androidx.fragment.app.FragmentManager;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -28,18 +29,20 @@ import in.sanitization.sanitization.Fragments.ContactFragment;
 import in.sanitization.sanitization.Fragments.HomeFragment;
 import in.sanitization.sanitization.Fragments.PrivacyFragment;
 import in.sanitization.sanitization.Fragments.TermsFragment;
+import in.sanitization.sanitization.util.Session_management;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     NavigationView navigationView;
     DrawerLayout drawer;
     Toolbar toolbar;
     Activity ctx=HomeActivity.this;
+    Session_management session_management;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
+        session_management = new Session_management(HomeActivity.this);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitle(getResources().getString(R.string.app_name));
@@ -176,6 +179,33 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             fm = new TermsFragment();
         }
 
+        else if (id == R.id.nav_logout)
+        {
+            androidx.appcompat.app.AlertDialog.Builder dialog = new AlertDialog.Builder(HomeActivity.this);
+            dialog.setTitle("Logout");
+            dialog.setMessage("Sure to Logout ?");
+            dialog.setCancelable(false);
+            dialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                   session_management.logoutSession();
+                    Intent intent = new Intent(HomeActivity.this , LoginActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+
+                }
+            }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    dialog.cancel();
+
+                }
+            });
+            dialog.show();
+        }
         if (fm != null) {
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.frame, fm)

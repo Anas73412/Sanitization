@@ -49,7 +49,7 @@
                 android:layout_width="match_parent"
                 android:nestedScrollingEnabled="false"
                 tools:itemCount="4"
-                android:layout_height="320dp"/>
+                android:layout_height="wrap_content"/>
                 <Button
                     android:id="@+id/view_more"
                     android:layout_width="wrap_content"
@@ -62,8 +62,7 @@
                     android:textAllCaps="false"
                     android:paddingLeft="@dimen/space_10"
                     android:paddingEnd="@dimen/space_10"
-                    android:drawableEnd="@drawable/icons8_right_arrow_30px"
-                    android:drawableTint="@color/white"
+
                     android:textColor="@color/white"
                     android:textSize="@dimen/space_12"
 

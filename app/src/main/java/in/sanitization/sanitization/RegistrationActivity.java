@@ -3,31 +3,48 @@ package in.sanitization.sanitization;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.google.gson.Gson;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Map;
 
+import in.sanitization.sanitization.Config.BaseUrl;
 import in.sanitization.sanitization.Config.Module;
 import in.sanitization.sanitization.util.CustomVolleyJsonRequest;
 
 import static in.sanitization.sanitization.Config.BaseUrl.SIGN_UP;
 
-public class RegistrationActivity extends AppCompatActivity implements View.OnClickListener {
+public class RegistrationActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
 
-    EditText et_name,et_number,et_email,et_address,et_pass,et_con_pass;
+    EditText et_name,et_number,et_email,et_address,et_pass,et_con_pass,et_pin ;
+    AutoCompleteTextView et_city ,et_state;
     Button btn_reg;
     Module module;
+   HashMap<String,Object> hashMap = new HashMap<>();
+    ArrayList<String> state_list;
+    ArrayList<String> city_list ;
     Activity ctx=RegistrationActivity.this;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,11 +60,18 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         et_number=findViewById(R.id.et_number);
         et_email=findViewById(R.id.et_email);
         et_address=findViewById(R.id.et_address);
+        et_state=findViewById(R.id.et_state);
+        et_city=findViewById(R.id.et_city);
+        et_pin=findViewById(R.id.et_pincode);
         et_pass=findViewById(R.id.et_pass);
         et_con_pass=findViewById(R.id.et_con_pass);
         btn_reg=findViewById(R.id.btn_reg);
         module=new Module(ctx);
+        city_list = new ArrayList<>();
+        state_list = new ArrayList<>();
         btn_reg.setOnClickListener(this);
+        et_state.setOnItemSelectedListener(this);
+        getstates();
     }
 
     @Override
@@ -60,7 +84,10 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             String address=et_address.getText().toString();
             String pass=et_pass.getText().toString();
             String cpass=et_con_pass.getText().toString();
-            
+            String city=et_city.getText().toString();
+            String state=et_state.getText().toString();
+            String pin=et_pin.getText().toString();
+
             if(name.isEmpty())
             {
                 et_name.setError("Enter Name");
@@ -98,6 +125,16 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             }else if(cpass.isEmpty())
             {
                 et_con_pass.setError("Enter Password");
+                et_con_pass.requestFocus();
+            }
+            else if(cpass.length()<5)
+            {
+                et_con_pass.setError("Minimum 6 characters allow");
+                et_con_pass.requestFocus();
+            }
+            else if(cpass.length()<5)
+            {
+                et_con_pass.setError("Minimum 6 characters allow");
                 et_con_pass.requestFocus();
             }
             else if(cpass.length()<5)
@@ -160,5 +197,121 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             }
         });
         AppController.getInstance().addToRequestQueue(customVolleyJsonRequest);
+    }
+
+    private void getstates() {
+
+        Map<String, String> params = new HashMap<String, String>();
+
+        final CustomVolleyJsonRequest jsonObjReq = new CustomVolleyJsonRequest(Request.Method.POST,
+                BaseUrl.GET_STATES, params, new Response.Listener<JSONObject>() {
+
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.d("states", response.toString());
+                try {
+                    boolean status = response.getBoolean("responce");
+                    if (status)
+                    {
+                        JSONArray data = response.getJSONArray("data");
+                      for (int i = 0 ; i <data.length();i++)
+                      {
+                         JSONObject object = data.getJSONObject(i);
+                         state_list.add(object.get("city_state").toString());
+
+                      }
+                        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
+                                RegistrationActivity.this, android.R.layout.simple_list_item_1,state_list);
+                      et_state.setAdapter(arrayAdapter);
+                      et_state.setThreshold(1);
+
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                String msg=module.VolleyErrorMessage(error);
+
+                if(!msg.equals(""))
+                {
+                    Toast.makeText(RegistrationActivity.this,""+msg,Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
+        // Adding request to request queue
+        AppController.getInstance().addToRequestQueue(jsonObjReq,"plans");
+
+    }
+    private void getcities(String state) {
+
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("state",state);
+
+        final CustomVolleyJsonRequest jsonObjReq = new CustomVolleyJsonRequest(Request.Method.POST,
+                BaseUrl.GET_CITY, params, new Response.Listener<JSONObject>() {
+
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.d("city", response.toString());
+                try {
+                    boolean status = response.getBoolean("responce");
+                    if (status)
+                    {
+                        JSONArray data = response.getJSONArray("data");
+                        for (int i = 0 ; i <data.length();i++)
+                        {
+                            JSONObject object = data.getJSONObject(i);
+                            city_list.add(object.get("city_state").toString());
+
+                        }
+                        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
+                                RegistrationActivity.this, android.R.layout.simple_list_item_1,city_list);
+                        et_city.setAdapter(arrayAdapter);
+                        et_city.setThreshold(1);
+
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                String msg=module.VolleyErrorMessage(error);
+
+                if(!msg.equals(""))
+                {
+                    Toast.makeText(RegistrationActivity.this,""+msg,Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
+        // Adding request to request queue
+        AppController.getInstance().addToRequestQueue(jsonObjReq,"plans");
+
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        if(view.getId()==R.id.et_state )
+        {
+            Toast.makeText(RegistrationActivity.this,""+et_state.getText(),Toast.LENGTH_LONG).show();
+            getcities(et_state.getText().toString());
+        }
+       getcities(parent.getSelectedItem().toString());
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+        Toast.makeText(RegistrationActivity.this,"Select State",Toast.LENGTH_LONG).show();
+
     }
 }

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Verfication_activity"
+    android:background="@color/bg_color"
+    android:orientation="vertical">
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+
+  <RelativeLayout
+      android:layout_width="match_parent"
+      android:background="@drawable/semi_circle_layout"
+      android:layout_height="300dp">
+    <ImageView
+        android:layout_centerInParent="true"
+        android:src="@drawable/iconn"
+        android:layout_width="150dp"
+        android:layout_height="150dp"/>
+    <in.sanitization.sanitization.Fonts.LatoBLack
+        android:layout_width="wrap_content"
+        android:text="Mobile Verification"
+        android:textAllCaps="false"
+        android:textSize="@dimen/space_25"
+        android:textColor="@color/white"
+        android:textAlignment="center"
+
+        android:layout_marginBottom="@dimen/space_30"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="40dp"
+        android:layout_height="wrap_content"/>
+    <TextView
+        android:id="@+id/txt_reg_back"
+        android:background="@drawable/ic_keyboard_backspace_black_24dp"
+        android:backgroundTint="@color/black"
+        android:backgroundTintMode="src_in"
+        android:layout_margin="@dimen/space_20"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+  </RelativeLayout>
+
+
+    <FrameLayout
+        android:id="@+id/varify_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+
+  </LinearLayout>
+
+
+</ScrollView>

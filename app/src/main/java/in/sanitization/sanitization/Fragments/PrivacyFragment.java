@@ -41,7 +41,7 @@ public class PrivacyFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view =  inflater.inflate(R.layout.fragment_contact, container, false);
+        View view =  inflater.inflate(R.layout.fragment_privacy, container, false);
         textView = view.findViewById(R.id.text);
         title= view.findViewById(R.id.text_title);
         getInfo();
