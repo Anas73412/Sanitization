@@ -17,6 +17,13 @@
             android:icon="@drawable/icons8_edit_user_500px"
             android:title="Profile" />
     </group>
+    <group android:id="@+id/group_enquire"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_enquire"
+            android:icon="@drawable/icons8_ask_question_500px"
+            android:title="Send Enquiry" />
+    </group>
     <group android:id="@+id/group_contact"
         android:checkableBehavior="single">
         <item

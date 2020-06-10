@@ -141,6 +141,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         {
             fm = new EditProfileFragment();
         }
+        else if (id == R.id.nav_enquire)
+        {
+           Intent intent = new Intent(ctx,HelpActivity.class);
+           startActivity(intent);
+        }
         else if (id == R.id.nav_logout)
         {
             androidx.appcompat.app.AlertDialog.Builder dialog = new AlertDialog.Builder(HomeActivity.this);

@@ -21,6 +21,7 @@
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header_home"
         app:itemTextAppearance="@style/NavDrawerTextStyle"
+        app:itemIconSize="40dp"
         app:menu="@menu/activity_home_drawer">
         <RelativeLayout
             android:layout_width="match_parent"
