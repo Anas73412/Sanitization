@@ -91,7 +91,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
         else if(v.getId() == R.id.tv_create)
         {
-            Intent intent=new Intent(ctx,Verfication_activity.class);
+            Intent intent=new Intent(ctx,RegistrationActivity.class);
             startActivity(intent);
         }
     }

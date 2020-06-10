@@ -34,6 +34,9 @@ import in.sanitization.sanitization.Config.Module;
 import in.sanitization.sanitization.util.CustomVolleyJsonRequest;
 import in.sanitization.sanitization.util.LoadingBar;
 
+import static in.sanitization.sanitization.Config.BaseUrl.BASE_URL;
+import static in.sanitization.sanitization.Config.BaseUrl.IMG_PLAN_URL;
+
 public class PackageDetails extends AppCompatActivity implements View.OnClickListener {
     TextView pckg_name ,pckg_price,pkg_product ,txt_title ,pkg_mrp ,pkg_discount;
     ImageView img_back;
@@ -114,32 +117,49 @@ public class PackageDetails extends AppCompatActivity implements View.OnClickLis
                     boolean status = response.getBoolean("responce");
                     if (status)
                     {
+                        ArrayList<String> imgList=new ArrayList<>();
                         HashMap<String, String> url_maps = new HashMap<String, String>();
                         JSONObject data = response.getJSONObject("data");
                         String img_obj = data.getString("plan_image");
                         JSONArray img_arr = new JSONArray(img_obj);
+                        if(img_obj.isEmpty())
+                        {
+                            module.showToast("No Images Avalaible");
+                        }
+                        else
+                        {
+
+                        }
                        for (int i = 0 ;i<img_arr.length();i++)
                        {
 
-                           url_maps.put("package_img",img_arr.getString(i));
+
+                           CustomSlider textSliderView = new CustomSlider(PackageDetails.this);
+                           // initialize a SliderLayout
+                           Log.e("ddddd",""+IMG_PLAN_URL +img_arr.get(i).toString());
+                           textSliderView
+                                   .image(IMG_PLAN_URL +img_arr.get(i).toString())
+                                   .setScaleType(CustomSlider.ScaleType.CenterInside);
+                           pkg_img.addSlider(textSliderView);
 
 
                        }
-                        for(String name : url_maps.keySet()){
-
-                           CustomSlider textSliderView = new CustomSlider(PackageDetails.this);
-                            textSliderView
-                                    .description(name)
-                                    .image(url_maps.get(name))
-                                    .setScaleType(BaseSliderView.ScaleType.Fit);
-
-                            textSliderView.bundle(new Bundle());
-                            textSliderView.getBundle()
-                                    .putString("extra",name);
-                           pkg_img.addSlider(textSliderView);
-                        }
-                        pkg_img.setPresetTransformer(SliderLayout.Transformer.Accordion);
-                        pkg_img.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
+//                        for(String name : url_maps.keySet()){
+//
+//                           CustomSlider textSliderView = new CustomSlider(PackageDetails.this);
+//                            textSliderView
+//                                    .description(name)
+//                                    .image(url_maps.get(name))
+//                                    .setScaleType(BaseSliderView.ScaleType.Fit);
+//
+//                            textSliderView.bundle(new Bundle());
+//                            textSliderView.getBundle()
+//                                    .putString("extra",name);
+//                           pkg_img.addSlider(textSliderView);
+//                        }
+//                        pkg_img.setPresetTransformer(SliderLayout.Transformer.Accordion);
+//                        pkg_img.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
+                        pkg_img.setDuration(10000);
                         pkg_product.setText(data.getString("plan_description"));
                         pckg_name.setText(data.getString("plan_title"));
                         int price = Integer.parseInt(data.getString("plan_price"));

@@ -35,19 +35,19 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     NavigationView navigationView;
     DrawerLayout drawer;
     Toolbar toolbar;
-    Activity ctx=HomeActivity.this;
     Session_management session_management;
+    Activity ctx=HomeActivity.this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        session_management = new Session_management(HomeActivity.this);
+
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitle(getResources().getString(R.string.app_name));
        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-
+   session_management=new Session_management(ctx);
         final ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
@@ -59,6 +59,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         HomeFragment fm=new HomeFragment();
         final Bundle bundle=new Bundle();
         addFragment(fm,bundle);
+
 
         getSupportFragmentManager().addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
             @Override

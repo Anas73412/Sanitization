@@ -36,7 +36,7 @@ import in.sanitization.sanitization.util.CustomVolleyJsonRequest;
 
 import static in.sanitization.sanitization.Config.BaseUrl.SIGN_UP;
 
-public class RegistrationActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
+public class RegistrationActivity extends AppCompatActivity implements View.OnClickListener{
 
     EditText et_name,et_number,et_email,et_address,et_pass,et_con_pass,et_pin ;
     AutoCompleteTextView et_city ,et_state;
@@ -70,7 +70,17 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         city_list = new ArrayList<>();
         state_list = new ArrayList<>();
         btn_reg.setOnClickListener(this);
-        et_state.setOnItemSelectedListener(this);
+        et_state.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String state=et_state.getText().toString().trim();
+                et_city.setText("");
+                if(!state.isEmpty())
+                {
+                    getcities(state);
+                }
+            }
+        });
         getstates();
     }
 
@@ -252,13 +262,13 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
         Map<String, String> params = new HashMap<String, String>();
         params.put("state",state);
-
+        city_list.clear();
         final CustomVolleyJsonRequest jsonObjReq = new CustomVolleyJsonRequest(Request.Method.POST,
                 BaseUrl.GET_CITY, params, new Response.Listener<JSONObject>() {
 
             @Override
             public void onResponse(JSONObject response) {
-                Log.d("city", response.toString());
+                Log.e("city", response.toString());
                 try {
                     boolean status = response.getBoolean("responce");
                     if (status)
@@ -267,7 +277,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                         for (int i = 0 ; i <data.length();i++)
                         {
                             JSONObject object = data.getJSONObject(i);
-                            city_list.add(object.get("city_state").toString());
+                            city_list.add(object.get("city_name").toString());
 
                         }
                         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
@@ -286,7 +296,6 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             public void onErrorResponse(VolleyError error) {
 
                 String msg=module.VolleyErrorMessage(error);
-
                 if(!msg.equals(""))
                 {
                     Toast.makeText(RegistrationActivity.this,""+msg,Toast.LENGTH_LONG).show();
@@ -299,19 +308,15 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
     }
 
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        if(view.getId()==R.id.et_state )
-        {
-            Toast.makeText(RegistrationActivity.this,""+et_state.getText(),Toast.LENGTH_LONG).show();
-            getcities(et_state.getText().toString());
-        }
-       getcities(parent.getSelectedItem().toString());
-    }
+//    @Override
+//    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//        if(view.getId()==R.id.et_state )
+//        {
+//            Toast.makeText(RegistrationActivity.this,""+et_state.getText(),Toast.LENGTH_LONG).show();
+////            getcities(et_state.getText().toString());
+//        }
+////       getcities(parent.getSelectedItem().toString());
+//    }
 
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-        Toast.makeText(RegistrationActivity.this,"Select State",Toast.LENGTH_LONG).show();
 
-    }
 }
