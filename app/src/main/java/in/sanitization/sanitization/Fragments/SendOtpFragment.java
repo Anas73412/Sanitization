@@ -74,10 +74,10 @@ public class SendOtpFragment extends Fragment {
             else {
                 otp = getRandomKey(6);
                 Log.e("otp", otp);
-                Fragment fm = new VerifyOtpFragment();
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                fragmentManager.beginTransaction().add(R.id.varify_container, fm)
-                        .commit();
+//                Fragment fm = new VerifyOtpFragment();
+//                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+//                fragmentManager.beginTransaction().add(R.id.varify_container, fm)
+//                        .commit();
             sendCode(number,otp);
             }
 
@@ -101,7 +101,8 @@ public class SendOtpFragment extends Fragment {
                 try
                 {
                     boolean responce=response.getBoolean("responce");
-                    if(responce==true)
+                    Log.d("send_otp",response.toString());
+                    if(responce)
                     {
                         loadingBar.dismiss();
                         Fragment fm=new VerifyOtpFragment();
@@ -113,14 +114,11 @@ public class SendOtpFragment extends Fragment {
                         fragmentManager.beginTransaction().add(R.id.varify_container, fm)
                                 .commit();
 
-                        //   Toast.makeText(OtpGenerateActivity.this,"true",Toast.LENGTH_LONG).show();
-
-
                     }
                     else
                     {
                         loadingBar.dismiss();
-//                        Toast.makeText(getActivity(),"false",Toast.LENGTH_LONG).show();
+                      Toast.makeText(getActivity(),response.getString("error"),Toast.LENGTH_LONG).show();
                     }
                 }
                 catch (Exception ex)

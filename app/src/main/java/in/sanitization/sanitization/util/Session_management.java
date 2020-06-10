@@ -34,17 +34,17 @@ public class Session_management {
     }
 
     public void createLoginSession(String id, String email, String name
-            , String mobile, String image, String wallet_ammount, String rewards, String house) {
+            , String mobile, String state, String city, String pin, String house) {
 
         editor.putBoolean(IS_LOGIN, true);
         editor.putString(KEY_ID, id);
         editor.putString(KEY_EMAIL, email);
         editor.putString(KEY_NAME, name);
         editor.putString(KEY_MOBILE, mobile);
-        editor.putString(KEY_IMAGE, image);
-        editor.putString(KEY_HOUSE, house);
-        editor.putString(KEY_WALLET_Ammount, wallet_ammount);
-        editor.putString(KEY_REWARDS, rewards);
+        editor.putString(KEY_STATE, state);
+        editor.putString(KEY_ADDRESS, house);
+        editor.putString(KEY_CITY, city);
+        editor.putString(KEY_PINCODE, pin);
 
         editor.commit();
     }
@@ -75,25 +75,25 @@ public class Session_management {
         // user name
         user.put(KEY_NAME, prefs.getString(KEY_NAME, null));
         user.put(KEY_MOBILE, prefs.getString(KEY_MOBILE, null));
-        user.put(KEY_IMAGE, prefs.getString(KEY_IMAGE, null));
-        user.put(KEY_WALLET_Ammount, prefs.getString(KEY_WALLET_Ammount, null));
-        user.put(KEY_REWARDS, prefs.getString(KEY_REWARDS, null));
-        user.put(KEY_HOUSE, prefs.getString(KEY_HOUSE, null));
+        user.put(KEY_CITY, prefs.getString(KEY_CITY, null));
+        user.put(KEY_STATE, prefs.getString(KEY_STATE, null));
+        user.put(KEY_PINCODE, prefs.getString(KEY_PINCODE, null));
+        user.put(KEY_ADDRESS, prefs.getString(KEY_ADDRESS, null));
 
         // return user
         return user;
     }
 
     public void updateData(String name, String mobile, String pincode
-            , String socity_id, String image, String wallet, String rewards, String house) {
+            , String city, String state, String house) {
 
         editor.putString(KEY_NAME, name);
         editor.putString(KEY_MOBILE, mobile);
         editor.putString(KEY_PINCODE, pincode);
-        editor.putString(KEY_IMAGE, image);
-        editor.putString(KEY_WALLET_Ammount, wallet);
-        editor.putString(KEY_REWARDS_POINTS, rewards);
-        editor.putString(KEY_HOUSE, house);
+        editor.putString(KEY_CITY, city);
+        editor.putString(KEY_STATE, state);
+
+        editor.putString(KEY_ADDRESS, house);
 
         editor.apply();
     }
@@ -149,50 +149,34 @@ public class Session_management {
         editor2.commit();
     }
 
-//    public HashMap<String, String> getdatetime() {
-//        HashMap<String, String> user = new HashMap<String, String>();
-//
-//        user.put(KEY_DATE, prefs2.getString(KEY_DATE, null));
-//        user.put(KEY_TIME, prefs2.getString(KEY_TIME, null));
-//
-//        return user;
-//    }
+
 
     // Get Login State
     public boolean isLoggedIn() {
         return prefs.getBoolean(IS_LOGIN, false);
     }
-    public void updateProfile(String image,String name,String cnt)
+
+    public void updateProfile(String name , String email ,String state ,String city ,String pin ,String add )
     {
-        editor.putString(KEY_IMAGE,image);
+
         editor.putString(KEY_NAME,name);
-//        editor.putString(KEY_CNT,cnt);
+        editor.putString(KEY_EMAIL,email);
+        editor.putString(KEY_STATE,state);
+        editor.putString(KEY_CITY,city);
+        editor.putString(KEY_PINCODE,pin);
+        editor.putString(KEY_ADDRESS,add);
+
         editor.commit();
     }
 
     public HashMap<String,String> getUpdateProfile()
     {
         HashMap<String,String> map=new HashMap<>();
-        map.put(KEY_IMAGE,prefs.getString(KEY_IMAGE,null));
+//        map.put(KEY_IMAGE,prefs.getString(KEY_IMAGE,null));
         map.put(KEY_NAME,prefs.getString(KEY_NAME,null));
 //        map.put(KEY_CNT,prefs.getString(KEY_CNT,null));
         return map;
     }
 
-    public void updateUserName(String name)
-    {
-        editor.putString(KEY_NAME,name);
-        editor.commit();
-    }
-//    public void setCategoryId(String id)
-//    {
-//        editor.putString(KEY_CAT,id);
-//        editor.commit();
-//    }
-
-//    public String getCategoryId()
-//    {
-//        return prefs.getString(KEY_CAT,"");
-//    }
 
 }

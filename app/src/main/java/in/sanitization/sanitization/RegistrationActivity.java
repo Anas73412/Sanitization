@@ -40,9 +40,10 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
     EditText et_name,et_number,et_email,et_address,et_pass,et_con_pass,et_pin ;
     AutoCompleteTextView et_city ,et_state;
+    TextView tv_back;
     Button btn_reg;
     Module module;
-   HashMap<String,Object> hashMap = new HashMap<>();
+
     ArrayList<String> state_list;
     ArrayList<String> city_list ;
     Activity ctx=RegistrationActivity.this;
@@ -66,10 +67,13 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         et_pass=findViewById(R.id.et_pass);
         et_con_pass=findViewById(R.id.et_con_pass);
         btn_reg=findViewById(R.id.btn_reg);
+       tv_back=findViewById(R.id.txt_back);
         module=new Module(ctx);
         city_list = new ArrayList<>();
         state_list = new ArrayList<>();
+
         btn_reg.setOnClickListener(this);
+        tv_back.setOnClickListener(this);
         et_state.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -82,6 +86,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             }
         });
         getstates();
+        et_number.setText(getIntent().getStringExtra("number"));
+        et_number.setEnabled(false);
     }
 
     @Override
@@ -111,15 +117,38 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             {
                 et_number.setError("Invalid Mobile Number");
                 et_number.requestFocus();
-            }else if(email.isEmpty())
+            }
+            else if(email.isEmpty())
             {
                 et_email.setError("Enter Email Address");
                 et_email.requestFocus();
-            }else if(!email.contains("@"))
+            }
+            else if(!email.contains("@"))
             {
                 et_email.setError("Invalid Email Address");
                 et_email.requestFocus();
-            }else if(address.isEmpty())
+            }
+            else if(state.isEmpty())
+            {
+                et_state.setError("Select State");
+                et_state.requestFocus();
+            }
+            else if(city.isEmpty())
+            {
+                et_city.setError("Select City");
+                et_city.requestFocus();
+            }
+            else if(pin.isEmpty())
+            {
+                et_pin.setError("Enter Pincode");
+                et_pin.requestFocus();
+            }
+            else if(pin.length()!=6)
+            {
+                et_pin.setError("Enter Valid Pincode");
+                et_pin.requestFocus();
+            }
+            else if(address.isEmpty())
             {
                 et_address.setError("Enter Address");
                 et_address.requestFocus();
@@ -142,36 +171,34 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 et_con_pass.setError("Minimum 6 characters allow");
                 et_con_pass.requestFocus();
             }
-            else if(cpass.length()<5)
-            {
-                et_con_pass.setError("Minimum 6 characters allow");
-                et_con_pass.requestFocus();
-            }
-            else if(cpass.length()<5)
-            {
-                et_con_pass.setError("Minimum 6 characters allow");
-                et_con_pass.requestFocus();
-            }
+
             else
             {
                if(pass.equals(cpass))
                {
-                   registerUser(name,number,email,address,pass);
+                   registerUser(name,number,email,state,city,pin,address,pass);
                }
                else {
-                   module.showToast("Password must be matched");
+                   module.showToast("Password must be same");
                }
             }
             
         }
+        else if (v.getId() == R.id.txt_back)
+        {
+            finish();
+        }
     }
 
-    private void registerUser(String name, String number, String email, String address, String pass) {
+    private void registerUser(String name, String number, String email,String state ,String city ,String pincode, String address, String pass ) {
 
         HashMap<String,String> params=new HashMap<>();
         params.put("user_name",name);
         params.put("user_mobile",number);
         params.put("user_email",email);
+        params.put("state",state);
+        params.put("city",city);
+        params.put("pincode",pincode);
         params.put("address",address);
         params.put("password",pass);
 
@@ -231,7 +258,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
                       }
                         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
-                                RegistrationActivity.this, android.R.layout.simple_list_item_1,state_list);
+                                ctx, android.R.layout.simple_list_item_1,state_list);
                       et_state.setAdapter(arrayAdapter);
                       et_state.setThreshold(1);
 
@@ -249,7 +276,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
                 if(!msg.equals(""))
                 {
-                    Toast.makeText(RegistrationActivity.this,""+msg,Toast.LENGTH_LONG).show();
+                    Toast.makeText(ctx,""+msg,Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -281,7 +308,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
                         }
                         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
-                                RegistrationActivity.this, android.R.layout.simple_list_item_1,city_list);
+                                ctx, android.R.layout.simple_list_item_1,city_list);
                         et_city.setAdapter(arrayAdapter);
                         et_city.setThreshold(1);
 
@@ -308,15 +335,6 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
     }
 
-//    @Override
-//    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//        if(view.getId()==R.id.et_state )
-//        {
-//            Toast.makeText(RegistrationActivity.this,""+et_state.getText(),Toast.LENGTH_LONG).show();
-////            getcities(et_state.getText().toString());
-//        }
-////       getcities(parent.getSelectedItem().toString());
-//    }
 
 
 }

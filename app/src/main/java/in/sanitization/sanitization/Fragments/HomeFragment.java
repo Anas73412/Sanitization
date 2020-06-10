@@ -164,13 +164,13 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                                 model.setSlider_id(jsonObject.getString("slider_id"));
                                 model.setSlider_title(jsonObject.getString("slider_title"));
                                 model.setSlider_image(jsonObject.getString("slider_image"));
-                                model.setSlider_plan(jsonObject.getString("slider_plan"));
+//                                model.setSlider_plan(jsonObject.getString("slider_plan"));
                                 model.setStatus(jsonObject.getString("status"));
                                 model.setIs_delete(jsonObject.getString("is_delete"));
                                carList.add(model);
                                 HashMap<String, String> url_maps = new HashMap<String, String>();
                                 url_maps.put("slider_title", jsonObject.getString("slider_title"));
-                                url_maps.put("sub_cat", jsonObject.getString("slider_plan"));
+//                                url_maps.put("sub_cat", jsonObject.getString("slider_plan"));
                                 url_maps.put("slider_image", BaseUrl.IMG_SLIDER_URL + jsonObject.getString("slider_image"));
                                 listarray.add(url_maps);
                             }
@@ -179,7 +179,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                                 textSliderView.description(name.get("")).image(name.get("slider_image")).setScaleType( BaseSliderView.ScaleType.Fit);
                                 textSliderView.bundle(new Bundle());
                                 textSliderView.getBundle().putString("extra", name.get("slider_title"));
-                                textSliderView.getBundle().putString("extra", name.get("sub_cat"));
+//                                textSliderView.getBundle().putString("extra", name.get("sub_cat"));
                                 home_slider.addSlider(textSliderView);
                                 final String sub_cat = (String) textSliderView.getBundle().get("extra");
                                 textSliderView.setOnSliderClickListener(new BaseSliderView.OnSliderClickListener() {
@@ -245,13 +245,13 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                                 model.setSlider_id(jsonObject.getString("banner_id"));
                                 model.setSlider_title(jsonObject.getString("banner_title"));
                                 model.setSlider_image(jsonObject.getString("banner_image"));
-                                model.setSlider_plan(jsonObject.getString("banner_plan"));
+//                                model.setSlider_plan(jsonObject.getString("banner_plan"));
                                 model.setStatus(jsonObject.getString("status"));
                                 model.setIs_delete(jsonObject.getString("is_delete"));
                                 bannerList.add(model);
                                 HashMap<String, String> url_maps = new HashMap<String, String>();
                                 url_maps.put("banner_title", jsonObject.getString("banner_title"));
-                                url_maps.put("banner_plan", jsonObject.getString("banner_plan"));
+//                                url_maps.put("banner_plan", jsonObject.getString("banner_plan"));
                                 url_maps.put("banner_image", BaseUrl.IMG_SLIDER_URL + jsonObject.getString("banner_image"));
                                 url_maps.put("status",jsonObject.getString("status"));
                                 url_maps.put("is_delete",jsonObject.getString("is_delete"));
@@ -262,7 +262,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                                 textSliderView.description(name.get("")).image(name.get("banner_image")).setScaleType( BaseSliderView.ScaleType.Fit);
                                 textSliderView.bundle(new Bundle());
                                 textSliderView.getBundle().putString("extra", name.get("banner_title"));
-                                textSliderView.getBundle().putString("extra", name.get("banner_plan"));
+//                                textSliderView.getBundle().putString("extra", name.get("banner_plan"));
 //                                home_banner.addSlider(textSliderView);
                                 final String plan = (String) textSliderView.getBundle().get("extra");
                                 textSliderView.setOnSliderClickListener(new BaseSliderView.OnSliderClickListener() {

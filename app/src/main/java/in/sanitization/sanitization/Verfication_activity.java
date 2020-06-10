@@ -27,7 +27,7 @@ LoadingBar loadingBar ;
     setContentView(R.layout.activity_verfication_activity);
 
     loadingBar=new LoadingBar(activity);
-    back = findViewById( R.id.txt_reg_back );
+    back = findViewById( R.id.txt_back );
     back.setOnClickListener( new View.OnClickListener() {
       @Override
       public void onClick(View view) {

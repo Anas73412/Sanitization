@@ -70,8 +70,9 @@ public class VerifyOtpFragment extends Fragment implements OnOtpCompletionListen
         module = new Module(getActivity());
         checkAndRequestPermissions();
         Bundle bundle = getArguments();
-//       type= bundle.getString("type");
-//      number= bundle.getString("number");
+       type=getArguments().getString("type");
+     number= getArguments().getString("number");
+//     Toast.makeText(getActivity(),"num"+number,Toast.LENGTH_LONG).show();
 
     }
 
@@ -95,20 +96,15 @@ public class VerifyOtpFragment extends Fragment implements OnOtpCompletionListen
             }
             else
             {
-                Intent intent = new Intent( getActivity(), RegistrationActivity.class);
-                intent.putExtra( "mobile", number );
-                startActivity( intent );
-//                if(type.equals("f"))
-//                {
-//                   // verifyMobileWithOtp(number,otp_string);
-//
-//
-//                }
-//                else if(type.equals("r"))
-//                {
-//                    verifyRegisterMobileWithOtp(number,otp_string);
-//
-//                }otp_string
+                if(type.equals("f"))
+                {
+                    verifyMobileWithOtp(number,otp_string);
+                }
+                else if(type.equals("r"))
+                {
+                    verifyRegisterMobileWithOtp(number,otp_string);
+
+                }
 
             }
 
@@ -131,12 +127,14 @@ public class VerifyOtpFragment extends Fragment implements OnOtpCompletionListen
                     boolean status=response.getBoolean("responce");
                     if(status)
                     {
-                        String data=response.getString("data");
-
+                        loadingBar.dismiss();
                         Intent intent = new Intent( getActivity(), RegistrationActivity.class);
-                        intent.putExtra( "mobile", number );
+                        intent.putExtra( "number", number );
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity( intent );
-                       
+                        getActivity().finish();
 
                     }
                     else

@@ -11,6 +11,7 @@ public class BaseUrl {
     public static final String GET_BANNERS =BASE_URL+"index.php/api/get_banners" ;
     public static final String GET_SLIDER_URL =BASE_URL+"index.php/api/get_sliders" ;
     public static final String SIGN_UP =BASE_URL+"index.php/api/signup";
+    public static final String UPDATE_PROFILE =BASE_URL+"index.php/api/update_profile";
     public static final String LOGIN =BASE_URL+"index.php/api/login";
     public static final String SEND_QUERY =BASE_URL+"index.php/api/contact_us";
     public static final String ABOUT_US=BASE_URL+"index.php/api/aboutus";
@@ -20,8 +21,8 @@ public class BaseUrl {
     public static final String GET_STATES=BASE_URL+"index.php/api/get_state";
     public static final String GET_CITY=BASE_URL+"index.php/api/get_city_by_state";
     public static final String GET_DETAILS =BASE_URL+"index.php/api/get_plan_by_id" ;
-    public static final String URL_SEND_OTP =BASE_URL+"index.php/api/get_plan_by_id" ;
-    public static final String URL_VERIFY_REGISTER_OTP ="" ;
+    public static final String URL_SEND_OTP =BASE_URL+"index.php/api/fun_register_with_otp" ;
+    public static final String URL_VERIFY_REGISTER_OTP ="mobile_register_otp_verification" ;
     public static final String URL_VERIFY_OTP = "";
 
 }

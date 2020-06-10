@@ -13,6 +13,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
+            android:visibility="gone"
             android:background="@drawable/semi_cirlce2"
             android:layout_height="300dp">
             <ImageView
@@ -21,7 +22,7 @@
                 android:layout_width="150dp"
                 android:layout_height="150dp"/>
             <in.sanitization.sanitization.Fonts.LatoBLack
-                android:id="@+id/text_title"
+
                 android:layout_width="wrap_content"
                 android:text="Terms &amp; Conditions"
                 android:textAllCaps="false"
@@ -49,13 +50,13 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
                 <TextView
-                    android:visibility="gone"
+                    android:id="@+id/text_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text=" About Us "
+                    android:text=" Terms and Conditions "
                     android:textColor="@color/colorAccent"
                     android:textSize="20dp"
-                    android:textStyle="bold"
+
 
                     />
                 <View

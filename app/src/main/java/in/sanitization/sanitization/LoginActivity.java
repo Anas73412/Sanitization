@@ -31,7 +31,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     EditText et_mobile,et_pass;
     Button btn_login;
-    TextView tv_create;
+    TextView tv_create ,tv_back;
     Module module;
     Session_management session_management;
     Activity ctx=LoginActivity.this;
@@ -49,10 +49,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         et_pass=findViewById(R.id.et_pass);
         btn_login=findViewById(R.id.btn_login);
         tv_create=findViewById(R.id.tv_create);
+        tv_back=findViewById(R.id.txt_back);
         module=new Module(ctx);
         session_management =new Session_management(ctx);
         btn_login.setOnClickListener(this);
         tv_create.setOnClickListener(this);
+        tv_back.setOnClickListener(this);
     }
 
     @Override
@@ -78,7 +80,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             }
             else if(pass.length()<5)
             {
-                et_pass.setError("Minimum 6 charactes allow");
+                et_pass.setError("Minimum 6 characters allowed");
                 et_pass.requestFocus();
             }
             else
@@ -91,8 +93,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
         else if(v.getId() == R.id.tv_create)
         {
-            Intent intent=new Intent(ctx,RegistrationActivity.class);
+            Intent intent=new Intent(ctx,Verfication_activity.class);
+            intent.putExtra("type","r");
             startActivity(intent);
+        }
+        else if(v.getId() == R.id.txt_back)
+        {
+           finish();
         }
     }
 
@@ -108,13 +115,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     boolean resp=response.getBoolean("responce");
                     if(resp)
                     {
-                        Log.e("data_login",""+response.toString());
+                        Log.d("data_login",""+response.toString());
                         //module.showToast(""+response.getString("message"));
                         JSONObject object=response.getJSONObject("data");
-                        session_management.createLoginSession(object.getString("user_id").toString(),object.getString("user_email").toString(),
-                                object.getString("user_fullname").toString(),object.getString("user_phone").toString(),
-                                object.getString("user_image").toString(),object.getString("wallet").toString(),
-                                object.getString("rewards").toString(),object.getString("address").toString());
+                        session_management.createLoginSession(object.getString("user_id"),object.getString("user_email"),object.getString("user_fullname"),object.getString("user_phone"),
+                                object.getString("state"),object.getString("city"),object.getString("pincode"),object.getString("address"));
                         Intent intent=new Intent(ctx,HomeActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);

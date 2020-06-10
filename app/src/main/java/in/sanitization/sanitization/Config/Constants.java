@@ -12,11 +12,13 @@ public class Constants {
     public static final String KEY_EMAIL = "user_email";
     public static final String KEY_ID = "user_id";
     public static final String KEY_MOBILE = "user_phone";
-    public static final String KEY_IMAGE = "user_image";
-    public static final String KEY_WALLET_Ammount = "wallet_ammount";
-    public static final String KEY_REWARDS_POINTS = "rewards_points";
+//    public static final String KEY_IMAGE = "user_image";
+//    public static final String KEY_WALLET_Ammount = "wallet_ammount";
+//    public static final String KEY_REWARDS_POINTS = "rewards_points";
     public static final String KEY_PINCODE = "pincode";
-    public static final String KEY_REWARDS = "rewards";
-    public static final String KEY_HOUSE = "house_no";
+    public static final String KEY_ADDRESS = "address";
+    public static final String KEY_STATE = "state";
+    public static final String KEY_CITY = "city";
+
 
 }
