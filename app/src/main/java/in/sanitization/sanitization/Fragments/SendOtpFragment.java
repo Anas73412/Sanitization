@@ -41,6 +41,7 @@ public class SendOtpFragment extends Fragment {
     public String otp="";
     LoadingBar loadingBar ;
     Module module ;
+    String type = "";
     public SendOtpFragment() {
         // Required empty public constructor
     }
@@ -54,6 +55,7 @@ public class SendOtpFragment extends Fragment {
         btn_otp_verify=view.findViewById(R.id.btn_otp_verify);
         et_gen_otp=view.findViewById(R.id.et_gen_otp);
         loadingBar=new LoadingBar(getActivity());
+        type = getActivity().getIntent().getStringExtra("type");
 
      btn_otp_verify.setOnClickListener(new View.OnClickListener() {
         @Override
@@ -74,11 +76,15 @@ public class SendOtpFragment extends Fragment {
             else {
                 otp = getRandomKey(6);
                 Log.e("otp", otp);
-//                Fragment fm = new VerifyOtpFragment();
-//                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-//                fragmentManager.beginTransaction().add(R.id.varify_container, fm)
-//                        .commit();
-            sendCode(number,otp);
+
+                if (type.equals("r"))
+                {
+                    sendCodeR(number,otp);
+                }
+                else if (type.equals("f"))
+                {
+                    sendCodeF(number,otp);
+                }
             }
 
         }
@@ -87,14 +93,14 @@ public class SendOtpFragment extends Fragment {
         return  view ;
     }
 
-    private void sendCode(final String number, final String otp) {
+    private void sendCodeR(final String number, final String otp) {
         loadingBar.show();
         String json_tag="json_otp";
         HashMap<String,String> map=new HashMap<>();
         map.put("mobile",number);
         map.put("otp",otp);
 
-        CustomVolleyJsonRequest customVolleyJsonRequest=new CustomVolleyJsonRequest(Request.Method.POST, BaseUrl.URL_SEND_OTP, map, new Response.Listener<JSONObject>() {
+        CustomVolleyJsonRequest customVolleyJsonRequest=new CustomVolleyJsonRequest(Request.Method.POST, BaseUrl.URL_SEND_OTP_R, map, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
 
@@ -109,6 +115,7 @@ public class SendOtpFragment extends Fragment {
                         Bundle bundle=new Bundle();
                         bundle.putString("type",getActivity().getIntent().getStringExtra("type"));
                         bundle.putString("number",number);
+                        bundle.putString("otp",otp);
                         fm.setArguments(bundle);
                         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                         fragmentManager.beginTransaction().add(R.id.varify_container, fm)
@@ -144,7 +151,63 @@ public class SendOtpFragment extends Fragment {
 
     }
 
+    private void sendCodeF(final String number, final String otp) {
+        loadingBar.show();
+        String json_tag="json_otp";
+        HashMap<String,String> map=new HashMap<>();
+        map.put("mobile",number);
+        map.put("otp",otp);
 
+        CustomVolleyJsonRequest customVolleyJsonRequest=new CustomVolleyJsonRequest(Request.Method.POST, BaseUrl.URL_SEND_OTP_F, map, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+
+                try
+                {
+                    boolean responce=response.getBoolean("responce");
+                    Log.d("send_otp",response.toString());
+                    if(responce)
+                    {
+                        loadingBar.dismiss();
+                        Fragment fm=new VerifyOtpFragment();
+                        Bundle bundle=new Bundle();
+                        bundle.putString("type",getActivity().getIntent().getStringExtra("type"));
+                        bundle.putString("number",number);
+                        bundle.putString("otp",otp);
+                        fm.setArguments(bundle);
+                        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                        fragmentManager.beginTransaction().add(R.id.varify_container, fm)
+                                .commit();
+
+                    }
+                    else
+                    {
+                        loadingBar.dismiss();
+                        Toast.makeText(getActivity(),response.getString("error"),Toast.LENGTH_LONG).show();
+                    }
+                }
+                catch (Exception ex)
+                {        loadingBar.dismiss();
+                    ex.printStackTrace();
+                    Toast.makeText(getActivity(),""+ex.getMessage(),Toast.LENGTH_LONG).show();
+                }
+
+                // Toast.makeText(OtpActivity.this,""+response,Toast.LENGTH_LONG).show();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                String msg=module.VolleyErrorMessage(error);
+                if(!msg.equals(""))
+                {
+                    Toast.makeText(getActivity(),""+msg,Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+        AppController.getInstance().addToRequestQueue(customVolleyJsonRequest,json_tag);
+
+
+    }
 
 
     public static String getRandomKey(int i)

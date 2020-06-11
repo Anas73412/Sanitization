@@ -1,6 +1,10 @@
 package in.sanitization.sanitization.Fragments;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -12,6 +16,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.text.Html;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,6 +56,7 @@ import in.sanitization.sanitization.Model.Slider_model;
 import in.sanitization.sanitization.PackageDetails;
 import in.sanitization.sanitization.R;
 import in.sanitization.sanitization.util.CustomVolleyJsonArrayRequest;
+import in.sanitization.sanitization.util.CustomVolleyJsonRequest;
 import in.sanitization.sanitization.util.LoadingBar;
 import in.sanitization.sanitization.util.RecyclerTouchListener;
 
@@ -60,10 +66,11 @@ import in.sanitization.sanitization.util.RecyclerTouchListener;
 public class HomeFragment extends Fragment implements View.OnClickListener {
     RecyclerView rv_faq;
     SliderLayout home_slider ,home_banner;
-    TextView txt_contact,txt_message ,txt_about,txt_version,txt_view_more;
+    TextView txt_contact,txt_message ,txt_about,txt_version,txt_view_more,txt_more_faq;
     Module module ;
     LoadingBar loadingBar ;
-    String url = "contact us";
+    String url = "contact us" ,app_link="";
+    int version_code =0 ;
     FAQAdapter faqAdapter;
     ArrayList<Slider_model> carList;
     ArrayList<Slider_model> bannerList;
@@ -86,6 +93,39 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         // Inflate the layout for this fragment
        View view = inflater.inflate(R.layout.fragment_home, container, false);
        initViews(view);
+        view.setFocusableInTouchMode(true);
+        view.requestFocus();
+
+        view.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
+                    AlertDialog.Builder builder=new AlertDialog.Builder(getActivity());
+                    builder.setTitle("Confirmation");
+                    builder.setMessage("Are you sure want to exit?");
+                    builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                            //((MainActivity) getActivity()).finish();
+                            getActivity().finishAffinity();
+
+
+                        }
+                    })
+                            .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    dialogInterface.dismiss();
+                                }
+                            });
+                    AlertDialog dialog=builder.create();
+                    dialog.show();
+                    return true;
+                }
+                return false;
+            }
+        });
        return view;
     }
     private void initViews(View view) {
@@ -98,6 +138,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         txt_message = view.findViewById(R.id.txt_message);
         txt_version = view.findViewById(R.id.txt_version);
         txt_view_more = view.findViewById(R.id.view_more);
+        txt_more_faq = view.findViewById(R.id.view_faq);
         viewPager = view.findViewById(R.id.viewPager);
         viewPager2 = view.findViewById(R.id.viewPager2);
         txt_contact.setText(Html.fromHtml(url));
@@ -111,19 +152,24 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         list=new ArrayList<>();
         rv_package=view.findViewById(R.id.rv_package);
         txt_view_more.setOnClickListener(this);
+        txt_more_faq.setOnClickListener(this);
 
-
+        getAppSettingData();
         rv_faq.setLayoutManager(new LinearLayoutManager(getActivity()));
-        faq_list.add(new FAQModel("How is it beneficial",""));
-        faq_list.add(new FAQModel("Cost for Sanitization",""));
-        faq_list.add(new FAQModel("Duration for the process",""));
-        faq_list.add(new FAQModel("What are the precautions to be taken",""));
+        faq_list.add(new FAQModel("How is it beneficial","The formula used  has proven in University and clinical studies to be one of the most effective solutions in destroying virtually any form of bacteria and virus within minutes of application. In fact, our formula is the same formula often used in wound care for both humans and pets."));
+        faq_list.add(new FAQModel("Cost for Sanitization","Please call or email us to discuss your situation and we will discuss a strategy for solving you issues and how much it will cost."));
+        faq_list.add(new FAQModel("Duration for the process","Normally, the pest control team would inform you about the usage of the premises again. But in general, keep the premises close for more than 10 hours for best results."));
+        faq_list.add(new FAQModel("What are the precautions to be taken","Clean your hands often. Use soap and water, or an alcohol-based hand rub.\n" +
+                "Maintain a safe distance from anyone who is coughing or sneezing.\n" +
+                "Don’t touch your eyes, nose or mouth.\n" +
+                "Cover your nose and mouth with your bent elbow or a tissue when you cough or sneeze.\n" +
+                "Stay home if you feel unwell.\n" +
+                "If you have a fever, cough and difficulty breathing, seek medical attention. Call in advance.\n" +
+                "Follow the directions of your local health authority."));
         faqAdapter = new FAQAdapter(getActivity(),faq_list);
         rv_faq.setAdapter(faqAdapter);
 
-        getplans();
-        makeGetSliderRequest();
-        makeGetBannerSliderRequest();
+
 
         rv_package.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), rv_package, new RecyclerTouchListener.OnItemClickListener() {
             @Override
@@ -358,5 +404,107 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             fragmentManager.beginTransaction().replace(R.id.frame, fm)
                     .addToBackStack(null).commit();
         }
+        else  if (i == R.id.view_faq)
+        {
+            Fragment fm = new FaqFragment();
+            FragmentManager fragmentManager =getActivity().getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.frame, fm)
+                    .addToBackStack(null).commit();
+        }
     }
+    public void getAppSettingData()
+    {
+        loadingBar.show();
+        String json_tag="json_app_tag";
+        HashMap<String,String> map=new HashMap<>();
+
+        CustomVolleyJsonArrayRequest request=new CustomVolleyJsonArrayRequest(Request.Method.POST, BaseUrl.URL_UPDATER, map, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                loadingBar.dismiss();
+                try
+                {
+                   JSONObject obj = response.getJSONObject(0);
+
+
+                        version_code=Integer.parseInt(obj.getString("app_version"));
+                        app_link=obj.getString("app_link");
+
+                        if(getUpdaterInfo())
+                        {
+                            getplans();
+                            makeGetSliderRequest();
+                            makeGetBannerSliderRequest();
+
+
+                        }
+                        else
+                        {
+
+                            AlertDialog.Builder builder=new AlertDialog.Builder(getActivity());
+                            builder.setCancelable(false);
+                            builder.setMessage("The new version of app is available please update to get access.");
+                            builder.setPositiveButton("Update now", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    dialogInterface.dismiss();
+                                    String url = app_link;
+                                    Intent in = new Intent(Intent.ACTION_VIEW);
+                                    in.setData(Uri.parse(url));
+                                    startActivity(in);
+                                    getActivity().finish();
+                                    //Toast.makeText(getActivity(),"updating",Toast.LENGTH_SHORT).show();
+                                }
+                            }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+
+                                    dialogInterface.dismiss();
+                                    getActivity().finishAffinity();
+                                }
+                            });
+                            AlertDialog dialog=builder.create();
+                            dialog.show();
+                        }
+
+
+                    } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                loadingBar.dismiss();
+                String msg=module.VolleyErrorMessage(error);
+                if(!(msg.isEmpty() || msg.equals("")))
+                {
+                    Toast.makeText(getActivity(),""+msg,Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        AppController.getInstance().addToRequestQueue(request,json_tag);
+    }
+
+    public boolean getUpdaterInfo()
+    {
+        boolean st=false;
+        try
+        {
+            PackageInfo packageInfo=getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(),0);
+            int ver_code=packageInfo.versionCode;
+            if(ver_code == version_code)
+            {
+                st=true;
+            }
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+        }
+        return st;
+    }
+
 }

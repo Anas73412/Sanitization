@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -32,9 +34,24 @@ public class FAQAdapter extends RecyclerView.Adapter<FAQAdapter.ViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         FAQModel model = faq_list.get(position);
         holder.txt_faq.setText(model.getQuestion());
+        holder.txt_ans.setText(model.getAnswer());
+        holder.lin_faq.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (holder.rel_ans.getVisibility()==View.VISIBLE)
+                {
+                    holder.rel_ans.setVisibility(View.GONE);
+                }
+                else
+                {
+                    holder.rel_ans.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
 
     }
 
@@ -44,10 +61,15 @@ public class FAQAdapter extends RecyclerView.Adapter<FAQAdapter.ViewHolder> {
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView txt_faq;
+        TextView txt_faq,txt_ans;
+        LinearLayout lin_faq ;
+        RelativeLayout rel_ans ;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             txt_faq = itemView.findViewById(R.id.tv_faq);
+            txt_ans = itemView.findViewById(R.id.tv_ans);
+           lin_faq = itemView.findViewById(R.id.lin_faq);
+           rel_ans = itemView.findViewById(R.id.rel_ans);
         }
     }
 }

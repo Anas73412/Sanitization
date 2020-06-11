@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <RelativeLayout
+    android:layout_height="wrap_content">
+    <androidx.cardview.widget.CardView
+       android:layout_margin="@dimen/space_5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <LinearLayout
+        android:id="@+id/lin_faq"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/space_5"
+        android:orientation="vertical"
         >
         <in.sanitization.sanitization.Fonts.LatoBLack
             android:textColor="@color/black"
@@ -18,6 +24,28 @@
             android:drawablePadding="@dimen/space_10"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
-    </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/rel_ans"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-</androidx.cardview.widget.CardView>
+        <View
+            android:id="@+id/view"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/space_1"
+            android:background="@color/bg_color"
+            android:layout_margin="@dimen/space_5"/>
+        <in.sanitization.sanitization.Fonts.LatoBLack
+            android:layout_below="@+id/view"
+            android:textColor="@color/black"
+            android:text="Package 1"
+            android:id="@+id/tv_ans"
+            android:textSize="@dimen/space_13"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        </RelativeLayout>
+    </LinearLayout>
+
+    </androidx.cardview.widget.CardView></RelativeLayout>

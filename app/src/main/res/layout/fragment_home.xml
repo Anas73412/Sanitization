@@ -55,7 +55,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
                     android:text=" View More "
-                    android:background="@drawable/bg_rounded_button"
+                    android:background="@color/white"
                    android:layout_gravity="end"
                     android:textAlignment="center"
                     android:gravity="center"
@@ -63,7 +63,7 @@
                     android:paddingLeft="@dimen/space_10"
                     android:paddingEnd="@dimen/space_10"
 
-                    android:textColor="@color/white"
+                    android:textColor="@color/black"
                     android:textSize="@dimen/space_12"
 
 
@@ -268,6 +268,25 @@
 
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
+                    <Button
+                        android:id="@+id/view_faq"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:text=" View More "
+                        android:background="@color/white"
+                        android:layout_gravity="end"
+                        android:textAlignment="center"
+                        android:gravity="center"
+                        android:textAllCaps="false"
+                        android:paddingLeft="@dimen/space_10"
+                        android:paddingEnd="@dimen/space_10"
+
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/space_12"
+
+
+
+                        />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 

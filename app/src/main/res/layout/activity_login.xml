@@ -111,14 +111,28 @@
             android:background="@drawable/button_background"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
-        <in.sanitization.sanitization.Fonts.LatoBLack
-            android:id="@+id/tv_create"
-            android:textColor="@color/gdnt_top"
-            android:textAlignment="gravity"
-            android:gravity="right"
-            android:text="To create new account..."
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content">
+            <in.sanitization.sanitization.Fonts.LatoBLack
+                android:id="@+id/tv_forgot"
+                android:textColor="@color/gdnt_top"
+                android:textAlignment="gravity"
+
+                android:text="Forgot Password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <in.sanitization.sanitization.Fonts.LatoBLack
+                android:id="@+id/tv_create"
+                android:textColor="@color/gdnt_top"
+                android:textAlignment="gravity"
+                android:gravity="right"
+                android:text="Create New Account"
+                android:layout_alignParentEnd="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </RelativeLayout>
+
     </LinearLayout>
 
 </LinearLayout>

@@ -31,7 +31,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     EditText et_mobile,et_pass;
     Button btn_login;
-    TextView tv_create ,tv_back;
+    TextView tv_create ,tv_back ,tv_forgot;
     Module module;
     Session_management session_management;
     Activity ctx=LoginActivity.this;
@@ -49,11 +49,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         et_pass=findViewById(R.id.et_pass);
         btn_login=findViewById(R.id.btn_login);
         tv_create=findViewById(R.id.tv_create);
+        tv_forgot=findViewById(R.id.tv_forgot);
         tv_back=findViewById(R.id.txt_back);
         module=new Module(ctx);
         session_management =new Session_management(ctx);
         btn_login.setOnClickListener(this);
         tv_create.setOnClickListener(this);
+        tv_forgot.setOnClickListener(this);
         tv_back.setOnClickListener(this);
     }
 
@@ -95,6 +97,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         {
             Intent intent=new Intent(ctx,Verfication_activity.class);
             intent.putExtra("type","r");
+            startActivity(intent);
+        }
+        else if(v.getId() == R.id.tv_forgot)
+        {
+            Intent intent=new Intent(ctx,Verfication_activity.class);
+            intent.putExtra("type","f");
             startActivity(intent);
         }
         else if(v.getId() == R.id.txt_back)

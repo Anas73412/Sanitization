@@ -77,28 +77,28 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onBackPressed() {
                 super.onBackPressed();
-
-        AlertDialog.Builder builder=new AlertDialog.Builder(ctx);
-        builder.setTitle("Confirmation");
-        builder.setMessage("Are you sure want to exit?");
-        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    finishAffinity();
-                }
-
-            }
-        })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        dialog.dismiss();
-                    }
-                });
-        AlertDialog dialog=builder.create();
-        dialog.show();
+//
+//        AlertDialog.Builder builder=new AlertDialog.Builder(ctx);
+//        builder.setTitle("Confirmation");
+//        builder.setMessage("Are you sure want to exit?");
+//        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+//                    finishAffinity();
+//                }
+//
+//            }
+//        })
+//                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//
+//                        dialog.dismiss();
+//                    }
+//                });
+//        AlertDialog dialog=builder.create();
+//        dialog.show();
     }
 
 

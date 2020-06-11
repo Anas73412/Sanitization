@@ -21,8 +21,12 @@ public class BaseUrl {
     public static final String GET_STATES=BASE_URL+"index.php/api/get_state";
     public static final String GET_CITY=BASE_URL+"index.php/api/get_city_by_state";
     public static final String GET_DETAILS =BASE_URL+"index.php/api/get_plan_by_id" ;
-    public static final String URL_SEND_OTP =BASE_URL+"index.php/api/fun_register_with_otp" ;
-    public static final String URL_VERIFY_REGISTER_OTP ="mobile_register_otp_verification" ;
-    public static final String URL_VERIFY_OTP = "";
+    public static final String URL_SEND_OTP_R =BASE_URL+"index.php/api/fun_register_with_otp" ;
+    public static final String URL_SEND_OTP_F =BASE_URL+"index.php/api/fun_gen_otp" ;
+    public static final String URL_VERIFY_REGISTER_OTP =BASE_URL+"index.php/api/mobile_register_otp_verification" ;
+    public static final String URL_UPDATER =BASE_URL+"index.php/api/get_version" ;
+    public static final String FORGOT_URL = BASE_URL+"index.php/api/update_password";
+    public static final String URL_VERIFY_OTP = BASE_URL+"index.php/api/mobile_otp_verification" ;
+
 
 }
