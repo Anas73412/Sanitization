@@ -23,10 +23,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".HelpActivity" />
+<!--        <activity android:name=".HelpActivity" />-->
         <activity android:name=".RegistrationActivity" />
         <activity android:name=".LoginActivity" />
-<!--        <activity android:name=".HomeActivity" />-->
+        <activity android:name=".HomeActivity" />
         <activity android:name=".PackageDetails" />
         <activity android:name=".NewActivity" />
         <activity android:name=".DemoActivity" />
