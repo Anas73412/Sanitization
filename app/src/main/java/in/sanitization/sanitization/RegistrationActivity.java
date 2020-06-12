@@ -3,6 +3,7 @@ package in.sanitization.sanitization;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -33,6 +34,7 @@ import java.util.Map;
 import in.sanitization.sanitization.Config.BaseUrl;
 import in.sanitization.sanitization.Config.Module;
 import in.sanitization.sanitization.util.CustomVolleyJsonRequest;
+import in.sanitization.sanitization.util.LoadingBar;
 
 import static in.sanitization.sanitization.Config.BaseUrl.SIGN_UP;
 
@@ -43,7 +45,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     TextView tv_back;
     Button btn_reg;
     Module module;
-
+    LoadingBar loadingBar ;
     ArrayList<String> state_list;
     ArrayList<String> city_list ;
     Activity ctx=RegistrationActivity.this;
@@ -69,6 +71,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         btn_reg=findViewById(R.id.btn_reg);
        tv_back=findViewById(R.id.txt_back);
         module=new Module(ctx);
+        loadingBar=new LoadingBar(ctx);
         city_list = new ArrayList<>();
         state_list = new ArrayList<>();
 
@@ -190,8 +193,9 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
-    private void registerUser(String name, String number, String email,String state ,String city ,String pincode, String address, String pass ) {
-
+    private void registerUser(String name, String number, String email,String state ,String city ,String pincode, String address, String pass )
+    {
+        loadingBar.show();
         HashMap<String,String> params=new HashMap<>();
         params.put("user_name",name);
         params.put("user_mobile",number);
@@ -206,11 +210,13 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             @Override
             public void onResponse(JSONObject response) {
                 try {
+                    loadingBar.dismiss();
                     boolean resp=response.getBoolean("responce");
                     if(resp)
                     {
                         module.showToast(""+response.getString("message"));
-                       finish();
+                        Intent intent = new Intent(RegistrationActivity.this,LoginActivity.class);
+                        startActivity(intent);
                     }
                     else
                     {
@@ -219,6 +225,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 }
                 catch (Exception ex)
                 {
+                    loadingBar.dismiss();
                     ex.printStackTrace();
                 }
 
@@ -226,6 +233,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                loadingBar.dismiss();
                 String msg=module.VolleyErrorMessage(error);
                 if(!msg.isEmpty())
                 {

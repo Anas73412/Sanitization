@@ -143,8 +143,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         }
         else if (id == R.id.nav_enquire)
         {
-           Intent intent = new Intent(ctx,HelpActivity.class);
-           startActivity(intent);
+            fm = new HelpActivity();
+//           Intent intent = new Intent(ctx,HelpActivity.class);
+//           startActivity(intent);
         }
         else if (id == R.id.nav_logout)
         {

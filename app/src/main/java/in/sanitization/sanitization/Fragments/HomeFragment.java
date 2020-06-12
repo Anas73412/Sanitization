@@ -49,6 +49,7 @@ import in.sanitization.sanitization.AppController;
 import in.sanitization.sanitization.Config.BaseUrl;
 import in.sanitization.sanitization.Config.Module;
 import in.sanitization.sanitization.CustomSlider;
+import in.sanitization.sanitization.HomeActivity;
 import in.sanitization.sanitization.Model.BannerModel;
 import in.sanitization.sanitization.Model.FAQModel;
 import in.sanitization.sanitization.Model.PackageModel;
@@ -143,7 +144,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         viewPager2 = view.findViewById(R.id.viewPager2);
         txt_contact.setText(Html.fromHtml(url));
         loadingBar = new LoadingBar(getActivity());
-
+        ((HomeActivity) getActivity()).setTitle(getResources().getString(R.string.app_name));
         banner_list = new ArrayList<>();
         carList = new ArrayList<>();
         bannerList = new ArrayList<>();
@@ -155,19 +156,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         txt_more_faq.setOnClickListener(this);
 
         getAppSettingData();
-        rv_faq.setLayoutManager(new LinearLayoutManager(getActivity()));
-        faq_list.add(new FAQModel("How is it beneficial","The formula used  has proven in University and clinical studies to be one of the most effective solutions in destroying virtually any form of bacteria and virus within minutes of application. In fact, our formula is the same formula often used in wound care for both humans and pets."));
-        faq_list.add(new FAQModel("Cost for Sanitization","Please call or email us to discuss your situation and we will discuss a strategy for solving you issues and how much it will cost."));
-        faq_list.add(new FAQModel("Duration for the process","Normally, the pest control team would inform you about the usage of the premises again. But in general, keep the premises close for more than 10 hours for best results."));
-        faq_list.add(new FAQModel("What are the precautions to be taken","Clean your hands often. Use soap and water, or an alcohol-based hand rub.\n" +
-                "Maintain a safe distance from anyone who is coughing or sneezing.\n" +
-                "Don’t touch your eyes, nose or mouth.\n" +
-                "Cover your nose and mouth with your bent elbow or a tissue when you cough or sneeze.\n" +
-                "Stay home if you feel unwell.\n" +
-                "If you have a fever, cough and difficulty breathing, seek medical attention. Call in advance.\n" +
-                "Follow the directions of your local health authority."));
-        faqAdapter = new FAQAdapter(getActivity(),faq_list);
-        rv_faq.setAdapter(faqAdapter);
+
 
 
 
@@ -393,6 +382,51 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         AppController.getInstance().addToRequestQueue(jsonObjReq,"plans");
 
     }
+    private void getfaqs() {
+        loadingBar.show();
+        faq_list.clear();
+        Map<String, String> params = new HashMap<String, String>();
+
+        CustomVolleyJsonArrayRequest jsonObjReq = new CustomVolleyJsonArrayRequest(Request.Method.POST,
+                BaseUrl.FAQ, params, new Response.Listener<JSONArray>() {
+
+            @Override
+            public void onResponse(JSONArray response) {
+                Log.d("plans", response.toString());
+                loadingBar.dismiss();
+
+                if (response != null && response.length() > 0) {
+
+
+                    Gson gson = new Gson();
+                    Type listType = new TypeToken<List<FAQModel>>() {
+                    }.getType();
+                  faq_list = gson.fromJson(response.toString(), listType);
+                    rv_faq.setLayoutManager(new LinearLayoutManager(getActivity()));
+                    faqAdapter = new FAQAdapter(getActivity(),faq_list);
+                    rv_faq.setAdapter(faqAdapter);
+                    faqAdapter.notifyDataSetChanged();
+
+                }
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                loadingBar.dismiss();
+                String msg=module.VolleyErrorMessage(error);
+
+                if(!msg.equals(""))
+                {
+                    Toast.makeText(getActivity(),""+msg,Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
+        // Adding request to request queue
+        AppController.getInstance().addToRequestQueue(jsonObjReq,"plans");
+
+    }
 
     @Override
     public void onClick(View v) {
@@ -418,16 +452,20 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         String json_tag="json_app_tag";
         HashMap<String,String> map=new HashMap<>();
 
-        CustomVolleyJsonArrayRequest request=new CustomVolleyJsonArrayRequest(Request.Method.POST, BaseUrl.URL_UPDATER, map, new Response.Listener<JSONArray>() {
+        CustomVolleyJsonRequest request=new CustomVolleyJsonRequest(Request.Method.POST, BaseUrl.URL_UPDATER, map, new Response.Listener<JSONObject>() {
             @Override
-            public void onResponse(JSONArray response) {
+            public void onResponse(JSONObject response) {
+                Log.d("app_data",response.toString());
                 loadingBar.dismiss();
                 try
                 {
-                   JSONObject obj = response.getJSONObject(0);
+                  boolean stat = response.getBoolean("responce");
+                  if (stat)
+                  {
+                        JSONArray j_arr = response.getJSONArray("data");
+                       JSONObject obj = j_arr.getJSONObject(0);
 
-
-                        version_code=Integer.parseInt(obj.getString("app_version"));
+                        version_code=Integer.parseInt(obj.getString("version"));
                         app_link=obj.getString("app_link");
 
                         if(getUpdaterInfo())
@@ -435,7 +473,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                             getplans();
                             makeGetSliderRequest();
                             makeGetBannerSliderRequest();
-
+                            getfaqs();
 
                         }
                         else
@@ -467,7 +505,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                             dialog.show();
                         }
 
-
+}
                     } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -504,6 +542,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         {
             ex.printStackTrace();
         }
+        Log.d("update_status", String.valueOf(st));
         return st;
     }
 

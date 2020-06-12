@@ -25,6 +25,7 @@
                 android:layout_gravity="center_horizontal"
                 android:gravity="center_horizontal"
                 android:src="@drawable/iconn"
+                android:layout_marginTop="@dimen/space_20"
                 android:backgroundTintMode="src_in"
                 android:backgroundTint="@color/white"
                 android:textAlignment="center" />

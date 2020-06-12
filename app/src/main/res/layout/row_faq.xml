@@ -42,7 +42,7 @@
             android:text="Package 1"
             android:id="@+id/tv_ans"
             android:textSize="@dimen/space_13"
-
+            android:layout_marginLeft="@dimen/space_10"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
         </RelativeLayout>

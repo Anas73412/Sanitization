@@ -31,6 +31,8 @@ import in.sanitization.sanitization.Adapter.PackageAdapter;
 import in.sanitization.sanitization.AppController;
 import in.sanitization.sanitization.Config.BaseUrl;
 import in.sanitization.sanitization.Config.Module;
+import in.sanitization.sanitization.HomeActivity;
+import in.sanitization.sanitization.MainActivity;
 import in.sanitization.sanitization.Model.PackageModel;
 import in.sanitization.sanitization.PackageDetails;
 import in.sanitization.sanitization.R;
@@ -60,7 +62,7 @@ public class PackagesFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.fragment_packages, container, false);
-
+        ((HomeActivity) getActivity()).setTitle("Our Packages");
         list=new ArrayList<>();
         rv_package=view.findViewById(R.id.rv_package);
         module = new Module(getActivity());

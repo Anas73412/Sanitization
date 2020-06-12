@@ -105,10 +105,6 @@
                         android:paddingRight="@dimen/space_5"
                         android:text="@string/about_us"
                         android:paddingBottom="@dimen/space_5"
-
-
-
-
                         />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -265,7 +261,7 @@
                         />
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_faq"
-
+                        tools:itemCount="4"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
                     <Button

@@ -1,10 +1,15 @@
 package in.sanitization.sanitization;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -18,33 +23,45 @@ import java.util.HashMap;
 
 import in.sanitization.sanitization.Config.Module;
 import in.sanitization.sanitization.util.CustomVolleyJsonRequest;
+import in.sanitization.sanitization.util.LoadingBar;
 import in.sanitization.sanitization.util.Session_management;
 
 import static in.sanitization.sanitization.Config.BaseUrl.SEND_QUERY;
 import static in.sanitization.sanitization.Config.Constants.KEY_ID;
 import static in.sanitization.sanitization.Config.Constants.KEY_MOBILE;
 
-public class HelpActivity extends AppCompatActivity implements View.OnClickListener {
+public class HelpActivity extends Fragment implements View.OnClickListener {
 
     EditText et_mobile,et_msg;
     Button btn_submit;
     Session_management session_management;
     Module module;
-    Activity ctx=HelpActivity.this;
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_help);
-        initViews();
+    LoadingBar loadingBar ;
+
+    public HelpActivity() {
     }
 
-    private void initViews() {
-        et_mobile=findViewById(R.id.et_mobile);
-        et_msg=findViewById(R.id.et_msg);
-        btn_submit=findViewById(R.id.btn_submit);
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view =  inflater.inflate(R.layout.activity_home, container, false);
+
+        loadingBar = new LoadingBar(getActivity());
+        ((HomeActivity) getActivity()).setTitle("Send Enquiry");
+    initViews(view);
+        return view;
+    }
+
+
+
+    private void initViews(View v) {
+        et_mobile=v.findViewById(R.id.et_mobile);
+        et_msg=v.findViewById(R.id.et_msg);
+        btn_submit=v.findViewById(R.id.btn_submit);
         btn_submit.setOnClickListener(this);
-        session_management=new Session_management(ctx);
-        module =new Module(ctx);
+        session_management=new Session_management(getActivity());
+        module =new Module(getActivity());
+       loadingBar =new LoadingBar(getActivity());
         et_mobile.setText(session_management.getUserDetails().get(KEY_MOBILE));
         et_mobile.setEnabled(false);
 
@@ -74,6 +91,7 @@ public class HelpActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void sendQuery(String user_id, String message) {
+        loadingBar.show();
         HashMap<String,String> params=new HashMap<>();
         params.put("user_id",user_id);
         params.put("message",message);
@@ -82,11 +100,12 @@ public class HelpActivity extends AppCompatActivity implements View.OnClickListe
             public void onResponse(JSONObject response) {
 
                 try {
+                    loadingBar.dismiss();
                     boolean resp=response.getBoolean("responce");
                     if(resp)
                     {
                         module.showToast(""+response.getString("message"));
-                        finish();
+                        getActivity().getSupportFragmentManager().popBackStackImmediate();
                     }
                     else
                     {
@@ -95,12 +114,14 @@ public class HelpActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 catch (Exception ex)
                 {
+                    loadingBar.dismiss();
                     ex.printStackTrace();
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                loadingBar.dismiss();
                 String msg=module.VolleyErrorMessage(error);
                 if(!msg.isEmpty())
                 {

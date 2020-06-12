@@ -22,12 +22,17 @@ import java.util.HashMap;
 
 import in.sanitization.sanitization.AppController;
 import in.sanitization.sanitization.Config.BaseUrl;
+import in.sanitization.sanitization.Config.Module;
+import in.sanitization.sanitization.HomeActivity;
+import in.sanitization.sanitization.MainActivity;
 import in.sanitization.sanitization.R;
 import in.sanitization.sanitization.util.CustomVolleyJsonRequest;
+import in.sanitization.sanitization.util.LoadingBar;
 
 
 public class ContactFragment extends Fragment {
     TextView textView ,title;
+    LoadingBar loadingBar ;
 
     public ContactFragment() {
         // Required empty public constructor
@@ -41,19 +46,23 @@ public class ContactFragment extends Fragment {
       View view =  inflater.inflate(R.layout.fragment_contact, container, false);
       textView = view.findViewById(R.id.text);
         title= view.findViewById(R.id.text_title);
+        loadingBar = new LoadingBar(getActivity());
+        ((HomeActivity) getActivity()).setTitle("Contact Us");
         getInfo();
       return view;
     }
     private void getInfo()
     {
+        loadingBar.show();
         HashMap<String,String> params = new HashMap<>();
-        CustomVolleyJsonRequest jsonRequest = new CustomVolleyJsonRequest(Request.Method.POST, BaseUrl.PRIVACY,params, new Response.Listener<JSONObject>() {
+        CustomVolleyJsonRequest jsonRequest = new CustomVolleyJsonRequest(Request.Method.POST, BaseUrl.CONTACT,params, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
                     boolean stat = response.getBoolean("responce");
                     if (stat)
                     {
+                        loadingBar.dismiss();
                         JSONArray array = response.getJSONArray("data");
                         JSONObject object = array.getJSONObject(0);
                         textView.setText(Html.fromHtml(object.getString("pg_descri")));
@@ -61,6 +70,7 @@ public class ContactFragment extends Fragment {
 
                     }
                 } catch (JSONException e) {
+                    loadingBar.dismiss();
                     e.printStackTrace();
                 }
 
@@ -68,9 +78,11 @@ public class ContactFragment extends Fragment {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                loadingBar.dismiss();
+                new Module(getActivity()).showToast(error.getMessage());
             }
         });
         AppController.getInstance().addToRequestQueue(jsonRequest);
     }
+
 }

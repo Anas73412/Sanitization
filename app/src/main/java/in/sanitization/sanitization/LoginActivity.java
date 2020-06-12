@@ -22,6 +22,7 @@ import java.util.HashMap;
 
 import in.sanitization.sanitization.Config.Module;
 import in.sanitization.sanitization.util.CustomVolleyJsonRequest;
+import in.sanitization.sanitization.util.LoadingBar;
 import in.sanitization.sanitization.util.Session_management;
 
 import static in.sanitization.sanitization.Config.BaseUrl.LOGIN;
@@ -33,6 +34,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     Button btn_login;
     TextView tv_create ,tv_back ,tv_forgot;
     Module module;
+    LoadingBar loadingBar ;
     Session_management session_management;
     Activity ctx=LoginActivity.this;
     @Override
@@ -52,6 +54,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         tv_forgot=findViewById(R.id.tv_forgot);
         tv_back=findViewById(R.id.txt_back);
         module=new Module(ctx);
+       loadingBar=new LoadingBar(ctx);
         session_management =new Session_management(ctx);
         btn_login.setOnClickListener(this);
         tv_create.setOnClickListener(this);
@@ -88,8 +91,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             else
             {
                 loginUser(number,pass);
-                Intent intent=new Intent(ctx,HomeActivity.class);
-                startActivity(intent);
+
             }
 
         }
@@ -112,6 +114,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void loginUser(String number, String pass) {
+        loadingBar.show();
         HashMap<String,String> params=new HashMap<>();
         params.put("user_phone",number);
         params.put("password",pass);
@@ -120,10 +123,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             @Override
             public void onResponse(JSONObject response) {
                 try {
+                    loadingBar.dismiss();
                     boolean resp=response.getBoolean("responce");
+                    Log.d("data_login",""+response.toString());
                     if(resp)
                     {
-                        Log.d("data_login",""+response.toString());
+
                         //module.showToast(""+response.getString("message"));
                         JSONObject object=response.getJSONObject("data");
                         session_management.createLoginSession(object.getString("user_id"),object.getString("user_email"),object.getString("user_fullname"),object.getString("user_phone"),
@@ -142,6 +147,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 }
                 catch (Exception ex)
                 {
+                    loadingBar.dismiss();
                     ex.printStackTrace();
                 }
 
@@ -149,6 +155,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                loadingBar.dismiss();
                 String msg=module.VolleyErrorMessage(error);
                 if(!msg.isEmpty())
                 {

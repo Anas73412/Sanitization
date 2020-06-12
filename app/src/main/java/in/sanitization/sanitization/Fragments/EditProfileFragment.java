@@ -32,9 +32,12 @@ import java.util.Map;
 import in.sanitization.sanitization.AppController;
 import in.sanitization.sanitization.Config.BaseUrl;
 import in.sanitization.sanitization.Config.Module;
+import in.sanitization.sanitization.HomeActivity;
+import in.sanitization.sanitization.MainActivity;
 import in.sanitization.sanitization.R;
 import in.sanitization.sanitization.RegistrationActivity;
 import in.sanitization.sanitization.util.CustomVolleyJsonRequest;
+import in.sanitization.sanitization.util.LoadingBar;
 import in.sanitization.sanitization.util.Session_management;
 
 import static in.sanitization.sanitization.Config.BaseUrl.SIGN_UP;
@@ -56,6 +59,7 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
     AutoCompleteTextView et_city ,et_state ;
     Button btn_update ;
     Module module;
+    LoadingBar loadingBar ;
     HashMap<String,Object> hashMap = new HashMap<>();
     ArrayList<String> state_list;
     ArrayList<String> city_list ;
@@ -72,6 +76,8 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
        View view = inflater.inflate(R.layout.fragment_edit_profile, container, false);
+        ((HomeActivity) getActivity()).setTitle("Edit Profile");
+
        initViews(view);
        return  view ;
     }
@@ -86,7 +92,7 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
         et_pin=v.findViewById(R.id.et_pincode);
 
         btn_update=v.findViewById(R.id.btn_updt);
-
+        loadingBar = new LoadingBar(getActivity());
         module=new Module(getActivity());
         session_management = new Session_management(getActivity());
         city_list = new ArrayList<>();
@@ -268,7 +274,7 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
 
     private void updateProfile(String id , final String name, final String email, final String state , final String city , final String pincode, final String address )
     {
-
+        loadingBar.show();
         HashMap<String,String> params=new HashMap<>();
         params.put("user_id",id);
         params.put("name",name);
@@ -285,6 +291,7 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
             @Override
             public void onResponse(JSONObject response) {
                 try {
+                    loadingBar.dismiss();
                     boolean resp=response.getBoolean("responce");
                     Log.e("update_response",response.toString());
                     if(resp)
@@ -311,6 +318,7 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                loadingBar.dismiss();
                 String msg=module.VolleyErrorMessage(error);
                 if(!msg.isEmpty())
                 {

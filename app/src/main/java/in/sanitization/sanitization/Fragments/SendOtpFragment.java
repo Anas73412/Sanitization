@@ -27,6 +27,7 @@ import java.util.Random;
 import in.sanitization.sanitization.AppController;
 import in.sanitization.sanitization.Config.BaseUrl;
 import in.sanitization.sanitization.Config.Module;
+import in.sanitization.sanitization.MainActivity;
 import in.sanitization.sanitization.R;
 import in.sanitization.sanitization.util.CustomVolleyJsonRequest;
 import in.sanitization.sanitization.util.LoadingBar;
@@ -56,6 +57,7 @@ public class SendOtpFragment extends Fragment {
         et_gen_otp=view.findViewById(R.id.et_gen_otp);
         loadingBar=new LoadingBar(getActivity());
         type = getActivity().getIntent().getStringExtra("type");
+
 
      btn_otp_verify.setOnClickListener(new View.OnClickListener() {
         @Override

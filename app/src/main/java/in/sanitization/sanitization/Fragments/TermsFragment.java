@@ -22,8 +22,12 @@ import java.util.HashMap;
 
 import in.sanitization.sanitization.AppController;
 import in.sanitization.sanitization.Config.BaseUrl;
+import in.sanitization.sanitization.Config.Module;
+import in.sanitization.sanitization.HomeActivity;
+import in.sanitization.sanitization.MainActivity;
 import in.sanitization.sanitization.R;
 import in.sanitization.sanitization.util.CustomVolleyJsonRequest;
+import in.sanitization.sanitization.util.LoadingBar;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -31,7 +35,7 @@ import in.sanitization.sanitization.util.CustomVolleyJsonRequest;
 public class TermsFragment extends Fragment {
 
     private TextView textView ,title;
-
+    LoadingBar loadingBar ;
     public TermsFragment() {
         // Required empty public constructor
     }
@@ -44,11 +48,14 @@ public class TermsFragment extends Fragment {
         View view =  inflater.inflate(R.layout.fragment_terms, container, false);
         textView = view.findViewById(R.id.text);
         title= view.findViewById(R.id.text_title);
+        loadingBar = new LoadingBar(getActivity());
+        ((HomeActivity) getActivity()).setTitle("Terms & Conditions");
         getInfo();
         return view;
     }
     private void getInfo()
     {
+        loadingBar.show();
         HashMap<String,String> params = new HashMap<>();
         CustomVolleyJsonRequest jsonRequest = new CustomVolleyJsonRequest(Request.Method.POST, BaseUrl.TERMS,params, new Response.Listener<JSONObject>() {
             @Override
@@ -57,6 +64,7 @@ public class TermsFragment extends Fragment {
                     boolean stat = response.getBoolean("responce");
                     if (stat)
                     {
+                        loadingBar.dismiss();
                         JSONArray array = response.getJSONArray("data");
                         JSONObject object = array.getJSONObject(0);
                         textView.setText(Html.fromHtml(object.getString("pg_descri")));
@@ -64,6 +72,7 @@ public class TermsFragment extends Fragment {
 
                     }
                 } catch (JSONException e) {
+                    loadingBar.dismiss();
                     e.printStackTrace();
                 }
 
@@ -71,7 +80,8 @@ public class TermsFragment extends Fragment {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                loadingBar.dismiss();
+                new Module(getActivity()).showToast(error.getMessage());
             }
         });
         AppController.getInstance().addToRequestQueue(jsonRequest);

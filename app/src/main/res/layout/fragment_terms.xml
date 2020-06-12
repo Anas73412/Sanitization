@@ -56,7 +56,7 @@
                     android:text=" Terms and Conditions "
                     android:textColor="@color/colorAccent"
                     android:textSize="20dp"
-
+                    android:visibility="gone"
 
                     />
                 <View
@@ -64,6 +64,7 @@
                     android:layout_height="@dimen/space_1"
                     android:background="@color/gray"
                     android:layout_margin="@dimen/space_5"
+                    android:visibility="gone"
                     />
                 <TextView
                     android:id="@+id/text"
@@ -71,7 +72,7 @@
                     android:layout_height="wrap_content"
                     android:paddingLeft="@dimen/space_5"
                     android:paddingRight="@dimen/space_5"
-                    android:text="@string/about_us"
+
                     android:paddingBottom="@dimen/space_5"
 
 

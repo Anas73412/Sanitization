@@ -36,8 +36,8 @@ public class FAQAdapter extends RecyclerView.Adapter<FAQAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         FAQModel model = faq_list.get(position);
-        holder.txt_faq.setText(model.getQuestion());
-        holder.txt_ans.setText(model.getAnswer());
+        holder.txt_faq.setText(model.getFaq_que());
+        holder.txt_ans.setText(model.getFaq_ans());
         holder.lin_faq.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

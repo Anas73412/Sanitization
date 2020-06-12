@@ -65,13 +65,13 @@
             android:layout_marginTop="@dimen/space_4"
             android:background="@drawable/edittext_layout"
             android:ems="10"
-            android:gravity="center_horizontal"
+
             android:singleLine="true"
             android:hint="Password"
             android:fontFamily="@font/bold"
             android:inputType="textPassword"
             android:padding="@dimen/space_10"
-            android:textAlignment="center"
+
             android:textColor="@color/black"
             android:textColorHint="@color/dark_gray"
             android:textSize="14sp" />
@@ -107,13 +107,11 @@
             android:layout_marginTop="@dimen/space_4"
             android:background="@drawable/edittext_layout"
             android:ems="10"
-            android:gravity="center_horizontal"
             android:singleLine="true"
             android:hint="Confirm Password"
             android:fontFamily="@font/bold"
             android:padding="@dimen/space_10"
             android:inputType="textPassword"
-            android:textAlignment="center"
             android:textColor="@color/black"
             android:textColorHint="@color/dark_gray"
             android:textSize="14sp" />

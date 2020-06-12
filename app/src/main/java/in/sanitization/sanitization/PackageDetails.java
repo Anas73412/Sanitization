@@ -42,7 +42,7 @@ public class PackageDetails extends AppCompatActivity implements View.OnClickLis
     ImageView img_back;
     SliderLayout pkg_img ;
    HashMap<String ,Object> img_map;
-
+    int sp , mp ,diff ;
     Button btn_buy ;
     Module module ;
     LoadingBar loadingBar ;
@@ -161,22 +161,22 @@ public class PackageDetails extends AppCompatActivity implements View.OnClickLis
 //                        pkg_img.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
                         pkg_img.setDuration(10000);
                         pkg_product.setText(data.getString("plan_description"));
-                        pckg_name.setText(data.getString("plan_title"));
-                        int price = Integer.parseInt(data.getString("plan_price"));
-                        int mrp = Integer.parseInt(data.getString("plan_price"));
-                        int diff = mrp - price;
-                        int p = (diff/mrp)*100;
-                        if (p>0)
+                        pckg_name.setText(data.getString("plan_name"));
+                        sp = Integer.parseInt(data.getString("plan_price"));
+                        mp = Integer.parseInt(data.getString("plan_mrp"));
+                      diff = getDiscount(data.getString("plan_price"),data.getString("plan_mrp"));
+
+                        if (diff< 0)
                         {
                             pkg_discount.setVisibility(View.GONE);
                         }
                         else
                         {
                             pkg_discount.setVisibility(View.VISIBLE);
-                        pkg_discount.setText(""+p + "% OFF");}
+                        pkg_discount.setText(""+diff + "% OFF");}
 
-                        pckg_price.setText(getResources().getString(R.string.currency)+""+price);
-                        pkg_mrp.setText(getResources().getString(R.string.currency)+""+mrp);
+                        pckg_price.setText(getResources().getString(R.string.currency)+""+sp);
+                        pkg_mrp.setText(getResources().getString(R.string.currency)+""+mp);
 
 
                     }
@@ -202,4 +202,14 @@ public class PackageDetails extends AppCompatActivity implements View.OnClickLis
         AppController.getInstance().addToRequestQueue(jsonObjReq,"plans");
 
     }
+    public int getDiscount(String price, String mrp)
+    {
+        double mrp_d=Double.parseDouble(mrp);
+        double price_d=Double.parseDouble(price);
+        double per=((mrp_d-price_d)/mrp_d)*100;
+        double df=Math.round(per);
+        int d=(int)df;
+        return d;
+    }
+
 }
