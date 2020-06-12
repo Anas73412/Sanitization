@@ -3,6 +3,9 @@ package in.sanitization.sanitization;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -96,7 +99,16 @@ public class PackageDetails extends AppCompatActivity implements View.OnClickLis
         }
         else if (id == R.id.buy_now)
         {
-
+            AlertDialog.Builder builder=new AlertDialog.Builder(PackageDetails.this);
+            builder.setMessage(getResources().getString(R.string.order_soon));
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                   dialog.dismiss();
+                }
+            });
+            AlertDialog alertDialog=builder.create();
+            alertDialog.show();
         }
     }
 
@@ -177,8 +189,7 @@ public class PackageDetails extends AppCompatActivity implements View.OnClickLis
 
                         pckg_price.setText(getResources().getString(R.string.currency)+""+sp);
                         pkg_mrp.setText(getResources().getString(R.string.currency)+""+mp);
-
-
+                        pkg_mrp.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -190,7 +201,6 @@ public class PackageDetails extends AppCompatActivity implements View.OnClickLis
             public void onErrorResponse(VolleyError error) {
                 loadingBar.dismiss();
                 String msg=module.VolleyErrorMessage(error);
-
                 if(!msg.equals(""))
                 {
                     Toast.makeText(activity,""+msg,Toast.LENGTH_LONG).show();

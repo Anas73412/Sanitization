@@ -44,7 +44,7 @@ public class HelpActivity extends Fragment implements View.OnClickListener {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view =  inflater.inflate(R.layout.activity_home, container, false);
+        View view =  inflater.inflate(R.layout.activity_help, container, false);
 
         loadingBar = new LoadingBar(getActivity());
         ((HomeActivity) getActivity()).setTitle("Send Enquiry");

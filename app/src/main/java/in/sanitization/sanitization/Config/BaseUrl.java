@@ -18,7 +18,7 @@ public class BaseUrl {
     public static final String CONTACT =BASE_URL+"index.php/api/contact";
     public static final String TERMS=BASE_URL+"index.php/api/terms";
     public static final String FAQ=BASE_URL+"index.php/api/get_faq";
-    public static final String PRIVACY=BASE_URL+"index.php/api/privacy";
+    public static final String PRIVACY=BASE_URL+"index.php/api/privacy_policy";
     public static final String GET_STATES=BASE_URL+"index.php/api/get_state";
     public static final String GET_CITY=BASE_URL+"index.php/api/get_city_by_state";
     public static final String GET_DETAILS =BASE_URL+"index.php/api/get_plan_by_id" ;

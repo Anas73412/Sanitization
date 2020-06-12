@@ -56,7 +56,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="3dp"
-                            android:textSize="15dp"
+                            android:textSize="13dp"
                             android:padding="2dp"
 
                             android:text="Name"
@@ -68,12 +68,9 @@
                             android:layout_height="wrap_content"
 
                             android:layout_marginLeft="3dp"
-                            android:textSize="15dp"
-                            android:textStyle="italic"
-
-                            android:textColor="@color/color_3"
+                            android:textSize="11dp"
+                            android:textColor="@color/colorAccent"
                             android:padding="2dp"
-
                             android:text="Name"
 
                             />

@@ -189,7 +189,12 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         }
         else if (v.getId() == R.id.txt_back)
         {
-            finish();
+          Intent intent=new Intent(ctx,LoginActivity.class);
+          intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+          intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+          intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+          startActivity(intent);
+          finish();
         }
     }
 
@@ -343,6 +348,13 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
     }
 
-
-
+    @Override
+    public void onBackPressed() {
+        Intent intent=new Intent(ctx,LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        finish();
+    }
 }

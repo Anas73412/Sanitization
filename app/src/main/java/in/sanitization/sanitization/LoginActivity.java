@@ -3,6 +3,8 @@ package in.sanitization.sanitization;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -164,5 +166,31 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             }
         });
         AppController.getInstance().addToRequestQueue(customVolleyJsonRequest);
+    }
+
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder builder=new AlertDialog.Builder(LoginActivity.this);
+        builder.setTitle("Confirmation");
+        builder.setMessage("Are you sure want to exit?");
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+                //((MainActivity) getActivity()).finish();
+                finishAffinity();
+
+
+            }
+        })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
+        AlertDialog dialog=builder.create();
+        dialog.show();
+
     }
 }
