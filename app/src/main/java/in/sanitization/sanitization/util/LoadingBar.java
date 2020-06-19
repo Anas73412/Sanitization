@@ -32,6 +32,10 @@ public class LoadingBar {
     }
     public void show()
     {
+        if(dialog.isShowing())
+        {
+            dialog.dismiss();
+        }
         dialog.show();
     }
 

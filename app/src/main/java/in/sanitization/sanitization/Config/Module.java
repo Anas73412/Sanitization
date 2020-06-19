@@ -1,8 +1,16 @@
 package in.sanitization.sanitization.Config;
 
+import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
+
+import androidx.core.content.ContextCompat;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkError;
@@ -12,12 +20,18 @@ import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 
+import java.util.ArrayList;
+
+import in.sanitization.sanitization.R;
+import in.sanitization.sanitization.util.ToastMsg;
+
 public class Module {
 
     Context context;
-
+  ToastMsg toastMsg;
     public Module(Context context) {
         this.context = context;
+        toastMsg=new ToastMsg(context);
     }
 
 
@@ -45,6 +59,14 @@ public class Module {
         return str_error;
     }
 
+    public void errMessage(VolleyError error)
+    {
+        String msg=VolleyErrorMessage(error);
+        if(!msg.isEmpty())
+        {
+            showToast(""+msg);
+        }
+    }
     public void preventMultipleClick(final View view) {
         view.setEnabled(false);
         view.postDelayed(new Runnable() {
@@ -58,4 +80,104 @@ public class Module {
     {
         Toast.makeText(context,""+s,Toast.LENGTH_SHORT).show();
     }
+
+
+    public void setErrorOnEditText(EditText et, String msg)
+    {
+        toastMsg.toastIconError(""+msg);
+        et.requestFocus();
+    }
+
+    public void setDrawableBackground(Button btn)
+    {
+        final int sdk = android.os.Build.VERSION.SDK_INT;
+        if(sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+            btn.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.button_background) );
+        } else {
+            btn.setBackground(ContextCompat.getDrawable(context, R.drawable.button_background));
+        }
+        btn.setTextColor(context.getResources().getColor(R.color.white));
+    }
+    public void removeDrawableBackground(Button btn)
+    {
+        final int sdk = android.os.Build.VERSION.SDK_INT;
+        if(sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+            btn.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.button_white_background) );
+        } else {
+            btn.setBackground(ContextCompat.getDrawable(context, R.drawable.button_white_background));
+        }
+        btn.setTextColor(context.getResources().getColor(R.color.black));
+    }
+
+    public String getBuildingType(int flg)
+    {
+        String str="";
+        switch (flg)
+        {
+            case 1:str="Home";
+               break;
+            case 2:str="Office";
+               break;
+            case 3:str="Shop";
+                break;
+            case 4:str="Other";
+                break;
+            default:str="Home";
+                break;
+        }
+        return str;
+    }
+
+    public int getDiscount(String price, String mrp)
+    {
+        double mrp_d=Double.parseDouble(mrp);
+        double price_d=Double.parseDouble(price);
+        double per=((mrp_d-price_d)/mrp_d)*100;
+        double df=Math.round(per);
+        int d=(int)df;
+        return d;
+    }
+
+    public boolean checkCityExist(ArrayList<String> list,String str)
+    {
+        boolean flag=false;
+        for(int i=0;  i<list.size();i++)
+        {
+            if(list.get(i).toString().equalsIgnoreCase(str))
+            {
+                flag=true;
+            }
+        }
+        return flag;
+    }
+
+    public void setSpinAdapter(ArrayList<String> list, Spinner spin, Activity activity) {
+        list.add(0,"Select City");
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(activity, android.R.layout.simple_spinner_dropdown_item, list);
+        spin.setAdapter(adapter);
+
+    }
+
+    public void printLogE(String TAG,String msg)
+    {
+        Log.e(TAG,""+msg);
+    }
+
+    public int getFlagTypeOnAddress(String str)
+    {
+        int flag=0;
+        switch (str)
+        {
+            case "Home":flag=1;
+                        break;
+            case "Office":flag=2;
+                        break;
+             case "Shop":flag=3;
+                        break;
+              case "Other":flag=4;
+                        break;
+        }
+        return flag;
+    }
 }
+

@@ -19,6 +19,10 @@ public class Constants {
     public static final String KEY_ADDRESS = "address";
     public static final String KEY_STATE = "state";
     public static final String KEY_CITY = "city";
+    public static final String KEY_SOCITY_ID = "socity_id";
+    public static final String KEY_SOCITY_NAME = "socity_name";
+    public static final String KEY_SOCITY_PINCODE = "socity_pincode";
+
 
 
 }

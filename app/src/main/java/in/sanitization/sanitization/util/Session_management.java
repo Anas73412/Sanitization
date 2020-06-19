@@ -45,6 +45,9 @@ public class Session_management {
         editor.putString(KEY_ADDRESS, house);
         editor.putString(KEY_CITY, city);
         editor.putString(KEY_PINCODE, pin);
+        editor.putString(KEY_SOCITY_ID, "");
+        editor.putString(KEY_SOCITY_NAME, "");
+        editor.putString(KEY_SOCITY_PINCODE, "");
 
         editor.commit();
     }
@@ -68,22 +71,26 @@ public class Session_management {
      */
     public HashMap<String, String> getUserDetails() {
         HashMap<String, String> user = new HashMap<String, String>();
-
         user.put(KEY_ID, prefs.getString(KEY_ID, null));
-        // user email id
         user.put(KEY_EMAIL, prefs.getString(KEY_EMAIL, null));
-        // user name
         user.put(KEY_NAME, prefs.getString(KEY_NAME, null));
         user.put(KEY_MOBILE, prefs.getString(KEY_MOBILE, null));
         user.put(KEY_CITY, prefs.getString(KEY_CITY, null));
         user.put(KEY_STATE, prefs.getString(KEY_STATE, null));
         user.put(KEY_PINCODE, prefs.getString(KEY_PINCODE, null));
         user.put(KEY_ADDRESS, prefs.getString(KEY_ADDRESS, null));
-
-        // return user
         return user;
     }
 
+    public HashMap<String,String> getSocityDetails()
+    {
+        HashMap<String, String> socity = new HashMap<String, String>();
+        socity.put(KEY_SOCITY_ID, prefs.getString(KEY_SOCITY_ID, null));
+        socity.put(KEY_SOCITY_NAME, prefs.getString(KEY_SOCITY_NAME, null));
+        socity.put(KEY_SOCITY_PINCODE, prefs.getString(KEY_SOCITY_PINCODE, null));
+        return socity;
+
+    }
     public void updateData(String name, String mobile, String pincode
             , String city, String state, String house) {
 
@@ -98,12 +105,12 @@ public class Session_management {
         editor.apply();
     }
 
-//    public void updateSocity(String socity_name, String socity_id) {
-//        editor.putString(KEY_SOCITY_NAME, socity_name);
-//        editor.putString(KEY_SOCITY_ID, socity_id);
-//
-//        editor.apply();
-//    }
+    public void updateSocity(String socity_name, String socity_id,String socity_pincode) {
+        editor.putString(KEY_SOCITY_NAME, socity_name);
+        editor.putString(KEY_SOCITY_ID, socity_id);
+        editor.putString(KEY_SOCITY_PINCODE, socity_pincode);
+        editor.apply();
+    }
 
     public void logoutSession() {
         editor.clear();
@@ -172,11 +179,17 @@ public class Session_management {
     public HashMap<String,String> getUpdateProfile()
     {
         HashMap<String,String> map=new HashMap<>();
-//        map.put(KEY_IMAGE,prefs.getString(KEY_IMAGE,null));
         map.put(KEY_NAME,prefs.getString(KEY_NAME,null));
 //        map.put(KEY_CNT,prefs.getString(KEY_CNT,null));
         return map;
     }
 
+    public void clearSocities()
+    {
+        editor.putString(KEY_SOCITY_ID,"");
+        editor.putString(KEY_SOCITY_NAME,"");
+        editor.putString(KEY_SOCITY_PINCODE,"");
+        editor.commit();
+    }
 
 }

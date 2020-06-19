@@ -23,7 +23,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-<!--        <activity android:name=".HelpActivity" />-->
+        <activity android:name=".SubscriptionActivity"></activity>
+        <!-- <activity android:name=".HelpActivity" /> -->
         <activity android:name=".RegistrationActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".HomeActivity" />

@@ -28,6 +28,12 @@ public class BaseUrl {
     public static final String URL_UPDATER =BASE_URL+"index.php/api/get_version" ;
     public static final String FORGOT_URL = BASE_URL+"index.php/api/update_password";
     public static final String URL_VERIFY_OTP = BASE_URL+"index.php/api/mobile_otp_verification" ;
+    public static final String GET_SOCITY_URL = BASE_URL+"index.php/api/get_pincode_by_city" ;
+    public static final String ADD_ADDRESS_URL = BASE_URL+"index.php/api/add_address" ;
+    public static final String GET_ADDRESS_URL = BASE_URL+"index.php/api/get_address" ;
+    public static String DELETE_ADDRESS_URL = BASE_URL + "index.php/api/delete_address";
+    public static String EDIT_ADDRESS_URL = BASE_URL + "index.php/api/edit_address";
+
 
 
 }

@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.util.Log;
@@ -48,6 +49,7 @@ public class PackageDetails extends AppCompatActivity implements View.OnClickLis
     int sp , mp ,diff ;
     Button btn_buy ;
     Module module ;
+    String sPrice="",sMrp="",sTitle="";
     LoadingBar loadingBar ;
     Activity activity= PackageDetails.this;
     String title= "",price="",product="",status="",id="";
@@ -99,16 +101,22 @@ public class PackageDetails extends AppCompatActivity implements View.OnClickLis
         }
         else if (id == R.id.buy_now)
         {
-            AlertDialog.Builder builder=new AlertDialog.Builder(PackageDetails.this);
-            builder.setMessage(getResources().getString(R.string.order_soon));
-            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                   dialog.dismiss();
-                }
-            });
-            AlertDialog alertDialog=builder.create();
-            alertDialog.show();
+            Intent intent=new Intent(PackageDetails.this,SubscriptionActivity.class);
+            intent.putExtra("id",String.valueOf(id));
+            intent.putExtra("name",sTitle);
+            intent.putExtra("price",sPrice);
+            intent.putExtra("mrp",sMrp);
+            startActivity(intent);
+//            AlertDialog.Builder builder=new AlertDialog.Builder(PackageDetails.this);
+//            builder.setMessage(getResources().getString(R.string.order_soon));
+//            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+//                @Override
+//                public void onClick(DialogInterface dialog, int which) {
+//                   dialog.dismiss();
+//                }
+//            });
+//            AlertDialog alertDialog=builder.create();
+//            alertDialog.show();
         }
     }
 
@@ -174,9 +182,12 @@ public class PackageDetails extends AppCompatActivity implements View.OnClickLis
                         pkg_img.setDuration(10000);
                         pkg_product.setText(data.getString("plan_description"));
                         pckg_name.setText(data.getString("plan_name"));
+                        sTitle=data.getString("plan_name").toString();
+                        sPrice=data.getString("plan_price").toString();
+                        sMrp=data.getString("plan_mrp").toString();
                         sp = Integer.parseInt(data.getString("plan_price"));
                         mp = Integer.parseInt(data.getString("plan_mrp"));
-                      diff = getDiscount(data.getString("plan_price"),data.getString("plan_mrp"));
+                      diff = module.getDiscount(data.getString("plan_price"),data.getString("plan_mrp"));
 
                         if (diff< 0)
                         {
@@ -212,14 +223,6 @@ public class PackageDetails extends AppCompatActivity implements View.OnClickLis
         AppController.getInstance().addToRequestQueue(jsonObjReq,"plans");
 
     }
-    public int getDiscount(String price, String mrp)
-    {
-        double mrp_d=Double.parseDouble(mrp);
-        double price_d=Double.parseDouble(price);
-        double per=((mrp_d-price_d)/mrp_d)*100;
-        double df=Math.round(per);
-        int d=(int)df;
-        return d;
-    }
+
 
 }
