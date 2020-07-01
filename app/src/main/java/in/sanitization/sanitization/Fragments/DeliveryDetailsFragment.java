@@ -3,6 +3,7 @@ package in.sanitization.sanitization.Fragments;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -63,11 +64,14 @@ public class DeliveryDetailsFragment extends Fragment implements View.OnClickLis
         tv_rev_name.setText(rev_name);
         tv_rev_mobile.setText(rev_mobile);
         tv_rev_pincode.setText(rev_pincode);
-        String address=rev_address+"\n "+rev_city+" "+rev_state+" ("+rev_pincode+")";
+        String address=rev_address+"\n "+rev_state+" ("+rev_pincode+")";
+        tv_rev_address.setText(address);
 
         tvItems.setText("1");
         tvprice.setText(getResources().getString(R.string.currency)+" "+price);
         tvMrp.setText(getResources().getString(R.string.currency)+" "+mrp);
+        tvSubTotal.setText(getResources().getString(R.string.currency)+" "+price);
+
         Double dmrp=Double.parseDouble(mrp);
         Double dprice=Double.parseDouble(price);
         int dis=(int)(dmrp-dprice);
@@ -88,8 +92,24 @@ public class DeliveryDetailsFragment extends Fragment implements View.OnClickLis
     public void onClick(View v) {
         if(v.getId() == R.id.rel_order)
         {
+            Bundle bundle = new Bundle();
+            Fragment fm=new ConfirmOrderFragment();
+            loadFragment(fm,bundle);
+
 
         }
-
     }
+
+    public void loadFragment(Fragment fm,Bundle args)
+    {
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        fm.setArguments(args);
+        fragmentManager.beginTransaction()
+                .replace( R.id.content_frame,fm)
+                .addToBackStack(null)
+                .commit();
+    }
+
+
+
 }

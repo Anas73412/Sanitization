@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/bg_color"
+
     tools:context=".SubscriptionActivity">
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/app_bar"
@@ -30,18 +30,14 @@
 
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <LinearLayout
 
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
 
         <FrameLayout
             android:id="@+id/content_frame"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"></FrameLayout>
+            android:layout_height="match_parent"></FrameLayout>
 
-    </LinearLayout>
+
 </ScrollView>
 
 
