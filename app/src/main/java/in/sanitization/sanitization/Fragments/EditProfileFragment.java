@@ -57,6 +57,7 @@ import static in.sanitization.sanitization.Config.BaseUrl.SIGN_UP;
 import static in.sanitization.sanitization.Config.BaseUrl.UPDATE_PROFILE;
 import static in.sanitization.sanitization.Config.Constants.KEY_ADDRESS;
 import static in.sanitization.sanitization.Config.Constants.KEY_AREA_MANAGER;
+import static in.sanitization.sanitization.Config.Constants.KEY_BLOCK;
 import static in.sanitization.sanitization.Config.Constants.KEY_CITY;
 import static in.sanitization.sanitization.Config.Constants.KEY_DISTRICT;
 import static in.sanitization.sanitization.Config.Constants.KEY_DISTRICT_MANAGER;
@@ -165,7 +166,8 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
 
         getstates();
         getDistrict(module.getStateId(stateModelList,et_state.getText().toString()));
-        getBlock(module.getDistrictId(districtModelList,et_district.getText().toString()));
+      getBlock(module.getDistrictId(districtModelList,et_district.getText().toString()));
+
         et_mobile.setText(session_management.getUserDetails().get(KEY_MOBILE));
         et_name.setText(session_management.getUserDetails().get(KEY_NAME));
         et_email.setText(session_management.getUserDetails().get(KEY_EMAIL));
