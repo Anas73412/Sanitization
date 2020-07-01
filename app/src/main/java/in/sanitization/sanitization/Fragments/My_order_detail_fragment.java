@@ -129,7 +129,8 @@ public class My_order_detail_fragment extends Fragment {
        tv_r_name.setText(name);
        tv_r_mobile.setText(mobile);
        tv_price.setText(getActivity().getResources().getString(R.string.currency)+getArguments().getString("package_price"));
-       tv_p_name.setText(getActivity().getResources().getString(R.string.currency)+getArguments().getString("package_name"));
+       tv_p_name.setText(getArguments().getString("package_name"));
+       tv_duration.setText(getArguments().getString("package_duration"));
         getDetails(package_id);
         if (status.equals("0"))
         {

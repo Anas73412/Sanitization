@@ -118,6 +118,7 @@ public class MyOrders extends Fragment {
             public void onItemClick(View view, int position) {
                 OrderModel model = my_order_modelList.get(position);
             Bundle bundle = new Bundle();
+            Log.e("pack_id",model.getPackage_id());
 //        Intent intent=new Intent(getContext(), MyOrderDetail.class);
         bundle.putString("order_id",model.getOrder_id());
         bundle.putString("user_id",model.getUser_id());
@@ -125,6 +126,7 @@ public class MyOrders extends Fragment {
         bundle.putString("package_id",model.getPackage_id());
         bundle.putString("package_name",model.getPackage_name());
         bundle.putString("package_price",model.getPackage_price());
+        bundle.putString("package_duration",model.getPackage_duration());
         bundle.putString("date", model.getCreated_at());
 //        bundle.putString("time", model.getCreated_at().substring(11,18));
         bundle.putString("status",model.getStatus());
