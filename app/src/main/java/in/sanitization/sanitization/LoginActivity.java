@@ -137,7 +137,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         //module.showToast(""+response.getString("message"));
                         JSONObject object=response.getJSONObject("data");
                         session_management.createLoginSession(object.getString("user_id"),object.getString("user_email"),object.getString("user_fullname"),object.getString("user_phone"),
-                                object.getString("state"),object.getString("city"),object.getString("pincode"),object.getString("address"),object.getString("district_manager_id"),object.getString("area_manager_id"));
+                                object.getString("state"),object.getString("district"),object.getString("block"),object.getString("pincode"),object.getString("address"),object.getString("district_manager_id"),object.getString("area_manager_id"));
                         Intent intent=new Intent(ctx,HomeActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);

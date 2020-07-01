@@ -34,7 +34,7 @@ public class Session_management {
     }
 
     public void createLoginSession(String id, String email, String name
-            , String mobile, String state, String city, String pin, String house,String dis_id,String area_id) {
+            , String mobile, String state, String district ,String block, String pin, String house,String dis_id,String area_id) {
 
         editor.putBoolean(IS_LOGIN, true);
         editor.putString(KEY_ID, id);
@@ -43,7 +43,8 @@ public class Session_management {
         editor.putString(KEY_MOBILE, mobile);
         editor.putString(KEY_STATE, state);
         editor.putString(KEY_ADDRESS, house);
-        editor.putString(KEY_CITY, city);
+        editor.putString(KEY_DISTRICT, district);
+        editor.putString(KEY_BLOCK, block);
         editor.putString(KEY_PINCODE, pin);
         editor.putString(KEY_SOCITY_ID, "");
         editor.putString(KEY_SOCITY_NAME, "");
@@ -79,6 +80,8 @@ public class Session_management {
         user.put(KEY_MOBILE, prefs.getString(KEY_MOBILE, null));
         user.put(KEY_CITY, prefs.getString(KEY_CITY, null));
         user.put(KEY_STATE, prefs.getString(KEY_STATE, null));
+        user.put(KEY_DISTRICT, prefs.getString(KEY_DISTRICT, null));
+        user.put(KEY_BLOCK, prefs.getString(KEY_BLOCK, null));
         user.put(KEY_PINCODE, prefs.getString(KEY_PINCODE, null));
         user.put(KEY_ADDRESS, prefs.getString(KEY_ADDRESS, null));
         user.put(KEY_DISTRICT_MANAGER, prefs.getString(KEY_DISTRICT_MANAGER, null));
@@ -167,13 +170,14 @@ public class Session_management {
         return prefs.getBoolean(IS_LOGIN, false);
     }
 
-    public void updateProfile(String name , String email ,String state ,String city ,String pin ,String add )
+    public void updateProfile(String name , String email ,String state ,String district,String block ,String pin ,String add )
     {
 
         editor.putString(KEY_NAME,name);
         editor.putString(KEY_EMAIL,email);
         editor.putString(KEY_STATE,state);
-        editor.putString(KEY_CITY,city);
+        editor.putString(KEY_DISTRICT,district);
+        editor.putString(KEY_BLOCK,block);
         editor.putString(KEY_PINCODE,pin);
         editor.putString(KEY_ADDRESS,add);
 

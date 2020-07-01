@@ -17,6 +17,13 @@
             android:icon="@drawable/icons8_edit_user_500px"
             android:title="Profile" />
     </group>
+    <group android:id="@+id/group_orders"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_orders"
+            android:icon="@drawable/icons8_payment_history_100px_1"
+            android:title="Orders" />
+    </group>
     <group android:id="@+id/group_enquire"
         android:checkableBehavior="single">
         <item

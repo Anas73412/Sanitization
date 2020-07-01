@@ -22,10 +22,12 @@
                 android:id="@+id/lin_dis"
                 android:background="@drawable/address_edittext"
                 android:orientation="vertical"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <LinearLayout
+
                     android:weightSum="5"
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
@@ -99,6 +101,7 @@
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/lin_area"
+                android:visibility="gone"
                 android:background="@drawable/address_edittext"
                 android:orientation="vertical"
                 android:layout_marginTop="@dimen/space_10"
@@ -309,25 +312,35 @@
                     android:src="@drawable/icons8_asterisk_30px" />
 
             </LinearLayout>
+            <LinearLayout
 
-
-            <AutoCompleteTextView
-
-                android:id="@+id/et_state"
-                android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:textSize="14sp"
-                android:hint="State"
-                android:singleLine="true"
-                android:paddingLeft="@dimen/space_20"
-                android:layout_marginTop="@dimen/space_5"
-                android:layout_marginBottom="@dimen/space_5"
                 android:background="@drawable/edittext_layout"
-                android:drawableEnd="@drawable/ic_arrow_drop_down_black_24dp"
-               android:paddingRight="@dimen/space_10"
-                android:drawablePadding="@dimen/space_10"
-                android:drawableTint="@android:color/darker_gray"
-                android:ems="10" />
+                android:layout_marginBottom="@dimen/space_5"
+                android:layout_marginTop="@dimen/space_5"
+                android:weightSum="8"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:orientation="horizontal">
+                <ImageView
+                    android:src="@drawable/icons8_home_address_32px"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="@dimen/space_5"
+                    android:padding="@dimen/space_10"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"/>
+                <AutoCompleteTextView
+                    android:id="@+id/et_state"
+                    android:background="@drawable/edittext_layout"
+                    android:layout_weight="6.5"
+                    android:paddingLeft="@dimen/space_5"
+                    android:hint="State"
+                    android:drawableEnd="@drawable/ic_arrow_drop_down_black_24dp"
+                    android:drawableTint="@android:color/darker_gray"
+
+                    android:textSize="@dimen/space_14"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"/>
+            </LinearLayout>
             <LinearLayout
 
                 android:layout_width="match_parent"
@@ -338,7 +351,7 @@
                     android:paddingLeft="@dimen/space_10"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="City"
+                    android:text="District"
                     android:textColor="#000"
                     android:textSize="14sp" />
 
@@ -349,25 +362,83 @@
                     android:src="@drawable/icons8_asterisk_30px" />
 
             </LinearLayout>
+            <LinearLayout
 
-
-            <AutoCompleteTextView
-
-                android:id="@+id/et_city"
-                android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:textSize="14sp"
-                android:hint="City"
-                android:singleLine="true"
-                android:paddingLeft="@dimen/space_20"
-                android:layout_marginTop="@dimen/space_5"
-                android:layout_marginBottom="@dimen/space_5"
                 android:background="@drawable/edittext_layout"
-                android:drawableEnd="@drawable/ic_arrow_drop_down_black_24dp"
-                android:paddingRight="@dimen/space_10"
-                android:drawablePadding="@dimen/space_10"
-                android:drawableTint="@android:color/darker_gray"
-                android:ems="10" />
+                android:layout_marginBottom="@dimen/space_5"
+                android:layout_marginTop="@dimen/space_5"
+                android:weightSum="8"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:orientation="horizontal">
+                <ImageView
+                    android:src="@drawable/icons8_home_address_32px"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="@dimen/space_5"
+                    android:padding="@dimen/space_10"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"/>
+                <AutoCompleteTextView
+                    android:id="@+id/et_district"
+                    android:background="@drawable/edittext_layout"
+                    android:layout_weight="6.5"
+                    android:paddingLeft="@dimen/space_5"
+                    android:hint="District"
+                    android:drawableEnd="@drawable/ic_arrow_drop_down_black_24dp"
+                    android:drawableTint="@android:color/darker_gray"
+
+                    android:textSize="@dimen/space_14"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"/>
+            </LinearLayout>
+            <LinearLayout
+
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+                <TextView
+
+                    android:paddingLeft="@dimen/space_10"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Block"
+                    android:textColor="#000"
+                    android:textSize="14sp" />
+
+                <ImageView
+
+                    android:layout_width="10dp"
+                    android:layout_height="10dp"
+                    android:src="@drawable/icons8_asterisk_30px" />
+
+            </LinearLayout>
+            <LinearLayout
+                android:background="@drawable/edittext_layout"
+                android:layout_marginBottom="@dimen/space_5"
+                android:layout_marginTop="@dimen/space_5"
+                android:weightSum="8"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:orientation="horizontal">
+                <ImageView
+                    android:src="@drawable/icons8_home_address_32px"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="@dimen/space_5"
+                    android:padding="@dimen/space_10"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"/>
+                <Spinner
+                    android:id="@+id/spin_block"
+                    android:layout_weight="6.5"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:padding="10dp"
+                    android:spinnerMode="dropdown"
+                    android:hint="City"
+                    android:textSize="14dp"
+                    android:singleLine="true"
+                    android:layout_gravity="center_horizontal"/>
+            </LinearLayout>
             <LinearLayout
 
                 android:layout_width="match_parent"
