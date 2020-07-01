@@ -101,7 +101,7 @@ public class SendOtpFragment extends Fragment {
         HashMap<String,String> map=new HashMap<>();
         map.put("mobile",number);
         map.put("otp",otp);
-
+Log.e("ooooo",""+map.toString());
         CustomVolleyJsonRequest customVolleyJsonRequest=new CustomVolleyJsonRequest(Request.Method.POST, BaseUrl.URL_SEND_OTP_R, map, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {

@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,6 +49,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     EditText et_name,et_number,et_email,et_address,et_pass,et_con_pass,et_pin ;
     AutoCompleteTextView et_district ,et_state,et_block;
     TextView tv_back;
+    Spinner spin_block;
     Button btn_reg;
     Module module;
     LoadingBar loadingBar ;
@@ -73,7 +75,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         et_address=findViewById(R.id.et_address);
         et_state=findViewById(R.id.et_state);
         et_district=findViewById(R.id.et_district);
-        et_block=findViewById(R.id.et_block);
+        spin_block=findViewById(R.id.spin_block);
         et_pin=findViewById(R.id.et_pincode);
         et_pass=findViewById(R.id.et_pass);
         et_con_pass=findViewById(R.id.et_con_pass);
@@ -107,7 +109,6 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String dis=et_district.getText().toString().trim();
-                et_block.setText("");
                 if(!dis.isEmpty())
                 {
                     getBlock(module.getDistrictId(districtModelList,dis));
@@ -121,6 +122,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     }
 
     private void getBlock(String districtId) {
+        loadingBar.show();
         Map<String, String> params = new HashMap<String, String>();
         params.put("dis_id",districtId);
         blockModelList.clear();
@@ -130,7 +132,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
             @Override
             public void onResponse(JSONObject response) {
-                Log.e("blockkssss",""+response.toString());
+                loadingBar.dismiss();
                 try {
                     boolean status = response.getBoolean("responce");
                     if (status)
@@ -144,10 +146,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                             block_list.add(blockModelList.get(i).getBlock_name().toString());
 
                         }
-                        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
-                                ctx, android.R.layout.simple_list_item_1,block_list);
-                        et_block.setAdapter(arrayAdapter);
-                        et_block.setThreshold(1);
+                        module.setSpinAdapter(block_list,spin_block,ctx,"Select Block");
+
 
                     }
                 } catch (JSONException e) {
@@ -158,7 +158,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
             @Override
             public void onErrorResponse(VolleyError error) {
-
+loadingBar.dismiss();
                 String msg=module.VolleyErrorMessage(error);
 
                 if(!msg.equals(""))
@@ -273,7 +273,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             }
             else if(district.isEmpty())
             {
-                et_district.setError("Select City");
+                et_district.setError("Select District");
                 et_district.requestFocus();
             }
             else if(pin.isEmpty())
@@ -314,7 +314,16 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             {
                if(pass.equals(cpass))
                {
-                   registerUser(name,number,email,state,district,pin,address,pass);
+                   String block=spin_block.getSelectedItem().toString();
+                   if(block.equalsIgnoreCase("Select Block"))
+                   {
+                       module.showToast("Select Block");
+                   }
+                   else
+                   {
+                       registerUser(name,number,email,state,district,block,pin,address,pass);
+                   }
+
                }
                else {
                    module.showToast("Password must be same");
@@ -333,7 +342,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
-    private void registerUser(String name, String number, String email,String state ,String district ,String pincode, String address, String pass )
+    private void registerUser(String name, String number, String email,String state ,String district,String block ,String pincode, String address, String pass )
     {
         loadingBar.show();
         HashMap<String,String> params=new HashMap<>();
@@ -341,11 +350,13 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         params.put("user_mobile",number);
         params.put("user_email",email);
         params.put("state",state);
-        params.put("district",district);
+        params.put("district",module.getDistrictId(districtModelList,district));
+        params.put("block",module.getBlockId(blockModelList,block));
         params.put("pincode",pincode);
         params.put("address",address);
         params.put("password",pass);
 
+        Log.e("adsdasd",""+params.toString());
         CustomVolleyJsonRequest customVolleyJsonRequest=new CustomVolleyJsonRequest(Request.Method.POST, SIGN_UP, params, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {

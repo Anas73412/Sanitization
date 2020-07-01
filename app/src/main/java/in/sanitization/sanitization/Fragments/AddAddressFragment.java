@@ -535,7 +535,7 @@ public class AddAddressFragment extends Fragment implements View.OnClickListener
                         }
                         temp_list.clear();
                         temp_list.addAll(city_list);
-                            module.setSpinAdapter(city_list,spin_city,getActivity());
+                            module.setSpinAdapter(city_list,spin_city,getActivity(),"Select City");
 
                             if(!flag)
                             {

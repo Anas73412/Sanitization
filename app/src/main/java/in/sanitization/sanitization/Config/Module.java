@@ -26,6 +26,7 @@ import com.android.volley.VolleyError;
 
 import java.util.ArrayList;
 
+import in.sanitization.sanitization.Model.BlockModel;
 import in.sanitization.sanitization.Model.DistrictModel;
 import in.sanitization.sanitization.Model.StateModel;
 import in.sanitization.sanitization.R;
@@ -157,8 +158,8 @@ public class Module {
         return flag;
     }
 
-    public void setSpinAdapter(ArrayList<String> list, Spinner spin, Activity activity) {
-        list.add(0,"Select City");
+    public void setSpinAdapter(ArrayList<String> list, Spinner spin, Activity activity,String select) {
+        list.add(0,select);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(activity, android.R.layout.simple_spinner_dropdown_item, list);
         spin.setAdapter(adapter);
 
@@ -231,6 +232,20 @@ public class Module {
         for(int i=0; i<list.size();i++)
         {
             if(list.get(i).getDistrict_name().toString().equalsIgnoreCase(dis_name))
+            {
+                id=i;
+                break;
+            }
+        }
+        return String.valueOf(id+1);
+    }
+
+    public String getBlockId(ArrayList<BlockModel> list, String block_name)
+    {
+        int id=0;
+        for(int i=0; i<list.size();i++)
+        {
+            if(list.get(i).getBlock_name().toString().equalsIgnoreCase(block_name))
             {
                 id=i;
                 break;
