@@ -21,7 +21,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            app:circularsticks_animDuration="1000"
+            app:circularsticks_animDuration="100"
             app:circularsticks_firstShadowColor="@color/color_3"
             app:circularsticks_innerCircleRadius="15dp"
             app:circularsticks_noOfSticks="32"

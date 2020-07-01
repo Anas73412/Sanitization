@@ -189,7 +189,7 @@ public class PackageDetails extends AppCompatActivity implements View.OnClickLis
                         mp = Integer.parseInt(data.getString("plan_mrp"));
                       diff = module.getDiscount(data.getString("plan_price"),data.getString("plan_mrp"));
 
-                        if (diff< 0)
+                        if (diff<= 0)
                         {
                             pkg_discount.setVisibility(View.GONE);
                         }

@@ -30,6 +30,7 @@ import in.sanitization.sanitization.Fragments.ABoutUsFragment;
 import in.sanitization.sanitization.Fragments.ContactFragment;
 import in.sanitization.sanitization.Fragments.EditProfileFragment;
 import in.sanitization.sanitization.Fragments.HomeFragment;
+import in.sanitization.sanitization.Fragments.MyOrders;
 import in.sanitization.sanitization.Fragments.PrivacyFragment;
 import in.sanitization.sanitization.Fragments.TermsFragment;
 import in.sanitization.sanitization.util.Session_management;
@@ -154,6 +155,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         else if (id == R.id.nav_profile)
         {
             fm = new EditProfileFragment();
+        }
+        else if (id == R.id.nav_orders)
+
+        {
+            fm = new MyOrders();
         }
         else if (id == R.id.nav_enquire)
         {
