@@ -38,6 +38,12 @@ public class BaseUrl {
     public static String DELETE_ADDRESS_URL = BASE_URL + "index.php/api/delete_address";
     public static String EDIT_ADDRESS_URL = BASE_URL + "index.php/api/edit_address";
     public static String GET_MANAGERS_URL = BASE_URL + "index.php/api/get_managers";
+    public static String  GET_ORDER_URL = BASE_URL + "index.php/api/my_orders";
+    public static String IMG_PRODUCT_URL = BASE_URL + "index.php/api/get_managers";
+    public static String  GET_CANCEL_ORDERS = BASE_URL + "index.php/api/get_managers";
+    public static String  ORDER_DETAIL_URL = BASE_URL + "index.php/api/get_managers";
+    public static String  DELETE_ORDER_URL = BASE_URL + "index.php/api/get_managers";
+    public static String GET_DELIVERD_ORDER_URL = BASE_URL + "index.php/api/get_managers";
 
 
 

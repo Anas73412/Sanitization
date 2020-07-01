@@ -125,6 +125,8 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHold
                 args.putString("address", modelList.get(position).getAddress());
                 args.putString("state", modelList.get(position).getState());
                 args.putString("desc", modelList.get(position).getDescription());
+                args.putString("district", modelList.get(position).getDistrict_name());
+                args.putString("block", modelList.get(position).getBlock_name());
                 args.putString("add_type", modelList.get(position).getAddress_type());
                 args.putString("is_edit", "true");
                 //  args.putString( "address",getaddress );

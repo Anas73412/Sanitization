@@ -22,4 +22,26 @@
     <string name="home_second">Home Second</string>
     <string name="title_activity_first">FirstActivity</string>
     <string name="tv_total_item_amount">Total Items And Amount</string>
+    <string name="tv_order_cancle" translatable="false">Cancel Order</string>
+    <string name="tv_order_summery" translatable="false">Summary</string>
+    <string name="tv_order_total" translatable="false">Total: Rs.</string>
+    <string name="tv_order_qty" translatable="false">Qty</string>
+    <string name="tv_order_rs" translatable="false">Rs.</string>
+    <string name="order_mode" translatable="false">Order Mode</string>
+    <string name="tracking_st" translatable="false">Tracking Status On</string>
+    <string name="tt_t" translatable="false">Total Items</string>
+    <string name="thank_you">Thank you</string>
+    <string name="date_d" translatable="false">Date:</string>
+    <string name="time_t" translatable="false">Time:</string>
+    <string name="place_on" translatable="false">Placed On:</string>
+    <string name="payment" translatable="false">Payment</string>
+    <string name="order_id">Order Id :</string>
+    <string name="pending">Pending</string>
+    <string name="confirm">Confirmed</string>
+    <string name="cash">Cash on Delivery</string>
+    <string name="tv_toolbar_price">Price</string>
+    <string name="outfordeliverd">Out For Delivery</string>
+    <string name="delivered">Delivered</string>
+    <string name="date">Date:</string>
+    <string name="time">Time:</string>
 </resources>

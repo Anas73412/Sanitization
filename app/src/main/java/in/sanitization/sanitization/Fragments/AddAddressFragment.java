@@ -182,6 +182,10 @@ public class AddAddressFragment extends Fragment implements View.OnClickListener
             et_name.setText(eName);
             et_number.setText(eMobile);
             et_state.setText(eState);
+//            et_district.setText(eDistrict);
+            et_pincode.setText(ePincode);
+            getDistrict(module.getStateId(stateModelList,eState),false,eDistrict);
+            getBlock(module.getDistrictId(districtModelList,eDistrict),false,eBlock);
             if(!eState.isEmpty())
             {
                 distict_name=eDistrict;
@@ -322,7 +326,7 @@ public class AddAddressFragment extends Fragment implements View.OnClickListener
             String user_id=session_management.getUserDetails().get(KEY_ID).toString();
             if(is_edit.equalsIgnoreCase("true"))
             {
-                editAddress(elocation_id,name,mobile,state,block,pincode,address,details,module.getBuildingType(flagType),sScId);
+                editAddress(elocation_id,user_id,name,mobile,state,district,block,pincode,address,details,module.getBuildingType(flagType));
             }
             else
             {
@@ -381,20 +385,21 @@ public class AddAddressFragment extends Fragment implements View.OnClickListener
         });
         AppController.getInstance().addToRequestQueue(customVolleyJsonRequest);
     }
-    private void editAddress(String elocation_id, String name, final String mobile, String state, String city, String pincode, String address, String details, String buildingType, String socity_id) {
+    private void editAddress(String elocation_id,String user_id, String name, final String mobile, String state, String district,String block, String pincode, String address, String details, String buildingType) {
         loadingBar.show();
         String json_tag="json_add_address";
         HashMap<String,String> parmas=new HashMap<>();
+        parmas.put("user_id",user_id);
         parmas.put("location_id",elocation_id);
         parmas.put("name",name);
         parmas.put("mobile",mobile);
         parmas.put("state",state);
-        parmas.put("city",city);
+        parmas.put("district_id",module.getDistrictId(districtModelList,district));
+        parmas.put("block_id",module.getBlockId(blockModelList,block));
         parmas.put("pincode",pincode);
         parmas.put("address",address);
-        parmas.put("description",details);
-        parmas.put("address_type",buildingType);
-        parmas.put("socity_id",socity_id);
+        parmas.put("details",details);
+        parmas.put("building",buildingType);
         Log.e("edit_address",""+parmas.toString());
 
         CustomVolleyJsonRequest customVolleyJsonRequest=new CustomVolleyJsonRequest(Request.Method.POST, EDIT_ADDRESS_URL, parmas, new Response.Listener<JSONObject>() {
@@ -570,6 +575,8 @@ public class AddAddressFragment extends Fragment implements View.OnClickListener
                                     }
                                 }
                                 et_district.setSelection(idx);
+                                et_district.setText(dis_name);
+
                             }
                         }
 

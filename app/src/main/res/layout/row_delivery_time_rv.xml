@@ -142,7 +142,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorPrimaryDark"
                 android:padding="@dimen/space_5"
-                android:visibility="gone"
+
                 android:text="Edit"/>
             <in.sanitization.sanitization.Fonts.LatoBLack
                android:id="@+id/txtDelete"
