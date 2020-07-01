@@ -27,6 +27,12 @@ public class Constants {
     public static final String KEY_DISTRICT_MANAGER = "district_id";
     public static final String KEY_AREA_MANAGER = "area_id";
 
+    //Payment Gateway constants
+    //payment gateway
+    public static final long API_CONNECTION_TIMEOUT = 1201;
+    public static final long API_READ_TIMEOUT = 901;
+
+
 
 
 }

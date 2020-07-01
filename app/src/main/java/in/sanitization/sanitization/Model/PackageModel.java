@@ -10,9 +10,11 @@ public class PackageModel {
     String plan_price;
     String plan_image;
     String plan_status;
-    String product_name;
-    String plan_date;
-    String created_at;
+    String plan_description;
+    String plan_no_of_working_days;
+    String plan_expiry;
+    String 	plan_mrp;
+
 
 
     public PackageModel() {
@@ -58,27 +60,35 @@ public class PackageModel {
         this.plan_status = plan_status;
     }
 
-    public String getProduct_name() {
-        return product_name;
+    public String getPlan_description() {
+        return plan_description;
     }
 
-    public void setProduct_name(String product_name) {
-        this.product_name = product_name;
+    public void setPlan_description(String plan_description) {
+        this.plan_description = plan_description;
     }
 
-    public String getPlan_date() {
-        return plan_date;
+    public String getPlan_no_of_working_days() {
+        return plan_no_of_working_days;
     }
 
-    public void setPlan_date(String plan_date) {
-        this.plan_date = plan_date;
+    public void setPlan_no_of_working_days(String plan_no_of_working_days) {
+        this.plan_no_of_working_days = plan_no_of_working_days;
     }
 
-    public String getCreated_at() {
-        return created_at;
+    public String getPlan_expiry() {
+        return plan_expiry;
     }
 
-    public void setCreated_at(String created_at) {
-        this.created_at = created_at;
+    public void setPlan_expiry(String plan_expiry) {
+        this.plan_expiry = plan_expiry;
+    }
+
+    public String getPlan_mrp() {
+        return plan_mrp;
+    }
+
+    public void setPlan_mrp(String plan_mrp) {
+        this.plan_mrp = plan_mrp;
     }
 }

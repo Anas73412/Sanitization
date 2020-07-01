@@ -7,11 +7,11 @@
 
    <ScrollView
        android:layout_width="match_parent"
-       android:layout_height="wrap_content">
+       android:layout_height="match_parent">
        <LinearLayout
            android:layout_width="match_parent"
            android:orientation="vertical"
-           android:layout_height="wrap_content">
+           android:layout_height="match_parent">
            <LinearLayout
                android:layout_width="match_parent"
                android:layout_margin="@dimen/space_10"
@@ -43,7 +43,7 @@
                        android:layout_weight="1"
                        android:paddingLeft="5dp"
                        android:textSize="@dimen/space_14"
-                       android:text="Plan Name:"
+                       android:text="Package Name:"
                        android:textColor="@color/dark_gray"
                        android:layout_width="0dp"
                        android:layout_height="wrap_content"/>
@@ -71,7 +71,7 @@
                        android:layout_weight="1"
                        android:paddingLeft="5dp"
                        android:textSize="@dimen/space_14"
-                       android:text="Plan Price :"
+                       android:text="Package Price :"
                        android:textColor="@color/dark_gray"
                        android:layout_width="0dp"
                        android:layout_height="wrap_content"/>
@@ -99,7 +99,7 @@
                        android:layout_weight="1"
                        android:paddingLeft="5dp"
                        android:textSize="@dimen/space_14"
-                       android:text="Plan Mrp :"
+                       android:text="Package Mrp :"
                        android:textColor="@color/dark_gray"
                        android:layout_width="0dp"
                        android:layout_height="wrap_content"/>
@@ -183,7 +183,8 @@
         android:layout_alignParentBottom="true"
         android:id="@+id/btn_continue"
         android:layout_width="match_parent"
-        android:background="@color/colorAccent"
+        android:background="@drawable/bg_rounded_button"
+        android:backgroundTint="@color/colorAccent"
         android:layout_height="50dp">
     <in.sanitization.sanitization.Fonts.LatoBLack
         android:layout_width="wrap_content"

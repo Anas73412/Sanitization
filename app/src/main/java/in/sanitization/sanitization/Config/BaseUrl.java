@@ -4,7 +4,8 @@ public class BaseUrl {
 
 
 
-    public static String BASE_URL = "https://a2zindia.org/";//http://a2zindia.org/
+
+    public static String BASE_URL = "https://a2zindia.org/";
     public static final String IMG_SLIDER_URL =BASE_URL+"uploads/sliders/" ;
     public static final String IMG_PLAN_URL =BASE_URL+"uploads/plan/" ;
     public static final String IMG_DISTRICT_URL =BASE_URL+"uploads/district/" ;
@@ -38,12 +39,17 @@ public class BaseUrl {
     public static String DELETE_ADDRESS_URL = BASE_URL + "index.php/api/delete_address";
     public static String EDIT_ADDRESS_URL = BASE_URL + "index.php/api/edit_address";
     public static String GET_MANAGERS_URL = BASE_URL + "index.php/api/get_managers";
-    public static String  GET_ORDER_URL = BASE_URL + "index.php/api/my_orders";
-    public static String IMG_PRODUCT_URL = BASE_URL + "index.php/api/get_managers";
-    public static String  GET_CANCEL_ORDERS = BASE_URL + "index.php/api/get_managers";
-    public static String  ORDER_DETAIL_URL = BASE_URL + "index.php/api/get_managers";
-    public static String  DELETE_ORDER_URL = BASE_URL + "index.php/api/get_managers";
-    public static String GET_DELIVERD_ORDER_URL = BASE_URL + "index.php/api/get_managers";
+    public static String ATTEMPT_ORDER_URL = BASE_URL + "index.php/api/submit_order";
+    public static String GET_ORDER_URL = BASE_URL + "index.php/api/my_orders";
+    public static String GET_DELIVERD_ORDER_URL = BASE_URL + "index.php/api/my_orders";
+    public static String ORDER_DETAIL_URL = BASE_URL + "index.php/api/my_orders";
+    public static String DELETE_ORDER_URL = BASE_URL + "index.php/api/my_orders";
+    public static String GET_CANCEL_ORDERS = BASE_URL + "index.php/api/my_orders";
+    public static String IMG_PRODUCT_URL = BASE_URL + "index.php/api/my_orders";
+
+    //Payment Base Urls
+    public static final String PAYMENT_BASE_URL = "https://a2zindia.org/";
+    public static final String SERVER_main_folder = "payu/";
 
 
 

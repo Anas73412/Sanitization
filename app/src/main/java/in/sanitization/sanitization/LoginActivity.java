@@ -130,7 +130,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 try {
                     loadingBar.dismiss();
                     boolean resp=response.getBoolean("responce");
-                    Log.d("data_login",""+response.toString());
+                    Log.e("data_login",""+response.toString());
                     if(resp)
                     {
 

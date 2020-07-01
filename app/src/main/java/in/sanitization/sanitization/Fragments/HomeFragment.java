@@ -169,8 +169,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 intent.putExtra("plan_name",model.getPlan_name());
                 intent.putExtra("plan_price",model.getPlan_price());
                 intent.putExtra("plan_image",model.getPlan_image());
+                intent.putExtra("plan_expiry",model.getPlan_expiry());
+                intent.putExtra("plan_desc",model.getPlan_description());
+                intent.putExtra("working_days",model.getPlan_no_of_working_days());
                 intent.putExtra("plan_status",model.getPlan_status());
-                intent.putExtra("plan_product",model.getProduct_name());
                 startActivity(intent);
             }
 

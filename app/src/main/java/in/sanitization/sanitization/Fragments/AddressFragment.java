@@ -1,5 +1,6 @@
 package in.sanitization.sanitization.Fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -33,6 +34,7 @@ import in.sanitization.sanitization.AppController;
 import in.sanitization.sanitization.Config.BaseUrl;
 import in.sanitization.sanitization.Config.Module;
 import in.sanitization.sanitization.Model.AddressModel;
+import in.sanitization.sanitization.PaymentActivity;
 import in.sanitization.sanitization.R;
 import in.sanitization.sanitization.SubscriptionActivity;
 import in.sanitization.sanitization.util.CustomVolleyJsonRequest;
@@ -47,7 +49,7 @@ import static in.sanitization.sanitization.Config.Constants.KEY_ID;
  */
 public class AddressFragment extends Fragment implements View.OnClickListener{
 
-    String user_id="",plan_name="",plan_id="",plan_price="0",plan_mrp="0",plan_amt="0";
+    String user_id="",plan_name="",plan_id="",plan_price="0",plan_mrp="0",plan_amt="0",plan_expiry="",working_days="";
     Button btn_add_address;
     Session_management session_management;
     Module module;
@@ -94,6 +96,8 @@ public class AddressFragment extends Fragment implements View.OnClickListener{
         plan_name=getActivity().getIntent().getStringExtra("name");
         plan_price=getActivity().getIntent().getStringExtra("price");
         plan_mrp=getActivity().getIntent().getStringExtra("mrp");
+        plan_expiry=getActivity().getIntent().getStringExtra("plan_expiry");
+        working_days=getActivity().getIntent().getStringExtra("working_days");
         ((SubscriptionActivity)getActivity()).setTitle("Select Address");
         plan_amt=plan_price;
         address_list=new ArrayList<>();
@@ -116,22 +120,23 @@ public class AddressFragment extends Fragment implements View.OnClickListener{
         else if(v.getId()==R.id.btn_continue)
         {
           HashMap<String,String> addressMap=addressAdapter.getAlladdress();
-          Bundle bundle=new Bundle();
-          bundle.putString("plan_id",plan_id);
-          bundle.putString("plan_name",plan_name);
-          bundle.putString("mrp",plan_mrp);
-          bundle.putString("price",plan_price);
-          bundle.putString("loc_id",addressMap.get("location_id"));
-          bundle.putString("address",addressMap.get("address"));
-          bundle.putString("name",addressMap.get("name"));
-          bundle.putString("pincode",addressMap.get("pincode"));
-          bundle.putString("mobile",addressMap.get("phone"));
-          bundle.putString("state",addressMap.get("state"));
-          bundle.putString("city",addressMap.get("city"));
-          bundle.putString("socity_id",addressMap.get("socity_id"));
-            Log.e("dasdasdas",""+bundle.toString());
-            Fragment fm=new DeliveryDetailsFragment();
-            loadFragment(fm,bundle);
+            Intent bundle=new Intent(getActivity(), PaymentActivity.class);
+
+          bundle.putExtra("plan_id",plan_id);
+          bundle.putExtra("plan_name",plan_name);
+          bundle.putExtra("mrp",plan_mrp);
+          bundle.putExtra("price",plan_price);
+          bundle.putExtra("loc_id",addressMap.get("location_id"));
+          bundle.putExtra("address",addressMap.get("address"));
+          bundle.putExtra("name",addressMap.get("name"));
+          bundle.putExtra("pincode",addressMap.get("pincode"));
+          bundle.putExtra("mobile",addressMap.get("phone"));
+          bundle.putExtra("state",addressMap.get("state"));
+          bundle.putExtra("city",addressMap.get("city"));
+          bundle.putExtra("socity_id",addressMap.get("socity_id"));
+          bundle.putExtra("plan_expiry",plan_expiry);
+          bundle.putExtra("working_days",working_days);
+         startActivity(bundle);
 
 
         }

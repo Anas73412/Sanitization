@@ -46,7 +46,7 @@ public class PackageAdapter extends RecyclerView.Adapter<PackageAdapter.ViewHold
         PackageModel model=list.get(position);
         holder.tv_pck_name.setText(model.getPlan_name());
         holder.tv_amount.setText(activity.getResources().getString(R.string.currency)+" "+model.getPlan_price());
-        holder.tv_desc.setText(model.getProduct_name());
+        holder.tv_desc.setText(model.getPlan_name());
 
       switch (position%4)
         {

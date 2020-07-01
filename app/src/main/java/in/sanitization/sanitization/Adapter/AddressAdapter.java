@@ -217,7 +217,6 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHold
                     int clickedPos = getAdapterPosition();
 
                     location_id = modelList.get(clickedPos).getLocation_id();
-
                     getname = modelList.get(clickedPos).getReceiver_name();
                     getphone = modelList.get(clickedPos).getReceiver_mobile();
                     getsocityid=modelList.get(clickedPos).getSocity_id();

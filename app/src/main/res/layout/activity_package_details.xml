@@ -125,6 +125,74 @@
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/space_5"
+                >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TextView
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16dp"
+                        android:padding="5dp"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/bold"
+
+                        android:text="Working Days :"/>
+
+                    <TextView
+                        android:id="@+id/tv_work_days"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="14dp"
+                        android:padding="5dp"
+
+                        android:text=""
+                        />
+
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/space_5"
+                >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TextView
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16dp"
+                        android:padding="5dp"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/bold"
+
+                        android:text="Plan Expire :"/>
+
+                    <TextView
+                        android:id="@+id/tv_expiry"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="14dp"
+                        android:padding="5dp"
+
+                        android:text=""
+                        />
+
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
 
             <Button
                 android:layout_width="match_parent"

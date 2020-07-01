@@ -24,7 +24,9 @@ import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import in.sanitization.sanitization.Model.BlockModel;
 import in.sanitization.sanitization.Model.DistrictModel;
@@ -254,5 +256,24 @@ public class Module {
         return String.valueOf(id+1);
     }
 
+    public String getCurrentDate()
+    {
+        String c_date="";
+        try
+        {
+            Date date=new Date();
+            c_date=new SimpleDateFormat("dd/MM/yyyy").format(date).toString();
+        }catch (Exception ex)
+        {
+            ex.printStackTrace();
+        }
+        return c_date;
+    }
+    public String getUniqueId(String type)
+    {
+        Date date=new Date();
+        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("ddMMyyyyhhmmss");
+        return (type+simpleDateFormat.format(date).toString());
+    }
 }
 
