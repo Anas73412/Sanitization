@@ -5,10 +5,11 @@
     android:layout_height="match_parent"
     tools:context=".Fragments.MyOrders">
 
-<ScrollView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<!--<ScrollView-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="match_parent">-->
     <LinearLayout
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -39,31 +40,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="fill_parent"
               />
-            <RelativeLayout
-                android:id="@+id/rel_no"
-              android:visibility="gone"
-                android:layout_centerInParent="true"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-                <ImageView
-                    android:id="@+id/img"
-                    android:src="@drawable/empty"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:scaleType="center"
-                    android:layout_margin="@dimen/space_20"/>
 
-                <in.sanitization.sanitization.Fonts.LatoBLack
-                    android:layout_below="@id/img"
-                    android:textSize="20dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textAlignment="center"
-                    android:layout_marginTop="-150dp"
-                    android:text="No Orders Found"
-                    />
-            </RelativeLayout>
             <ImageView
                 android:visibility="gone"
                 android:layout_width="match_parent"
@@ -72,5 +49,36 @@
                 android:layout_centerInParent="true"/>
         </RelativeLayout>
     </LinearLayout>
-</ScrollView>
+<!--</ScrollView>-->
+    <RelativeLayout
+        android:id="@+id/rel_no"
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/img"
+            android:src="@drawable/empty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:scaleType="center"
+            android:layout_margin="@dimen/space_20"/>
+
+        <in.sanitization.sanitization.Fonts.LatoBLack
+            android:layout_below="@id/img"
+            android:textSize="30dp"
+            android:layout_marginTop="-150dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:text="No Orders Found"
+            />
+    </RelativeLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_myorder"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+
+
 </FrameLayout>
