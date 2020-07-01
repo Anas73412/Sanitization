@@ -1,7 +1,11 @@
 package in.sanitization.sanitization.Config;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+import android.telephony.PhoneNumberUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -22,6 +26,8 @@ import com.android.volley.VolleyError;
 
 import java.util.ArrayList;
 
+import in.sanitization.sanitization.Model.DistrictModel;
+import in.sanitization.sanitization.Model.StateModel;
 import in.sanitization.sanitization.R;
 import in.sanitization.sanitization.util.ToastMsg;
 
@@ -179,5 +185,59 @@ public class Module {
         }
         return flag;
     }
+
+    @SuppressLint("NewApi")
+    public void whatsapp( String phone,String message) {
+        String phoneNo=phone;
+
+        Intent sendIntent = new Intent("android.intent.action.MAIN");
+        sendIntent.setAction(Intent.ACTION_VIEW);
+        sendIntent.setPackage("com.whatsapp");
+        String url = "https://api.whatsapp.com/send?phone=" + phoneNo + "&text=" + message;
+        sendIntent.setDataAndType(Uri.parse(url),"text/plain");
+
+
+        if(sendIntent.resolveActivity(context.getPackageManager()) != null){
+            context.startActivity(sendIntent);
+        }else{
+            Toast.makeText(context,"Please Install Whatsapp Massnger App in your Devices",Toast.LENGTH_LONG).show();
+        }
+    }
+    public void callOnNumber(String num)
+    {
+        Intent intent=new Intent(Intent.ACTION_DIAL);
+        String number=num.trim();
+        intent.setData(Uri.parse("tel: "+number));
+        context.startActivity(intent);
+    }
+
+    public String getStateId(ArrayList<StateModel> list,String state_name)
+    {
+        int id=0;
+        for(int i=0; i<list.size();i++)
+        {
+              if(list.get(i).getState_name().toString().equalsIgnoreCase(state_name))
+              {
+                  id=i;
+                  break;
+              }
+        }
+        return String.valueOf(id+1);
+    }
+
+    public String getDistrictId(ArrayList<DistrictModel> list, String dis_name)
+    {
+        int id=0;
+        for(int i=0; i<list.size();i++)
+        {
+            if(list.get(i).getDistrict_name().toString().equalsIgnoreCase(dis_name))
+            {
+                id=i;
+                break;
+            }
+        }
+        return String.valueOf(id+1);
+    }
+
 }
 

@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Fragments.ManagerDetailsFragment">
+<LinearLayout
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:background="@color/gdnt_top"
+        android:layout_width="match_parent"
+        android:layout_height="300dp">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_margin="@dimen/space_30"
+            android:layout_height="match_parent">
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:src="@drawable/logo"
+                android:id="@+id/iv_pic"
+                android:layout_centerInParent="true"
+                android:layout_width="200dp"
+                android:layout_height="200dp"/>
+        </RelativeLayout>
+        <in.sanitization.sanitization.Fonts.LatoBLack
+            android:text="Name"
+            android:id="@+id/tv_name"
+            android:layout_alignParentBottom="true"
+            android:textSize="@dimen/space_22"
+            android:padding="@dimen/space_10"
+            android:textColor="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_margin="@dimen/space_10"
+        android:orientation="horizontal"
+        android:weightSum="3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:paddingLeft="@dimen/space_10"
+            android:layout_gravity="center_vertical"
+            android:layout_height="wrap_content">
+        <in.sanitization.sanitization.Fonts.LatoBLack
+            android:text="0000000000"
+            android:textSize="20dp"
+            android:id="@+id/tv_mobile"
+            android:textColor="@color/black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+            <in.sanitization.sanitization.Fonts.LatoBLack
+                android:text="Mobile Number"
+                android:textSize="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+        <ImageView
+            android:id="@+id/iv_whatsapp"
+            android:layout_weight=".5"
+            android:layout_width="0dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/icons8_whatsapp_48px"
+            android:layout_height="@dimen/space_35"/>
+        <ImageView
+            android:id="@+id/iv_call"
+            android:layout_weight=".5"
+            android:layout_width="0dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/icons8_phone_50px_1"
+            android:layout_height="@dimen/space_30"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_marginLeft="@dimen/space_10"
+        android:layout_marginRight="@dimen/space_10"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:padding="@dimen/space_10"
+        android:layout_gravity="center_vertical"
+        android:layout_height="wrap_content">
+        <in.sanitization.sanitization.Fonts.LatoBLack
+            android:id="@+id/tv_email"
+            android:text="a2zindia@gmailc.om"
+            android:textSize="16dp"
+            android:textColor="@color/black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <in.sanitization.sanitization.Fonts.LatoBLack
+            android:text="Email Address"
+            android:textSize="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_margin="@dimen/space_10"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:padding="@dimen/space_10"
+        android:layout_gravity="center_vertical"
+        android:layout_height="wrap_content">
+        <in.sanitization.sanitization.Fonts.LatoBLack
+            android:id="@+id/tv_gen"
+            android:text=""
+            android:textSize="16dp"
+            android:textColor="@color/black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <in.sanitization.sanitization.Fonts.LatoBLack
+            android:text="Gender"
+            android:textSize="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+
+</LinearLayout>
+
+
+</ScrollView>

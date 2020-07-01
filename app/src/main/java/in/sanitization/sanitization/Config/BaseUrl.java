@@ -7,6 +7,8 @@ public class BaseUrl {
     public static String BASE_URL = "https://a2zindia.org/";//http://a2zindia.org/
     public static final String IMG_SLIDER_URL =BASE_URL+"uploads/sliders/" ;
     public static final String IMG_PLAN_URL =BASE_URL+"uploads/plan/" ;
+    public static final String IMG_DISTRICT_URL =BASE_URL+"uploads/district/" ;
+    public static final String IMG_AREA_URL =BASE_URL+"uploads/area/" ;
     public static final String GET_PLANS =BASE_URL+"index.php/api/get_plans" ;
     public static final String GET_BANNERS =BASE_URL+"index.php/api/get_banners" ;
     public static final String GET_SLIDER_URL =BASE_URL+"index.php/api/get_sliders" ;
@@ -20,6 +22,8 @@ public class BaseUrl {
     public static final String FAQ=BASE_URL+"index.php/api/get_faq";
     public static final String PRIVACY=BASE_URL+"index.php/api/privacy_policy";
     public static final String GET_STATES=BASE_URL+"index.php/api/get_state";
+    public static final String GET_DISTRICT=BASE_URL+"index.php/api/get_district";
+    public static final String GET_BLOCK=BASE_URL+"index.php/api/get_block";
     public static final String GET_CITY=BASE_URL+"index.php/api/get_city_by_state";
     public static final String GET_DETAILS =BASE_URL+"index.php/api/get_plan_by_id" ;
     public static final String URL_SEND_OTP_R =BASE_URL+"index.php/api/fun_register_with_otp" ;
@@ -33,6 +37,7 @@ public class BaseUrl {
     public static final String GET_ADDRESS_URL = BASE_URL+"index.php/api/get_address" ;
     public static String DELETE_ADDRESS_URL = BASE_URL + "index.php/api/delete_address";
     public static String EDIT_ADDRESS_URL = BASE_URL + "index.php/api/edit_address";
+    public static String GET_MANAGERS_URL = BASE_URL + "index.php/api/get_managers";
 
 
 

@@ -23,6 +23,9 @@ public class Constants {
     public static final String KEY_SOCITY_NAME = "socity_name";
     public static final String KEY_SOCITY_PINCODE = "socity_pincode";
 
+    public static final String KEY_DISTRICT_MANAGER = "district_id";
+    public static final String KEY_AREA_MANAGER = "area_id";
+
 
 
 }

@@ -18,19 +18,168 @@
             android:orientation="vertical"
             android:padding="@dimen/space_10">
 
-            <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="wrap_content"
-                android:layout_height="150dp"
-                android:layout_gravity="center_horizontal"
-                android:gravity="center_horizontal"
-                android:src="@drawable/iconn"
-                android:layout_marginTop="@dimen/space_20"
-                android:backgroundTintMode="src_in"
-                android:backgroundTint="@color/white"
-                android:textAlignment="center" />
+            <LinearLayout
+                android:id="@+id/lin_dis"
+                android:background="@drawable/address_edittext"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:weightSum="5"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <RelativeLayout
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content">
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/img_dis"
+                          android:layout_margin="@dimen/space_5"
+                            android:layout_centerInParent="true"
+                            android:layout_width="wrap_content"
+                            android:layout_height="80dp"
+                            android:src="@drawable/logo"/>
+                    </RelativeLayout>
+                    <LinearLayout
+                        android:layout_weight="4"
+                        android:orientation="vertical"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content">
+                        <RelativeLayout
+                            android:background="@color/gdnt_top"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+                            <in.sanitization.sanitization.Fonts.LatoBLack
+                                android:text="District Manager"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/space_10"
+                                android:textAlignment="gravity"
+                                android:gravity="center_horizontal"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"/>
+                        </RelativeLayout>
+                        <LinearLayout
+                            android:layout_gravity="center_vertical"
+                            android:padding="@dimen/space_10"
+                            android:orientation="vertical"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+
+                        <in.sanitization.sanitization.Fonts.LatoBLack
+                            android:id="@+id/tv_dis_name"
+                            android:text="@string/app_name"
+                            android:textColor="@color/black"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"/>
+                        <in.sanitization.sanitization.Fonts.LatoBLack
+                            android:id="@+id/tv_dis_mobile"
+                            android:textSize="@dimen/space_12"
+                            android:text="@string/app_name"
+                            android:textColor="@color/black"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"/>
+                        </LinearLayout>
+                        <in.sanitization.sanitization.Fonts.LatoBLack
+                            android:textSize="@dimen/space_8"
+                            android:text="More Info.."
+                            android:textColor="@color/black"
+                            android:textAlignment="gravity"
+                            android:gravity="right"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/lin_area"
+                android:background="@drawable/address_edittext"
+                android:orientation="vertical"
+                android:layout_marginTop="@dimen/space_10"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:weightSum="5"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <RelativeLayout
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content">
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/img_area"
+                            android:padding="@dimen/space_10"
+                            android:layout_centerInParent="true"
+                            android:layout_width="wrap_content"
+                            android:layout_height="80dp"
+                            android:src="@drawable/logo"/>
+                    </RelativeLayout>
+                    <LinearLayout
+                        android:layout_weight="4"
+                        android:orientation="vertical"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content">
+                        <RelativeLayout
+                            android:background="@color/gdnt_top"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+                            <in.sanitization.sanitization.Fonts.LatoBLack
+                                android:text="Area Manager"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/space_10"
+                                android:textAlignment="gravity"
+                                android:gravity="center_horizontal"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"/>
+                        </RelativeLayout>
+                        <LinearLayout
+                            android:layout_gravity="center_vertical"
+                            android:padding="@dimen/space_10"
+                            android:orientation="vertical"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                        <in.sanitization.sanitization.Fonts.LatoBLack
+                            android:id="@+id/tv_area_name"
+                            android:text="@string/app_name"
+                            android:textColor="@color/black"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"/>
+                        <in.sanitization.sanitization.Fonts.LatoBLack
+                            android:id="@+id/tv_area_mobile"
+                            android:textSize="@dimen/space_12"
+                            android:text="@string/app_name"
+                            android:textColor="@color/black"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"/>
+                        </LinearLayout>
+                        <in.sanitization.sanitization.Fonts.LatoBLack
+                            android:textSize="@dimen/space_8"
+                            android:text="More Info.."
+                            android:textColor="@color/black"
+                            android:textAlignment="gravity"
+                            android:gravity="right"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
 
             <LinearLayout
+                android:layout_marginTop="@dimen/space_5"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">

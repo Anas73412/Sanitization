@@ -99,9 +99,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
         else if(v.getId() == R.id.tv_create)
         {
-            Intent intent=new Intent(ctx,Verfication_activity.class);
-            intent.putExtra("type","r");
+            Intent intent=new Intent(ctx,RegistrationActivity.class);
+            intent.putExtra("number","8081031624");
             startActivity(intent);
+//            Intent intent=new Intent(ctx,Verfication_activity.class);
+//            intent.putExtra("type","r");
+//            startActivity(intent);
         }
         else if(v.getId() == R.id.tv_forgot)
         {
@@ -134,7 +137,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         //module.showToast(""+response.getString("message"));
                         JSONObject object=response.getJSONObject("data");
                         session_management.createLoginSession(object.getString("user_id"),object.getString("user_email"),object.getString("user_fullname"),object.getString("user_phone"),
-                                object.getString("state"),object.getString("city"),object.getString("pincode"),object.getString("address"));
+                                object.getString("state"),object.getString("city"),object.getString("pincode"),object.getString("address"),object.getString("district_manager_id"),object.getString("area_manager_id"));
                         Intent intent=new Intent(ctx,HomeActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);

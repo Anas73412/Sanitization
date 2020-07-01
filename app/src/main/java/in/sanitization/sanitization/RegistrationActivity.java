@@ -20,11 +20,13 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -33,6 +35,9 @@ import java.util.Map;
 
 import in.sanitization.sanitization.Config.BaseUrl;
 import in.sanitization.sanitization.Config.Module;
+import in.sanitization.sanitization.Model.BlockModel;
+import in.sanitization.sanitization.Model.DistrictModel;
+import in.sanitization.sanitization.Model.StateModel;
 import in.sanitization.sanitization.util.CustomVolleyJsonRequest;
 import in.sanitization.sanitization.util.LoadingBar;
 
@@ -41,13 +46,16 @@ import static in.sanitization.sanitization.Config.BaseUrl.SIGN_UP;
 public class RegistrationActivity extends AppCompatActivity implements View.OnClickListener{
 
     EditText et_name,et_number,et_email,et_address,et_pass,et_con_pass,et_pin ;
-    AutoCompleteTextView et_city ,et_state;
+    AutoCompleteTextView et_district ,et_state,et_block;
     TextView tv_back;
     Button btn_reg;
     Module module;
     LoadingBar loadingBar ;
     ArrayList<String> state_list;
-    ArrayList<String> city_list ;
+    ArrayList<String> district_list,block_list ;
+    ArrayList<StateModel> stateModelList;
+    ArrayList<DistrictModel> districtModelList;
+    ArrayList<BlockModel> blockModelList;
     Activity ctx=RegistrationActivity.this;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +72,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         et_email=findViewById(R.id.et_email);
         et_address=findViewById(R.id.et_address);
         et_state=findViewById(R.id.et_state);
-        et_city=findViewById(R.id.et_city);
+        et_district=findViewById(R.id.et_district);
+        et_block=findViewById(R.id.et_block);
         et_pin=findViewById(R.id.et_pincode);
         et_pass=findViewById(R.id.et_pass);
         et_con_pass=findViewById(R.id.et_con_pass);
@@ -72,8 +81,12 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
        tv_back=findViewById(R.id.txt_back);
         module=new Module(ctx);
         loadingBar=new LoadingBar(ctx);
-        city_list = new ArrayList<>();
+        district_list = new ArrayList<>();
         state_list = new ArrayList<>();
+        block_list = new ArrayList<>();
+        stateModelList = new ArrayList<>();
+        districtModelList = new ArrayList<>();
+        blockModelList = new ArrayList<>();
 
         btn_reg.setOnClickListener(this);
         tv_back.setOnClickListener(this);
@@ -81,16 +94,138 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String state=et_state.getText().toString().trim();
-                et_city.setText("");
+                et_district.setText("");
                 if(!state.isEmpty())
                 {
-                    getcities(state);
+
+                    getDistrict(module.getStateId(stateModelList,state));
+
                 }
             }
         });
+        et_district.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String dis=et_district.getText().toString().trim();
+                et_block.setText("");
+                if(!dis.isEmpty())
+                {
+                    getBlock(module.getDistrictId(districtModelList,dis));
+                }
+            }
+        });
+
         getstates();
         et_number.setText(getIntent().getStringExtra("number"));
         et_number.setEnabled(false);
+    }
+
+    private void getBlock(String districtId) {
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("dis_id",districtId);
+        blockModelList.clear();
+        block_list.clear();
+        final CustomVolleyJsonRequest jsonObjReq = new CustomVolleyJsonRequest(Request.Method.POST,
+                BaseUrl.GET_BLOCK, params, new Response.Listener<JSONObject>() {
+
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.e("blockkssss",""+response.toString());
+                try {
+                    boolean status = response.getBoolean("responce");
+                    if (status)
+                    {
+                        JSONArray data = response.getJSONArray("data");
+                        Gson gsonState=new Gson();
+                        Type listType=new TypeToken<ArrayList<BlockModel>>(){}.getType();
+                        blockModelList=gsonState.fromJson(data.toString(),listType);
+                        for (int i = 0 ; i <blockModelList.size();i++)
+                        {
+                            block_list.add(blockModelList.get(i).getBlock_name().toString());
+
+                        }
+                        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
+                                ctx, android.R.layout.simple_list_item_1,block_list);
+                        et_block.setAdapter(arrayAdapter);
+                        et_block.setThreshold(1);
+
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                String msg=module.VolleyErrorMessage(error);
+
+                if(!msg.equals(""))
+                {
+                    Toast.makeText(ctx,""+msg,Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
+        // Adding request to request queue
+        AppController.getInstance().addToRequestQueue(jsonObjReq,"plans");
+
+    }
+
+    private void getDistrict(String stateId) {
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("state_id",stateId);
+        Log.e("asdsdasd",""+params.toString());
+     districtModelList.clear();
+     district_list.clear();
+        final CustomVolleyJsonRequest jsonObjReq = new CustomVolleyJsonRequest(Request.Method.POST,
+                BaseUrl.GET_DISTRICT, params, new Response.Listener<JSONObject>() {
+
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.d("states", response.toString());
+                try {
+                    boolean status = response.getBoolean("responce");
+                    if (status)
+                    {
+                        JSONArray data = response.getJSONArray("data");
+                        Gson gsonState=new Gson();
+                        Type listType=new TypeToken<ArrayList<DistrictModel>>(){}.getType();
+                        districtModelList=gsonState.fromJson(data.toString(),listType);
+                        for (int i = 0 ; i <districtModelList.size();i++)
+                        {
+                            district_list.add(districtModelList.get(i).getDistrict_name().toString());
+
+                        }
+                        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
+                                ctx, android.R.layout.simple_list_item_1,district_list);
+                        et_district.setAdapter(arrayAdapter);
+                        et_district.setThreshold(1);
+
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                String msg=module.VolleyErrorMessage(error);
+
+                if(!msg.equals(""))
+                {
+                    Toast.makeText(ctx,""+msg,Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
+        // Adding request to request queue
+        AppController.getInstance().addToRequestQueue(jsonObjReq,"plans");
+
+
     }
 
     @Override
@@ -103,7 +238,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             String address=et_address.getText().toString();
             String pass=et_pass.getText().toString();
             String cpass=et_con_pass.getText().toString();
-            String city=et_city.getText().toString();
+            String district=et_district.getText().toString();
             String state=et_state.getText().toString();
             String pin=et_pin.getText().toString();
 
@@ -136,10 +271,10 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 et_state.setError("Select State");
                 et_state.requestFocus();
             }
-            else if(city.isEmpty())
+            else if(district.isEmpty())
             {
-                et_city.setError("Select City");
-                et_city.requestFocus();
+                et_district.setError("Select City");
+                et_district.requestFocus();
             }
             else if(pin.isEmpty())
             {
@@ -179,7 +314,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             {
                if(pass.equals(cpass))
                {
-                   registerUser(name,number,email,state,city,pin,address,pass);
+                   registerUser(name,number,email,state,district,pin,address,pass);
                }
                else {
                    module.showToast("Password must be same");
@@ -198,7 +333,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
-    private void registerUser(String name, String number, String email,String state ,String city ,String pincode, String address, String pass )
+    private void registerUser(String name, String number, String email,String state ,String district ,String pincode, String address, String pass )
     {
         loadingBar.show();
         HashMap<String,String> params=new HashMap<>();
@@ -206,7 +341,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         params.put("user_mobile",number);
         params.put("user_email",email);
         params.put("state",state);
-        params.put("city",city);
+        params.put("district",district);
         params.put("pincode",pincode);
         params.put("address",address);
         params.put("password",pass);
@@ -252,24 +387,27 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     private void getstates() {
 
         Map<String, String> params = new HashMap<String, String>();
-
+       stateModelList.clear();
+       state_list.clear();
         final CustomVolleyJsonRequest jsonObjReq = new CustomVolleyJsonRequest(Request.Method.POST,
                 BaseUrl.GET_STATES, params, new Response.Listener<JSONObject>() {
 
             @Override
             public void onResponse(JSONObject response) {
-                Log.d("states", response.toString());
                 try {
                     boolean status = response.getBoolean("responce");
                     if (status)
                     {
                         JSONArray data = response.getJSONArray("data");
-                      for (int i = 0 ; i <data.length();i++)
+                        Gson gsonState=new Gson();
+                        Type listType=new TypeToken<ArrayList<StateModel>>(){}.getType();
+                        stateModelList=gsonState.fromJson(data.toString(),listType);
+                        for (int i = 0 ; i <stateModelList.size();i++)
                       {
-                         JSONObject object = data.getJSONObject(i);
-                         state_list.add(object.get("city_state").toString());
+                         state_list.add(stateModelList.get(i).getState_name().toString());
 
                       }
+                        Log.e("asdasdasd",""+stateModelList.size()+" - "+state_list.size());
                         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
                                 ctx, android.R.layout.simple_list_item_1,state_list);
                       et_state.setAdapter(arrayAdapter);
@@ -290,55 +428,6 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 if(!msg.equals(""))
                 {
                     Toast.makeText(ctx,""+msg,Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-
-        // Adding request to request queue
-        AppController.getInstance().addToRequestQueue(jsonObjReq,"plans");
-
-    }
-    private void getcities(String state) {
-
-        Map<String, String> params = new HashMap<String, String>();
-        params.put("state",state);
-        city_list.clear();
-        final CustomVolleyJsonRequest jsonObjReq = new CustomVolleyJsonRequest(Request.Method.POST,
-                BaseUrl.GET_CITY, params, new Response.Listener<JSONObject>() {
-
-            @Override
-            public void onResponse(JSONObject response) {
-                Log.e("city", response.toString());
-                try {
-                    boolean status = response.getBoolean("responce");
-                    if (status)
-                    {
-                        JSONArray data = response.getJSONArray("data");
-                        for (int i = 0 ; i <data.length();i++)
-                        {
-                            JSONObject object = data.getJSONObject(i);
-                            city_list.add(object.get("city_name").toString());
-
-                        }
-                        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
-                                ctx, android.R.layout.simple_list_item_1,city_list);
-                        et_city.setAdapter(arrayAdapter);
-                        et_city.setThreshold(1);
-
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }, new Response.ErrorListener() {
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-                String msg=module.VolleyErrorMessage(error);
-                if(!msg.equals(""))
-                {
-                    Toast.makeText(RegistrationActivity.this,""+msg,Toast.LENGTH_LONG).show();
                 }
             }
         });

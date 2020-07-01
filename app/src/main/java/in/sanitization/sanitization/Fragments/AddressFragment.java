@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -114,6 +115,24 @@ public class AddressFragment extends Fragment implements View.OnClickListener{
         }
         else if(v.getId()==R.id.btn_continue)
         {
+          HashMap<String,String> addressMap=addressAdapter.getAlladdress();
+          Bundle bundle=new Bundle();
+          bundle.putString("plan_id",plan_id);
+          bundle.putString("plan_name",plan_name);
+          bundle.putString("mrp",plan_mrp);
+          bundle.putString("price",plan_price);
+          bundle.putString("loc_id",addressMap.get("location_id"));
+          bundle.putString("address",addressMap.get("address"));
+          bundle.putString("name",addressMap.get("name"));
+          bundle.putString("pincode",addressMap.get("pincode"));
+          bundle.putString("mobile",addressMap.get("phone"));
+          bundle.putString("state",addressMap.get("state"));
+          bundle.putString("city",addressMap.get("city"));
+          bundle.putString("socity_id",addressMap.get("socity_id"));
+            Log.e("dasdasdas",""+bundle.toString());
+            Fragment fm=new DeliveryDetailsFragment();
+            loadFragment(fm,bundle);
+
 
         }
     }

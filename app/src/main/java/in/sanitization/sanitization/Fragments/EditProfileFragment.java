@@ -15,11 +15,16 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -29,6 +34,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import in.sanitization.sanitization.AppController;
 import in.sanitization.sanitization.Config.BaseUrl;
 import in.sanitization.sanitization.Config.Module;
@@ -43,7 +49,9 @@ import in.sanitization.sanitization.util.Session_management;
 import static in.sanitization.sanitization.Config.BaseUrl.SIGN_UP;
 import static in.sanitization.sanitization.Config.BaseUrl.UPDATE_PROFILE;
 import static in.sanitization.sanitization.Config.Constants.KEY_ADDRESS;
+import static in.sanitization.sanitization.Config.Constants.KEY_AREA_MANAGER;
 import static in.sanitization.sanitization.Config.Constants.KEY_CITY;
+import static in.sanitization.sanitization.Config.Constants.KEY_DISTRICT_MANAGER;
 import static in.sanitization.sanitization.Config.Constants.KEY_EMAIL;
 import static in.sanitization.sanitization.Config.Constants.KEY_ID;
 import static in.sanitization.sanitization.Config.Constants.KEY_MOBILE;
@@ -59,13 +67,17 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
     AutoCompleteTextView et_city ,et_state ;
     Button btn_update ;
     Module module;
-    LoadingBar loadingBar ;
+    LoadingBar loadingBar;
+    JSONArray disArr,areaArr;
     HashMap<String,Object> hashMap = new HashMap<>();
     ArrayList<String> state_list;
     ArrayList<String> city_list ;
     Session_management session_management;
     Activity ctx= getActivity();
     String id , name , add , state , city ,pin ,email;
+    CircleImageView img_dis,img_area;
+    TextView tv_dis_name,tv_dis_mobile,tv_area_name,tv_area_mobile;
+    LinearLayout lin_area,lin_dis;
     public EditProfileFragment() {
         // Required empty public constructor
     }
@@ -83,6 +95,12 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
     }
 
     private void initViews(View v) {
+        img_dis=v.findViewById(R.id.img_dis);
+        img_area=v.findViewById(R.id.img_area);
+        tv_dis_name=v.findViewById(R.id.tv_dis_name);
+        tv_dis_mobile=v.findViewById(R.id.tv_dis_mobile);
+        tv_area_name=v.findViewById(R.id.tv_area_name);
+        tv_area_mobile=v.findViewById(R.id.tv_area_mobile);
         et_name=v.findViewById(R.id.et_name);
         et_mobile=v.findViewById(R.id.et_phone);
         et_email=v.findViewById(R.id.et_email);
@@ -90,6 +108,8 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
         et_state=v.findViewById(R.id.et_state);
         et_city=v.findViewById(R.id.et_city);
         et_pin=v.findViewById(R.id.et_pincode);
+        lin_dis=v.findViewById(R.id.lin_dis);
+        lin_area=v.findViewById(R.id.lin_area);
 
         btn_update=v.findViewById(R.id.btn_updt);
         loadingBar = new LoadingBar(getActivity());
@@ -98,6 +118,8 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
         city_list = new ArrayList<>();
         state_list = new ArrayList<>();
         btn_update.setOnClickListener(this);
+        lin_dis.setOnClickListener(this);
+        lin_area.setOnClickListener(this);
 
         et_state.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -119,7 +141,7 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
         et_pin.setText(session_management.getUserDetails().get(KEY_PINCODE));
         et_address.setText(session_management.getUserDetails().get(KEY_ADDRESS));
         id =  session_management.getUserDetails().get(KEY_ID);
-
+        getmanagers(session_management.getUserDetails().get(KEY_DISTRICT_MANAGER).toString(),session_management.getUserDetails().get(KEY_AREA_MANAGER).toString());
 
     }
 
@@ -170,6 +192,21 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
                    updateProfile(id,name, email, state, city, pin, address);
 
             }
+        }
+        else if(v.getId()==R.id.lin_area)
+        {
+            Fragment fm=new ManagerDetailsFragment();
+            Bundle bundle=new Bundle();
+            bundle.putString("arr",areaArr.toString());
+            bundle.putString("type","area");
+            loadFragment(fm,bundle);
+        }else if(v.getId()==R.id.lin_dis)
+        {
+            Fragment fm=new ManagerDetailsFragment();
+            Bundle bundle=new Bundle();
+            bundle.putString("arr",disArr.toString());
+            bundle.putString("type","dis");
+            loadFragment(fm,bundle);
         }
     }
 
@@ -327,5 +364,72 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
             }
         });
         AppController.getInstance().addToRequestQueue(customVolleyJsonRequest);
+    }
+
+    public void loadFragment(Fragment fm,Bundle args)
+    {
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        fm.setArguments(args);
+        fragmentManager.beginTransaction()
+                .replace( R.id.frame,fm)
+                .addToBackStack(null)
+                .commit();
+    }
+    public void getmanagers(String dis_id,String area_id)
+    {
+        loadingBar.show();
+        HashMap<String,String> params=new HashMap<>();
+        params.put("dis_id",dis_id);
+        params.put("area_id",area_id);
+        CustomVolleyJsonRequest request=new CustomVolleyJsonRequest(Request.Method.POST, BaseUrl.GET_MANAGERS_URL, params, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                loadingBar.dismiss();
+                try {
+                    boolean resp=response.getBoolean("responce");
+                    if(resp)
+                    {
+                         disArr=response.getJSONArray("district");
+                         areaArr=response.getJSONArray("area");
+                        Glide.with(getActivity())
+                                .load( BaseUrl.IMG_DISTRICT_URL + disArr.getJSONObject(0).getString("user_photo").toString())
+                                .placeholder( R.drawable.logo)
+                                .crossFade()
+                                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                .dontAnimate()
+                                .into(img_dis);
+
+                        Glide.with(getActivity())
+                                .load( BaseUrl.IMG_AREA_URL + areaArr.getJSONObject(0).getString("user_photo").toString())
+                                .placeholder( R.drawable.logo)
+                                .crossFade()
+                                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                .dontAnimate()
+                                .into(img_area);
+                        tv_dis_name.setText(disArr.getJSONObject(0).getString("user_name").toString());
+                        tv_dis_mobile.setText(disArr.getJSONObject(0).getString("user_mobile").toString());
+                        tv_area_name.setText(areaArr.getJSONObject(0).getString("user_name").toString());
+                        tv_area_mobile.setText(areaArr.getJSONObject(0).getString("user_mobile").toString());
+
+                    }
+                    else
+                    {
+                        module.showToast(""+response.getString("error"));
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ex.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                loadingBar.dismiss();
+                module.errMessage(error);
+            }
+        });
+        AppController.getInstance().addToRequestQueue(request);
     }
 }
