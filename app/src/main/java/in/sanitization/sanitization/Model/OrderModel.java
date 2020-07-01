@@ -4,6 +4,7 @@ package in.sanitization.sanitization.Model;
 public class OrderModel {
     String order_id;
     String user_id;
+    String location_id;
     String payment;
     String transaction_id;
     String package_id;
@@ -16,8 +17,26 @@ public class OrderModel {
     String status;
     String created_at;
     String note ;
+    String receiver_name;
+       String receiver_mobile;
 
     public OrderModel() {
+    }
+
+    public String getReceiver_name() {
+        return receiver_name;
+    }
+
+    public void setReceiver_name(String receiver_name) {
+        this.receiver_name = receiver_name;
+    }
+
+    public String getReceiver_mobile() {
+        return receiver_mobile;
+    }
+
+    public void setReceiver_mobile(String receiver_mobile) {
+        this.receiver_mobile = receiver_mobile;
     }
 
     public String getNote() {
@@ -126,6 +145,14 @@ public class OrderModel {
 
     public String getCreated_at() {
         return created_at;
+    }
+
+    public String getLocation_id() {
+        return location_id;
+    }
+
+    public void setLocation_id(String location_id) {
+        this.location_id = location_id;
     }
 
     public void setCreated_at(String created_at) {
