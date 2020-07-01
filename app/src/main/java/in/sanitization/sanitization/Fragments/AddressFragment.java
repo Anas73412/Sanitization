@@ -157,6 +157,7 @@ public class AddressFragment extends Fragment implements View.OnClickListener{
             @Override
             public void onResponse(JSONObject response) {
                 loadingBar.dismiss();
+                Log.e("all_address",""+response.toString());
               try {
                   boolean resp=response.getBoolean("responce");
                   if(resp)

@@ -43,7 +43,10 @@ import in.sanitization.sanitization.Adapter.Socity_adapter;
 import in.sanitization.sanitization.AppController;
 import in.sanitization.sanitization.Config.BaseUrl;
 import in.sanitization.sanitization.Config.Module;
+import in.sanitization.sanitization.Model.BlockModel;
+import in.sanitization.sanitization.Model.DistrictModel;
 import in.sanitization.sanitization.Model.Socity_model;
+import in.sanitization.sanitization.Model.StateModel;
 import in.sanitization.sanitization.R;
 import in.sanitization.sanitization.SubscriptionActivity;
 import in.sanitization.sanitization.util.CustomVolleyJsonRequest;
@@ -64,18 +67,22 @@ import static in.sanitization.sanitization.Config.Constants.KEY_SOCITY_PINCODE;
 public class AddAddressFragment extends Fragment implements View.OnClickListener{
 
     Module module;
-    String eName="",elocation_id="",eMobile="",eSocictyId="",ePincode="",eAddress="",eState="",eCity="",eDesc="",eAddType="";
+    String eName="",elocation_id="",eMobile="",eDistrict="",eBlock="",
+            eSocictyId="",ePincode="",eAddress="",eState="",eCity="",eDesc="",eAddType="";
     String is_edit="";
-    String city_name="";
+    String city_name="",distict_name="",block_name="";
+    Spinner spin_block;
     LoadingBar loadingBar;
     Button btn_home,btn_shop,btn_other,btn_office;
     int flagType=0;
-    Spinner spin_city;
-    EditText et_name,et_number,et_address,et_details;
+
+    ArrayList<StateModel> stateModelList;
+    ArrayList<DistrictModel> districtModelList;
+    ArrayList<BlockModel> blockModelList;
+    EditText et_name,et_number,et_address,et_details,et_pincode;
     Button btn_submit;
-    AutoCompleteTextView et_state;
-    TextView tv_pincode;
-    ArrayList<String> state_list,city_list,temp_list;
+    AutoCompleteTextView et_state,et_district;
+    ArrayList<String> state_list,city_list,temp_list,district_list,block_list,tempDisList,tempBlockList;
     ToastMsg toastMsg;
     ArrayList<Socity_model> socity_modelList;
     Session_management session_management;
@@ -102,7 +109,8 @@ public class AddAddressFragment extends Fragment implements View.OnClickListener
         btn_office=v.findViewById(R.id.btn_office);
         btn_shop=v.findViewById(R.id.btn_shop);
         btn_other=v.findViewById(R.id.btn_other);
-        spin_city=v.findViewById(R.id.spin_city);
+        et_district=v.findViewById(R.id.et_district);
+        spin_block=v.findViewById(R.id.spin_block);
         btn_home.setOnClickListener(this);
         btn_office.setOnClickListener(this);
         btn_shop.setOnClickListener(this);
@@ -111,7 +119,7 @@ public class AddAddressFragment extends Fragment implements View.OnClickListener
         loadingBar=new LoadingBar(getActivity());
         et_name=v.findViewById(R.id.et_name);
         et_number=v.findViewById(R.id.et_number);
-        tv_pincode=v.findViewById(R.id.tv_pincode);
+        et_pincode=v.findViewById(R.id.et_pincode);
         et_address=v.findViewById(R.id.et_address);
         et_details=v.findViewById(R.id.et_details);
         btn_submit=v.findViewById(R.id.btn_submit);
@@ -119,8 +127,14 @@ public class AddAddressFragment extends Fragment implements View.OnClickListener
         state_list=new ArrayList<>();
         city_list=new ArrayList<>();
         temp_list=new ArrayList<>();
+        tempDisList=new ArrayList<>();
+        tempBlockList=new ArrayList<>();
+        stateModelList=new ArrayList<>();
+        districtModelList=new ArrayList<>();
+        blockModelList=new ArrayList<>();
+        district_list=new ArrayList<>();
         socity_modelList=new ArrayList<>();
-        tv_pincode.setOnClickListener(this);
+        block_list=new ArrayList<>();
         btn_submit.setOnClickListener(this);
         getstates();
         is_edit=getArguments().getString("is_edit");
@@ -131,16 +145,31 @@ public class AddAddressFragment extends Fragment implements View.OnClickListener
         ePincode=getArguments().getString("pincode");
         eAddress=getArguments().getString("address");
         eState=getArguments().getString("state");
-        eCity=getArguments().getString("city");
+        eDistrict=getArguments().getString("district");
+        eBlock=getArguments().getString("block");
         eDesc=getArguments().getString("desc");
         eAddType=getArguments().getString("add_type");
         et_state.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String state=et_state.getText().toString().trim();
+                et_district.setText("");
                 if(!state.isEmpty())
                 {
-                    getcities(state,true,"");
+
+                    getDistrict(module.getStateId(stateModelList,state),true,"");
+
+                }
+            }
+        });
+
+        et_district.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String dis=et_district.getText().toString().trim();
+                if(!dis.isEmpty())
+                {
+                    getBlock(module.getDistrictId(districtModelList,dis),true,"");
                 }
             }
         });
@@ -155,19 +184,11 @@ public class AddAddressFragment extends Fragment implements View.OnClickListener
             et_state.setText(eState);
             if(!eState.isEmpty())
             {
-                city_name=eCity;
+                distict_name=eDistrict;
             }
-            if(!eCity.isEmpty())
+            if(!eDistrict.isEmpty())
             {
-                String sId=session_management.getSocityDetails().get(KEY_SOCITY_ID).toString();
-                if(sId.isEmpty())
-                {
-                    makeGetSocityRequest(eCity.toString(),eSocictyId);
-                }
-                else
-                {
-                    makeGetSocityRequest(eCity.toString(),sId);
-                }
+                block_name=eBlock;
 
 
             }
@@ -191,28 +212,6 @@ public class AddAddressFragment extends Fragment implements View.OnClickListener
 
             removeFlagType(flagType);
         }
-
-
-
-            if (!(session_management.getSocityDetails().get(KEY_SOCITY_ID).isEmpty())) {
-                sPin = session_management.getSocityDetails().get(KEY_SOCITY_PINCODE);
-                sScId = session_management.getSocityDetails().get(KEY_SOCITY_ID);
-                sScNm = session_management.getSocityDetails().get(KEY_SOCITY_NAME);
-                tv_pincode.setText(sScNm + " (" + sPin + ")");
-            }
-
-            spin_city.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    city_name=city_list.get(position).toString();
-
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {
-
-                }
-            });
     }
 
     @Override
@@ -243,27 +242,7 @@ public class AddAddressFragment extends Fragment implements View.OnClickListener
         {
             validateData();
         }
-        else if(v.getId()== R.id.tv_pincode)
-        {
-            String cty=spin_city.getSelectedItem().toString();
-            if(cty.isEmpty())
-            {
-                toastMsg.toastIconError("Select a city");
 
-            }
-            else if(cty.equalsIgnoreCase("Select City"))
-            {
-                toastMsg.toastIconError("Invalid city");
-            }
-            else
-            {
-                SocietyFragment fm=new SocietyFragment();
-                Bundle bundle=new Bundle();
-                bundle.putString("city",cty);
-                loadFragment(fm,bundle);
-            }
-
-        }
 
     }
 
@@ -273,17 +252,25 @@ public class AddAddressFragment extends Fragment implements View.OnClickListener
 
  if(!et_state.getText().toString().isEmpty())
  {
-     getcities(et_state.getText().toString(),false,city_name);
+//     getcities(et_state.getText().toString(),false,city_name);
+     getDistrict(et_state.getText().toString(),false,distict_name);
  }
+ if(!et_district.getText().toString().isEmpty())
+ {
+     getBlock(et_district.getText().toString(),false,block_name);
+ }
+
     }
 
     private void validateData() {
         String name=et_name.getText().toString();
         String mobile=et_number.getText().toString();
         String state=et_state.getText().toString();
-        String pincode=tv_pincode.getText().toString();
+        String district=et_district.getText().toString();
+        String pincode=et_pincode.getText().toString();
         String address=et_address.getText().toString();
         String details=et_details.getText().toString();
+
 
         if(name.isEmpty())
         {
@@ -307,9 +294,19 @@ public class AddAddressFragment extends Fragment implements View.OnClickListener
             toastMsg.toastIconError("Invalid State");
             et_state.requestFocus();
         }
+        else if(district.isEmpty())
+        {
+            toastMsg.toastIconError("Select a District");
+            et_district.requestFocus();
+        }
+        else if(!district_list.contains(district))
+        {
+            toastMsg.toastIconError("Invalid District");
+            et_district.requestFocus();
+        }
         else if(pincode.isEmpty())
         {
-            toastMsg.toastIconError("Select a pincode");
+            toastMsg.toastIconError("Enter pincode");
 
         } else if(address.isEmpty())
         {
@@ -317,24 +314,24 @@ public class AddAddressFragment extends Fragment implements View.OnClickListener
         }
         else
         {
-            String city=spin_city.getSelectedItem().toString();
-       if(city.isEmpty() || city.equalsIgnoreCase("Select City"))
+        String block=spin_block.getSelectedItem().toString();
+       if(block.isEmpty() || block.equalsIgnoreCase("Select City"))
        {
-          toastMsg.toastIconError("Select City");
+          toastMsg.toastIconError("Select Block");
        }
             String user_id=session_management.getUserDetails().get(KEY_ID).toString();
             if(is_edit.equalsIgnoreCase("true"))
             {
-                editAddress(elocation_id,name,mobile,state,city,sPin,address,details,module.getBuildingType(flagType),sScId);
+                editAddress(elocation_id,name,mobile,state,block,pincode,address,details,module.getBuildingType(flagType),sScId);
             }
             else
             {
-                addAddress(user_id,name,mobile,state,city,sPin,address,details,module.getBuildingType(flagType),sScId);
+                addAddress(user_id,name,mobile,state,district,block,pincode,address,details,module.getBuildingType(flagType));
             }
         }
     }
 
-    private void addAddress(String user_id, String name, final String mobile, String state, String city, String pincode, String address, String details, String buildingType, String socity_id) {
+    private void addAddress(String user_id, String name, final String mobile, String state, String district,String block, String pincode, String address, String details, String buildingType) {
         loadingBar.show();
         String json_tag="json_add_address";
         HashMap<String,String> parmas=new HashMap<>();
@@ -342,12 +339,12 @@ public class AddAddressFragment extends Fragment implements View.OnClickListener
         parmas.put("name",name);
         parmas.put("mobile",mobile);
         parmas.put("state",state);
-        parmas.put("city",city);
+        parmas.put("district",module.getDistrictId(districtModelList,district));
+        parmas.put("block",module.getBlockId(blockModelList,block));
         parmas.put("pincode",pincode);
         parmas.put("address",address);
         parmas.put("details",details);
         parmas.put("building",buildingType);
-        parmas.put("socity_id",socity_id);
         Log.e("add_address",""+parmas.toString());
         CustomVolleyJsonRequest customVolleyJsonRequest=new CustomVolleyJsonRequest(Request.Method.POST, ADD_ADDRESS_URL, parmas, new Response.Listener<JSONObject>() {
             @Override
@@ -464,10 +461,151 @@ public class AddAddressFragment extends Fragment implements View.OnClickListener
     }
 
     private void getstates() {
-        loadingBar.show();
+
         Map<String, String> params = new HashMap<String, String>();
+        stateModelList.clear();
+        state_list.clear();
         final CustomVolleyJsonRequest jsonObjReq = new CustomVolleyJsonRequest(Request.Method.POST,
                 BaseUrl.GET_STATES, params, new Response.Listener<JSONObject>() {
+
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    boolean status = response.getBoolean("responce");
+                    if (status)
+                    {
+                        JSONArray data = response.getJSONArray("data");
+                        Gson gsonState=new Gson();
+                        Type listType=new TypeToken<ArrayList<StateModel>>(){}.getType();
+                        stateModelList=gsonState.fromJson(data.toString(),listType);
+                        for (int i = 0 ; i <stateModelList.size();i++)
+                        {
+                            state_list.add(stateModelList.get(i).getState_name().toString());
+
+                        }
+                        Log.e("asdasdasd",""+stateModelList.size()+" - "+state_list.size());
+                        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
+                                getActivity(), android.R.layout.simple_list_item_1,state_list);
+                        et_state.setAdapter(arrayAdapter);
+                        et_state.setThreshold(1);
+
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                String msg=module.VolleyErrorMessage(error);
+
+                if(!msg.equals(""))
+                {
+                    Toast.makeText(getActivity(),""+msg,Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
+        // Adding request to request queue
+        AppController.getInstance().addToRequestQueue(jsonObjReq,"plans");
+
+    }
+
+
+    public void loadFragment(Fragment fm,Bundle args)
+    {
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        fm.setArguments(args);
+        fragmentManager.beginTransaction()
+                .replace( R.id.content_frame,fm)
+                .addToBackStack(null)
+                .commit();
+    }
+
+
+    private void getDistrict(String stateId, final boolean flag,final String dis_name) {
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("state_id",stateId);
+        Log.e("asdsdasd",""+params.toString());
+        districtModelList.clear();
+        district_list.clear();
+        final CustomVolleyJsonRequest jsonObjReq = new CustomVolleyJsonRequest(Request.Method.POST,
+                BaseUrl.GET_DISTRICT, params, new Response.Listener<JSONObject>() {
+
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.d("states", response.toString());
+                try {
+                    boolean status = response.getBoolean("responce");
+                    if (status)
+                    {
+                        JSONArray data = response.getJSONArray("data");
+                        Gson gsonState=new Gson();
+                        Type listType=new TypeToken<ArrayList<DistrictModel>>(){}.getType();
+                        districtModelList=gsonState.fromJson(data.toString(),listType);
+                        for (int i = 0 ; i <districtModelList.size();i++)
+                        {
+                            district_list.add(districtModelList.get(i).getDistrict_name().toString());
+
+                        }
+                        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
+                                getActivity(), android.R.layout.simple_list_item_1,district_list);
+                        et_district.setAdapter(arrayAdapter);
+                        et_district.setThreshold(1);
+                        tempDisList.clear();
+                        tempDisList.addAll(district_list);
+                        if(!flag)
+                        {
+                            if(!dis_name.isEmpty())
+                            {
+                                int idx=-1;
+                                for(int i=0; i<district_list.size();i++)
+                                {
+                                    if(district_list.get(i).toString().equalsIgnoreCase(dis_name))
+                                    {
+                                        idx=i;
+                                        break;
+                                    }
+                                }
+                                et_district.setSelection(idx);
+                            }
+                        }
+
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                String msg=module.VolleyErrorMessage(error);
+
+                if(!msg.equals(""))
+                {
+                    Toast.makeText(getActivity(),""+msg,Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
+        // Adding request to request queue
+        AppController.getInstance().addToRequestQueue(jsonObjReq,"plans");
+
+
+    }
+
+    private void getBlock(String districtId, final boolean flag,final String block_name) {
+        loadingBar.show();
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("dis_id",districtId);
+        blockModelList.clear();
+        block_list.clear();
+        final CustomVolleyJsonRequest jsonObjReq = new CustomVolleyJsonRequest(Request.Method.POST,
+                BaseUrl.GET_BLOCK, params, new Response.Listener<JSONObject>() {
 
             @Override
             public void onResponse(JSONObject response) {
@@ -477,17 +615,34 @@ public class AddAddressFragment extends Fragment implements View.OnClickListener
                     if (status)
                     {
                         JSONArray data = response.getJSONArray("data");
-                        for (int i = 0 ; i <data.length();i++)
+                        Gson gsonState=new Gson();
+                        Type listType=new TypeToken<ArrayList<BlockModel>>(){}.getType();
+                        blockModelList=gsonState.fromJson(data.toString(),listType);
+                        for (int i = 0 ; i <blockModelList.size();i++)
                         {
-                            JSONObject object = data.getJSONObject(i);
-                            state_list.add(object.get("city_state").toString());
+                            block_list.add(blockModelList.get(i).getBlock_name().toString());
 
                         }
-                        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
-                                getActivity(), android.R.layout.simple_list_item_1,state_list);
-                        et_state.setAdapter(arrayAdapter);
-                        et_state.setThreshold(1);
+                        module.setSpinAdapter(block_list,spin_block,getActivity(),"Select Block");
 
+                        tempBlockList.clear();
+                        tempBlockList.addAll(block_list);
+                        if(!flag)
+                        {
+                            if(!block_name.isEmpty())
+                            {
+                                int idx=-1;
+                                for(int i=0; i<block_list.size();i++)
+                                {
+                                    if(block_list.get(i).toString().equalsIgnoreCase(block_name))
+                                    {
+                                        idx=i;
+                                        break;
+                                    }
+                                }
+                                spin_block.setSelection(idx);
+                            }
+                        }
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -511,142 +666,5 @@ public class AddAddressFragment extends Fragment implements View.OnClickListener
         AppController.getInstance().addToRequestQueue(jsonObjReq,"plans");
 
     }
-    private void getcities(String state, final boolean flag,final String city_name) {
-        loadingBar.show();
-        Map<String, String> params = new HashMap<String, String>();
-        params.put("state",state);
-        city_list.clear();
-        final CustomVolleyJsonRequest jsonObjReq = new CustomVolleyJsonRequest(Request.Method.POST,
-                BaseUrl.GET_CITY, params, new Response.Listener<JSONObject>() {
 
-            @Override
-            public void onResponse(JSONObject response) {
-                loadingBar.dismiss();
-                try {
-                    boolean status = response.getBoolean("responce");
-                    if (status)
-                    {
-                        JSONArray data = response.getJSONArray("data");
-                        for (int i = 0 ; i <data.length();i++)
-                        {
-                            JSONObject object = data.getJSONObject(i);
-                            city_list.add(object.get("city_name").toString());
-
-                        }
-                        temp_list.clear();
-                        temp_list.addAll(city_list);
-                            module.setSpinAdapter(city_list,spin_city,getActivity(),"Select City");
-
-                            if(!flag)
-                            {
-                                if(!city_name.isEmpty())
-                                {
-                                    int idx=-1;
-                                    for(int i=0; i<city_list.size();i++)
-                                    {
-                                        if(city_list.get(i).toString().equalsIgnoreCase(city_name))
-                                        {
-                                            idx=i;
-                                            break;
-                                        }
-                                    }
-                                    spin_city.setSelection(idx);
-                                }
-                            }
-
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }, new Response.ErrorListener() {
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                loadingBar.dismiss();
-                String msg=module.VolleyErrorMessage(error);
-                if(!msg.equals(""))
-                {
-                    module.showToast(""+msg);
-                }
-            }
-        });
-
-        // Adding request to request queue
-        AppController.getInstance().addToRequestQueue(jsonObjReq,"plans");
-
-    }
-
-    public void loadFragment(Fragment fm,Bundle args)
-    {
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        fm.setArguments(args);
-        fragmentManager.beginTransaction()
-                .replace( R.id.content_frame,fm)
-                .addToBackStack(null)
-                .commit();
-    }
-
-    private void makeGetSocityRequest(final String city, final String SocId) {
-        loadingBar.show();
-        // Tag used to cancel the request
-        String tag_json_obj = "json_socity_req";
-        HashMap<String,String> params=new HashMap<>();
-        params.put("city",city);
-
-        Log.e("get_socitiesss",""+SocId+" - "+city);
-        CustomVolleyJsonRequest customVolleyJsonRequest=new CustomVolleyJsonRequest(Request.Method.POST, BaseUrl.GET_SOCITY_URL, params, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                loadingBar.dismiss();
-                try {
-                    boolean resp=response.getBoolean("responce");
-                    if(resp)
-                    {
-                        JSONArray object=response.getJSONArray("data");
-                        Gson gson = new Gson();
-                        Type listType = new TypeToken<List<Socity_model>>() {
-                        }.getType();
-
-                        socity_modelList = gson.fromJson(object.toString(), listType);
-                       if(socity_modelList.size()<=0)
-                        {
-                            toastMsg.toastIconError("No Records Found");
-                        }
-                       else
-                       {
-                           int indx=-1;
-                           for(int i=0; i<socity_modelList.size();i++)
-                           {
-                               if(socity_modelList.get(i).getSociety_id().toString().equalsIgnoreCase(SocId))
-                               {
-
-                                   indx=i;
-                                   break;
-                               }
-                           }
-                           tv_pincode.setText(socity_modelList.get(indx).getSociety().toString() + " (" + socity_modelList.get(indx).getPincode().toString() + ")");
-                       }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    ex.printStackTrace();
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                loadingBar.dismiss();
-                String msg=module.VolleyErrorMessage(error);
-                if(!msg.isEmpty())
-                {
-                    module.showToast(""+msg);
-                }
-            }
-        });
-
-        // Adding request to request queue
-        AppController.getInstance().addToRequestQueue(customVolleyJsonRequest, tag_json_obj);
-    }
 }

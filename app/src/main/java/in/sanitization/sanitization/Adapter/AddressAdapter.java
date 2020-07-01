@@ -92,7 +92,6 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHold
             getpin = modelList.get(0).getPincode();
             getaddress = modelList.get(0).getAddress();
             getstate = modelList.get(0).getState();
-            getcity = modelList.get(0).getCity();
             getdesc = modelList.get(0).getDescription();
             getaddresstype = modelList.get(0).getAddress_type();
 
@@ -125,7 +124,6 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHold
                 args.putString("pincode", modelList.get(position).getPincode());
                 args.putString("address", modelList.get(position).getAddress());
                 args.putString("state", modelList.get(position).getState());
-                args.putString("city", modelList.get(position).getCity());
                 args.putString("desc", modelList.get(position).getDescription());
                 args.putString("add_type", modelList.get(position).getAddress_type());
                 args.putString("is_edit", "true");
@@ -224,7 +222,6 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHold
                     getpin=modelList.get(clickedPos).getPincode();
                     getaddress=modelList.get(clickedPos).getAddress();
                     getstate=modelList.get(clickedPos).getState();
-                    getcity=modelList.get(clickedPos).getCity();
                     getdesc=modelList.get(clickedPos).getDescription();
                     getaddresstype=modelList.get(clickedPos).getAddress_type();
 

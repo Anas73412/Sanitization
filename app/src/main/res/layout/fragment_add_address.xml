@@ -116,8 +116,37 @@
                     android:padding="@dimen/space_10"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"/>
+                <AutoCompleteTextView
+                    android:id="@+id/et_district"
+                    android:background="@drawable/edittext_layout"
+                    android:layout_weight="6.5"
+                    android:paddingLeft="@dimen/space_5"
+                    android:hint="District"
+                    android:drawableEnd="@drawable/ic_arrow_drop_down_black_24dp"
+                    android:drawableTint="@android:color/darker_gray"
+
+                    android:textSize="@dimen/space_14"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_marginTop="10dp"
+                android:background="@drawable/edittext_layout"
+                android:layout_marginLeft="@dimen/space_20"
+                android:layout_marginRight="@dimen/space_20"
+                android:weightSum="8"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:orientation="horizontal">
+                <ImageView
+                    android:src="@drawable/icons8_home_address_32px"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="@dimen/space_5"
+                    android:padding="@dimen/space_10"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"/>
                 <Spinner
-                    android:id="@+id/spin_city"
+                    android:id="@+id/spin_block"
                     android:layout_weight="6.5"
                     android:layout_width="0dp"
                     android:layout_height="40dp"
@@ -127,18 +156,6 @@
                     android:textSize="14dp"
                     android:singleLine="true"
                     android:layout_gravity="center_horizontal"/>
-<!--                <AutoCompleteTextView-->
-<!--                    android:id="@+id/et_city"-->
-<!--                    android:background="@drawable/edittext_layout"-->
-<!--                    android:layout_weight="6.5"-->
-<!--                    android:paddingLeft="@dimen/space_5"-->
-<!--                    android:hint="City"-->
-<!--                    android:drawableEnd="@drawable/ic_arrow_drop_down_black_24dp"-->
-<!--                    android:drawableTint="@android:color/darker_gray"-->
-
-<!--                    android:textSize="@dimen/space_14"-->
-<!--                    android:layout_width="0dp"-->
-<!--                    android:layout_height="match_parent"/>-->
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/lin_socity"
@@ -157,13 +174,14 @@
                     android:padding="@dimen/space_10"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"/>
-                <in.sanitization.sanitization.Fonts.LatoBLack
-                    android:id="@+id/tv_pincode"
+                <EditText
+                    android:id="@+id/et_pincode"
                     android:background="@drawable/edittext_layout"
-                    android:layout_weight="6.5"
+                    android:layout_weight="6"
                     android:paddingLeft="@dimen/space_5"
                     android:hint="Pincode"
-                    android:gravity="center_vertical"
+                    android:inputType="number"
+                    android:maxLength="6"
                     android:textSize="@dimen/space_14"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"/>
@@ -218,7 +236,7 @@
                     android:background="@drawable/address_edittext"
                     android:layout_weight="6"
                     android:paddingLeft="@dimen/space_5"
-                    android:hint="Address"
+                    android:hint="Description"
                     android:gravity="start"
                     android:paddingTop="@dimen/space_10"
                     android:textAlignment="gravity"

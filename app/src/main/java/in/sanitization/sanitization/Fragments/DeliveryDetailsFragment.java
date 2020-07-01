@@ -70,7 +70,7 @@ public class DeliveryDetailsFragment extends Fragment implements View.OnClickLis
         tvMrp.setText(getResources().getString(R.string.currency)+" "+mrp);
         Double dmrp=Double.parseDouble(mrp);
         Double dprice=Double.parseDouble(price);
-        int dis=Integer.parseInt(String.valueOf(dmrp-dprice));
+        int dis=(int)(dmrp-dprice);
         if(dis<=0)
         {
             tvDiscount.setText("No Discount");
