@@ -11,12 +11,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.net.URLEncoder;
 
@@ -33,6 +35,7 @@ public class ManagerDetailsFragment extends Fragment implements View.OnClickList
     String arr="",type="",mobile="";
     JSONArray jsonArray=null;
     Module module;
+    LinearLayout lin_gen ;
 
     public ManagerDetailsFragment() {
         // Required empty public constructor
@@ -56,6 +59,7 @@ public class ManagerDetailsFragment extends Fragment implements View.OnClickList
         tv_name=v.findViewById(R.id.tv_name);
         tv_email=v.findViewById(R.id.tv_email);
         tv_gen=v.findViewById(R.id.tv_gen);
+        lin_gen=v.findViewById(R.id.lin_gen);
         module=new Module(getActivity());
         arr=getArguments().getString("arr");
         type=getArguments().getString("type");
@@ -63,40 +67,68 @@ public class ManagerDetailsFragment extends Fragment implements View.OnClickList
          iv_call.setOnClickListener(this);
          iv_whatsapp.setOnClickListener(this);
         try {
-             jsonArray=new JSONArray(arr.toString());
-            String picString=jsonArray.getJSONObject(0).getString("user_photo").toString();
-            if(picString==null || picString.isEmpty())
-            {}
-            else
-            {
-                if(type.equalsIgnoreCase("area"))
-                {
+            jsonArray = new JSONArray(arr.toString());
+
+            if (type.equalsIgnoreCase("area")) {
+                String picString = jsonArray.getJSONObject(0).getString("user_photo").toString();
+                if (picString == null || picString.isEmpty()) {
+                } else {
                     Glide.with(getActivity())
-                            .load( BaseUrl.IMG_AREA_URL + picString)
+                            .load(BaseUrl.IMG_AREA_URL + picString)
+                            .placeholder(R.drawable.logo)
+                            .crossFade()
+                            .diskCacheStrategy(DiskCacheStrategy.ALL)
+                            .dontAnimate()
+                            .into(iv_pic);
+                    mobile = jsonArray.getJSONObject(0).getString("user_mobile").toString();
+                    tv_name.setText("" + jsonArray.getJSONObject(0).getString("user_name").toString());
+                    tv_email.setText("" + jsonArray.getJSONObject(0).getString("user_email").toString());
+                    tv_mobile.setText("" + mobile);
+                    tv_gen.setText("" + jsonArray.getJSONObject(0).getString("user_gender").toString());
+                }
+
+            } else if (type.equalsIgnoreCase("dis")) {
+                String picString = jsonArray.getJSONObject(0).getString("user_photo").toString();
+                if (picString == null || picString.isEmpty()) {
+                } else {
+                    Glide.with(getActivity())
+                            .load(BaseUrl.IMG_DISTRICT_URL +picString)
+                            .placeholder(R.drawable.logo)
+                            .crossFade()
+                            .diskCacheStrategy(DiskCacheStrategy.ALL)
+                            .dontAnimate()
+                            .into(iv_pic);
+                    mobile = jsonArray.getJSONObject(0).getString("user_mobile").toString();
+                    tv_name.setText("" + jsonArray.getJSONObject(0).getString("user_name").toString());
+                    tv_email.setText("" + jsonArray.getJSONObject(0).getString("user_email").toString());
+                    tv_mobile.setText("" + mobile);
+                    tv_gen.setText("" + jsonArray.getJSONObject(0).getString("user_gender").toString());
+                }
+
+            } else if (type.equalsIgnoreCase("worker")) {
+
+                JSONObject worker = jsonArray.getJSONObject(0);
+                JSONArray w_ar= new JSONArray(worker.getString("photo"));
+                if (w_ar.length()==0) {
+                }
+                else {
+
+                    Glide.with(getActivity())
+                            .load( BaseUrl.IMG_WORKER_URL +w_ar.get(0))
                             .placeholder( R.drawable.logo)
                             .crossFade()
                             .diskCacheStrategy(DiskCacheStrategy.ALL)
                             .dontAnimate()
                             .into(iv_pic);
+                    tv_name.setText("" + jsonArray.getJSONObject(0).getString("name").toString());
+                    tv_email.setText("" + jsonArray.getJSONObject(0).getString("email").toString());
+                    tv_mobile.setText("" + jsonArray.getJSONObject(0).getString("mobile").toString());
 
+                   lin_gen.setVisibility(View.GONE);
                 }
-                else
-                {
-                    Glide.with(getActivity())
-                            .load( BaseUrl.IMG_DISTRICT_URL + picString)
-                            .placeholder( R.drawable.logo)
-                            .crossFade()
-                            .diskCacheStrategy(DiskCacheStrategy.ALL)
-                            .dontAnimate()
-                            .into(iv_pic);
 
-                }
             }
-            mobile=jsonArray.getJSONObject(0).getString("user_mobile").toString();
-            tv_name.setText(""+jsonArray.getJSONObject(0).getString("user_name").toString());
-            tv_email.setText(""+jsonArray.getJSONObject(0).getString("user_email").toString());
-            tv_mobile.setText(""+mobile);
-            tv_gen.setText(""+jsonArray.getJSONObject(0).getString("user_gender").toString());
+
 
 
         }

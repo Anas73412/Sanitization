@@ -140,7 +140,7 @@ public class PackageDetails extends AppCompatActivity implements View.OnClickLis
                         JSONArray img_arr = new JSONArray(img_obj);
                         if(img_obj.isEmpty())
                         {
-                            module.showToast("No Images Avalaible");
+                            module.showToast("No Images Available");
                         }
                         else
                         {

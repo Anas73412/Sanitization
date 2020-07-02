@@ -10,11 +10,13 @@
     android:orientation="vertical">
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+      >
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_marginBottom="@dimen/space_20">
             <androidx.cardview.widget.CardView
 
                 android:layout_width="match_parent"
@@ -24,6 +26,7 @@
                 card_view:cardCornerRadius="4dp"
                 android:layout_marginLeft="@dimen/space_10"
                 android:layout_marginRight="@dimen/space_10"
+                android:layout_marginTop="@dimen/space_10"
 
 
                 >
@@ -38,7 +41,7 @@
                         android:textColor="@color/white"
 
                         android:layout_width="match_parent"
-                        android:background="@drawable/gradientbackground"
+                        android:background="@drawable/bg_rounded_button"
                         android:layout_height="wrap_content"
                         android:textStyle="bold"
                         android:fontFamily="@font/bold"
@@ -62,7 +65,8 @@
                             android:layout_margin="@dimen/space_2"
                             >
 
-                            <in.sanitization.sanitization.Fonts.LatoBLack                                    android:id="@+id/txtpin"
+                            <in.sanitization.sanitization.Fonts.LatoBLack
+                                android:id="@+id/txtid"
                                 android:layout_width="67dp"
                                 android:layout_height="match_parent"
                                 android:layout_alignParentTop="true"
@@ -74,7 +78,7 @@
 
                             <in.sanitization.sanitization.Fonts.LatoBLack
                                 android:id="@+id/order_id"
-                                android:layout_toRightOf="@id/txtpin"
+                                android:layout_toRightOf="@id/txtid"
                                 android:layout_width="wrap_content"
                                 android:layout_alignParentRight="true"
                                 android:padding="@dimen/space_2"
@@ -82,7 +86,7 @@
                                 android:layout_marginRight="20dp"
                                 android:textColor="@color/black"
                                 android:textSize="@dimen/space_14"
-                                android:layout_height="wrap_content"
+                                android:layout_height="match_parent"
                                 android:text=""
                                 />
                         </RelativeLayout>
@@ -115,7 +119,7 @@
                                 android:layout_marginRight="20dp"
                                 android:textColor="@color/black"
                                 android:textSize="@dimen/space_14"
-                                android:layout_height="wrap_content"
+                                android:layout_height="match_parent"
                                 android:text=""
                                 />
                         </RelativeLayout>
@@ -258,6 +262,7 @@
                 card_view:cardCornerRadius="4dp"
                 android:layout_marginLeft="@dimen/space_10"
                 android:layout_marginRight="@dimen/space_10"
+                android:layout_marginTop="@dimen/space_10"
 
 
                 >
@@ -272,7 +277,7 @@
                         android:textColor="@color/white"
                         android:id="@+id/textView8"
                         android:layout_width="match_parent"
-                        android:background="@drawable/gradientbackground"
+                        android:background="@drawable/bg_rounded_button"
                         android:layout_height="wrap_content"
                         android:textStyle="bold"
                         android:fontFamily="@font/bold"
@@ -288,6 +293,18 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="3dp"
                         android:orientation="vertical">
+                        <ImageView
+                            android:id="@+id/plan_img"
+                            android:layout_margin="@dimen/space_5"
+                            android:layout_centerInParent="true"
+                            android:layout_width="match_parent"
+                            android:layout_height="150dp"
+                            android:src="@drawable/logo"/>
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/space_1"
+                            android:layout_margin="@dimen/space_3"
+                            android:background="@color/gray"/>
                         <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -352,7 +369,7 @@
                             android:layout_margin="@dimen/space_2"
                             >
                             <in.sanitization.sanitization.Fonts.LatoBLack
-                                android:id="@+id/txtmobile"
+                                android:id="@+id/txtd"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textColor="@android:color/black"
@@ -362,7 +379,7 @@
 
                             <in.sanitization.sanitization.Fonts.LatoBLack
                                 android:id="@+id/duration"
-                                android:layout_toRightOf="@id/txtmobile"
+                                android:layout_toRightOf="@id/txtd"
                                 android:layout_width="wrap_content"
                                 android:layout_alignParentRight="true"
                                 android:padding="@dimen/space_2"
@@ -374,7 +391,34 @@
                                 android:text=""
                                 />
                         </RelativeLayout>
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/space_2"
+                            >
+                            <in.sanitization.sanitization.Fonts.LatoBLack
+                                android:id="@+id/txtex"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@android:color/black"
+                                android:textSize="@dimen/space_14"
+                                android:padding="2dp"
+                                android:text="Expires In :"/>
 
+                            <in.sanitization.sanitization.Fonts.LatoBLack
+                                android:id="@+id/expires"
+                                android:layout_toRightOf="@id/txtex"
+                                android:layout_width="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:padding="@dimen/space_2"
+                                android:textAlignment="viewEnd"
+                                android:layout_marginRight="20dp"
+                                android:textSize="@dimen/space_14"
+                                android:textColor="@color/black"
+                                android:layout_height="wrap_content"
+                                android:text=""
+                                />
+                        </RelativeLayout>
 
 
 
@@ -415,7 +459,7 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
+                            android:orientation="vertical"
                             android:layout_margin="@dimen/space_2"
                             >
                             <in.sanitization.sanitization.Fonts.LatoBLack        android:id="@+id/txtSociety"
@@ -433,7 +477,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_alignParentRight="true"
                                 android:padding="@dimen/space_2"
-                                android:textAlignment="viewEnd"
+
                                 android:layout_marginRight="20dp"
                                 android:textColor="@color/black"
                                 android:textSize="@dimen/space_14"
@@ -458,7 +502,7 @@
                 android:layout_marginLeft="@dimen/space_10"
                 android:layout_above="@+id/textDateTimeView" />
             <androidx.cardview.widget.CardView
-
+                android:id="@+id/card_worker"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 card_view:cardElevation="@dimen/space_3"
@@ -466,12 +510,13 @@
                 card_view:cardCornerRadius="4dp"
                 android:layout_marginLeft="@dimen/space_10"
                 android:layout_marginRight="@dimen/space_10"
+                android:layout_marginTop="@dimen/space_10"
 
 
                 >
 
             <LinearLayout
-                android:id="@+id/lin_dis"
+
                 android:background="@drawable/address_edittext"
                 android:orientation="vertical"
 
@@ -481,7 +526,7 @@
                     android:textColor="@color/white"
 
                     android:layout_width="match_parent"
-                    android:background="@drawable/gradientbackground"
+                    android:background="@drawable/bg_rounded_button"
                     android:layout_height="wrap_content"
                     android:textStyle="bold"
                     android:fontFamily="@font/bold"
@@ -501,15 +546,15 @@
                     android:layout_height="wrap_content">
 
                     <RelativeLayout
-                        android:layout_weight="1"
+                        android:layout_weight="1.5"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content">
-                        <de.hdodenhof.circleimageview.CircleImageView
+                        <ImageView
                             android:id="@+id/w_img"
                             android:layout_margin="@dimen/space_5"
                             android:layout_centerInParent="true"
                             android:layout_width="wrap_content"
-                            android:layout_height="80dp"
+                            android:layout_height="100dp"
                             android:src="@drawable/logo"/>
                     </RelativeLayout>
                     <LinearLayout
@@ -528,32 +573,38 @@
 
                             <in.sanitization.sanitization.Fonts.LatoBLack
                                 android:id="@+id/w_name"
-                                android:text="@string/app_name"
-                                android:textColor="@color/black"
+
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"/>
+                                android:padding="@dimen/space_2"
+                                android:textColor="@color/black"
+                                android:layout_height="wrap_content"
+                                android:text=""
+                                android:textSize="@dimen/space_14"/>
                             <in.sanitization.sanitization.Fonts.LatoBLack
                                 android:id="@+id/w_mobile"
-                                android:textSize="@dimen/space_12"
-                                android:text="@string/app_name"
-                                android:textColor="@color/black"
+
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"/>
+                                android:padding="@dimen/space_2"
+                                android:textColor="@color/black"
+                                android:layout_height="wrap_content"
+                                android:text=""
+                                android:textSize="@dimen/space_14"/>
                             <in.sanitization.sanitization.Fonts.LatoBLack
                                 android:id="@+id/w_email"
-                                android:textSize="@dimen/space_12"
-                                android:text="@string/app_name"
-                                android:textColor="@color/black"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"/>
+                                android:padding="@dimen/space_2"
+                                android:textColor="@color/black"
+                                android:layout_height="wrap_content"
+                                android:text=""
+                                android:textSize="@dimen/space_14"/>
                         </LinearLayout>
                         <in.sanitization.sanitization.Fonts.LatoBLack
-                            android:textSize="@dimen/space_8"
+                            android:textSize="@dimen/space_10"
                             android:text="More Info.."
                             android:textColor="@color/black"
-                            android:textAlignment="gravity"
-                            android:gravity="right"
-                            android:visibility="gone"
+                            android:gravity="end"
+                           android:layout_marginRight="@dimen/space_20"
+                            android:paddingRight="@dimen/space_20"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"/>
 
