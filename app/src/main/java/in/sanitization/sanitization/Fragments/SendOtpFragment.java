@@ -29,6 +29,8 @@ import in.sanitization.sanitization.Config.BaseUrl;
 import in.sanitization.sanitization.Config.Module;
 import in.sanitization.sanitization.MainActivity;
 import in.sanitization.sanitization.R;
+import in.sanitization.sanitization.networkconnectivity.NoInternetConnection;
+import in.sanitization.sanitization.util.ConnectivityReceiver;
 import in.sanitization.sanitization.util.CustomVolleyJsonRequest;
 import in.sanitization.sanitization.util.LoadingBar;
 
@@ -78,14 +80,17 @@ public class SendOtpFragment extends Fragment {
             else {
                 otp = getRandomKey(6);
                 Log.e("otp", otp);
+                if (ConnectivityReceiver.isConnected()) {
 
-                if (type.equals("r"))
+                    if (type.equals("r")) {
+                        sendCodeR(number, otp);
+                    } else if (type.equals("f")) {
+                        sendCodeF(number, otp);
+                    }
+                } else
                 {
-                    sendCodeR(number,otp);
-                }
-                else if (type.equals("f"))
-                {
-                    sendCodeF(number,otp);
+                    Intent intent = new Intent(getActivity(), NoInternetConnection.class);
+                    startActivity(intent);
                 }
             }
 

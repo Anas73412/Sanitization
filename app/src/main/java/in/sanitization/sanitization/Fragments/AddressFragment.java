@@ -37,6 +37,8 @@ import in.sanitization.sanitization.Model.AddressModel;
 import in.sanitization.sanitization.PaymentActivity;
 import in.sanitization.sanitization.R;
 import in.sanitization.sanitization.SubscriptionActivity;
+import in.sanitization.sanitization.networkconnectivity.NoInternetConnection;
+import in.sanitization.sanitization.util.ConnectivityReceiver;
 import in.sanitization.sanitization.util.CustomVolleyJsonRequest;
 import in.sanitization.sanitization.util.LoadingBar;
 import in.sanitization.sanitization.util.Session_management;
@@ -72,8 +74,13 @@ public class AddressFragment extends Fragment implements View.OnClickListener{
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.fragment_address, container, false);
         initViews(view);
-
-        getAllAddress(user_id);
+        if (ConnectivityReceiver.isConnected()) {
+            getAllAddress(user_id);
+        }  else
+        {
+            Intent intent = new Intent(getActivity(), NoInternetConnection.class);
+            startActivity(intent);
+        }
         return view;
     }
 

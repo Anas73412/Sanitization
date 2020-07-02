@@ -8,6 +8,8 @@ import android.view.WindowManager;
 
 import java.util.Map;
 
+import in.sanitization.sanitization.networkconnectivity.NoInternetConnection;
+import in.sanitization.sanitization.util.ConnectivityReceiver;
 import in.sanitization.sanitization.util.Session_management;
 
 public class SplashActivity extends AppCompatActivity {
@@ -25,6 +27,8 @@ public class SplashActivity extends AppCompatActivity {
                 try {
 
                     sleep(2 * 1000);
+                    if (ConnectivityReceiver.isConnected())
+                    {
                     if(session_management.isLoggedIn())
                     {
                         Intent intent = new Intent(SplashActivity.this, HomeActivity.class);
@@ -44,6 +48,11 @@ public class SplashActivity extends AppCompatActivity {
                         startActivity(intent);
                         finish();
 
+                    }}
+                    else
+                    {
+                        Intent intent = new Intent(SplashActivity.this, NoInternetConnection.class);
+                        startActivity(intent);
                     }
 
 

@@ -39,6 +39,8 @@ import in.sanitization.sanitization.Config.Module;
 import in.sanitization.sanitization.Model.BlockModel;
 import in.sanitization.sanitization.Model.DistrictModel;
 import in.sanitization.sanitization.Model.StateModel;
+import in.sanitization.sanitization.networkconnectivity.NoInternetConnection;
+import in.sanitization.sanitization.util.ConnectivityReceiver;
 import in.sanitization.sanitization.util.CustomVolleyJsonRequest;
 import in.sanitization.sanitization.util.LoadingBar;
 
@@ -116,7 +118,14 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             }
         });
 
-        getstates();
+        if (ConnectivityReceiver.isConnected()) {
+            getstates();
+        }
+        else
+        {
+            Intent intent = new Intent(RegistrationActivity.this, NoInternetConnection.class);
+            startActivity(intent);
+        }
         et_number.setText(getIntent().getStringExtra("number"));
         et_number.setEnabled(false);
     }
@@ -321,6 +330,7 @@ loadingBar.dismiss();
                    }
                    else
                    {
+
                        registerUser(name,number,email,state,district,block,pin,address,pass);
                    }
 

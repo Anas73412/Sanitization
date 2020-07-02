@@ -1,6 +1,7 @@
 package in.sanitization.sanitization.Fragments;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.util.Log;
@@ -48,6 +49,7 @@ import in.sanitization.sanitization.MainActivity;
 import in.sanitization.sanitization.Model.My_order_detail_model;
 import in.sanitization.sanitization.PackageDetails;
 import in.sanitization.sanitization.R;
+import in.sanitization.sanitization.networkconnectivity.NoInternetConnection;
 import in.sanitization.sanitization.util.ConnectivityReceiver;
 import in.sanitization.sanitization.util.CustomVolleyJsonArrayRequest;
 import in.sanitization.sanitization.util.CustomVolleyJsonRequest;
@@ -146,7 +148,13 @@ public class My_order_detail_fragment extends Fragment implements View.OnClickLi
        {
            card_worker.setVisibility(View.GONE);
        }
-        getDetails(location_id,package_id,worker_id);
+       if (ConnectivityReceiver.isConnected()) {
+           getDetails(location_id, package_id, worker_id);
+       } else
+       {
+           Intent intent = new Intent(getActivity(), NoInternetConnection.class);
+           startActivity(intent);
+       }
         if (status.equals("0"))
         {
             tv_status.setText("Pending");

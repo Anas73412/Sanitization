@@ -2,6 +2,7 @@ package in.sanitization.sanitization.Fragments;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -43,6 +44,7 @@ import in.sanitization.sanitization.Config.Module;
 import in.sanitization.sanitization.Model.Socity_model;
 import in.sanitization.sanitization.R;
 import in.sanitization.sanitization.SubscriptionActivity;
+import in.sanitization.sanitization.networkconnectivity.NoInternetConnection;
 import in.sanitization.sanitization.util.ConnectivityReceiver;
 import in.sanitization.sanitization.util.CustomVolleyJsonArrayRequest;
 import in.sanitization.sanitization.util.CustomVolleyJsonRequest;
@@ -119,8 +121,10 @@ public class SocietyFragment extends Fragment {
         // check internet connection
         if (ConnectivityReceiver.isConnected()) {
             makeGetSocityRequest(city);
-        } else {
-//            ((SubscriptionActivity) getActivity()).onNetworkConnectionChanged(false);
+        } else
+        {
+            Intent intent = new Intent(getActivity(), NoInternetConnection.class);
+            startActivity(intent);
         }
 
         rv_socity.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), rv_socity, new RecyclerTouchListener.OnItemClickListener() {

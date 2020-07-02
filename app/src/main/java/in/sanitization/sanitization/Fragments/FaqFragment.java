@@ -1,5 +1,6 @@
 package in.sanitization.sanitization.Fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -34,6 +35,8 @@ import in.sanitization.sanitization.HomeActivity;
 import in.sanitization.sanitization.MainActivity;
 import in.sanitization.sanitization.Model.FAQModel;
 import in.sanitization.sanitization.R;
+import in.sanitization.sanitization.networkconnectivity.NoInternetConnection;
+import in.sanitization.sanitization.util.ConnectivityReceiver;
 import in.sanitization.sanitization.util.CustomVolleyJsonArrayRequest;
 import in.sanitization.sanitization.util.LoadingBar;
 
@@ -62,7 +65,13 @@ public class FaqFragment extends Fragment {
         module = new Module(getActivity());
         faq_list = new ArrayList<>();
         rv_faq.setLayoutManager(new LinearLayoutManager(getActivity()));
-        getfaqs();
+        if (ConnectivityReceiver.isConnected()) {
+            getfaqs();
+        } else
+        {
+            Intent intent = new Intent(getActivity(), NoInternetConnection.class);
+            startActivity(intent);
+        }
         ((HomeActivity) getActivity()).setTitle("FAQs");
        return view ;
     }

@@ -1,6 +1,7 @@
 package in.sanitization.sanitization.Fragments;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -49,6 +50,8 @@ import in.sanitization.sanitization.Model.DistrictModel;
 import in.sanitization.sanitization.Model.StateModel;
 import in.sanitization.sanitization.R;
 import in.sanitization.sanitization.RegistrationActivity;
+import in.sanitization.sanitization.networkconnectivity.NoInternetConnection;
+import in.sanitization.sanitization.util.ConnectivityReceiver;
 import in.sanitization.sanitization.util.CustomVolleyJsonRequest;
 import in.sanitization.sanitization.util.LoadingBar;
 import in.sanitization.sanitization.util.Session_management;
@@ -163,11 +166,6 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
                 }
             }
         });
-
-        getstates();
-        getDistrict(module.getStateId(stateModelList,et_state.getText().toString()));
-      getBlock(module.getDistrictId(districtModelList,et_district.getText().toString()));
-
         et_mobile.setText(session_management.getUserDetails().get(KEY_MOBILE));
         et_name.setText(session_management.getUserDetails().get(KEY_NAME));
         et_email.setText(session_management.getUserDetails().get(KEY_EMAIL));
@@ -175,9 +173,18 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
         et_district.setText(session_management.getUserDetails().get(KEY_DISTRICT));
         et_pin.setText(session_management.getUserDetails().get(KEY_PINCODE));
         et_address.setText(session_management.getUserDetails().get(KEY_ADDRESS));
-        id =  session_management.getUserDetails().get(KEY_ID);
-        getmanagers(session_management.getUserDetails().get(KEY_DISTRICT_MANAGER).toString(),session_management.getUserDetails().get(KEY_AREA_MANAGER).toString());
-
+        id = session_management.getUserDetails().get(KEY_ID);
+        if (ConnectivityReceiver.isConnected()) {
+            getstates();
+            getDistrict(module.getStateId(stateModelList, et_state.getText().toString()));
+            getBlock(module.getDistrictId(districtModelList, et_district.getText().toString()));
+            getmanagers(session_management.getUserDetails().get(KEY_DISTRICT_MANAGER).toString(), session_management.getUserDetails().get(KEY_AREA_MANAGER).toString());
+        }
+        else
+        {
+            Intent intent = new Intent(getActivity(), NoInternetConnection.class);
+            startActivity(intent);
+        }
     }
 
     @Override

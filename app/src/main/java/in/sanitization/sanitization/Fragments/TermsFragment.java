@@ -1,5 +1,6 @@
 package in.sanitization.sanitization.Fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -26,6 +27,8 @@ import in.sanitization.sanitization.Config.Module;
 import in.sanitization.sanitization.HomeActivity;
 import in.sanitization.sanitization.MainActivity;
 import in.sanitization.sanitization.R;
+import in.sanitization.sanitization.networkconnectivity.NoInternetConnection;
+import in.sanitization.sanitization.util.ConnectivityReceiver;
 import in.sanitization.sanitization.util.CustomVolleyJsonRequest;
 import in.sanitization.sanitization.util.LoadingBar;
 
@@ -50,7 +53,14 @@ public class TermsFragment extends Fragment {
         title= view.findViewById(R.id.text_title);
         loadingBar = new LoadingBar(getActivity());
         ((HomeActivity) getActivity()).setTitle("Terms & Conditions");
-        getInfo();
+        if (ConnectivityReceiver.isConnected()) {
+            getInfo();
+        }
+        else
+        {
+            Intent intent = new Intent(getActivity(), NoInternetConnection.class);
+            startActivity(intent);
+        }
         return view;
     }
     private void getInfo()

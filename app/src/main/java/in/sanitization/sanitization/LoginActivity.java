@@ -23,6 +23,8 @@ import org.json.JSONObject;
 import java.util.HashMap;
 
 import in.sanitization.sanitization.Config.Module;
+import in.sanitization.sanitization.networkconnectivity.NoInternetConnection;
+import in.sanitization.sanitization.util.ConnectivityReceiver;
 import in.sanitization.sanitization.util.CustomVolleyJsonRequest;
 import in.sanitization.sanitization.util.LoadingBar;
 import in.sanitization.sanitization.util.Session_management;
@@ -92,7 +94,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             }
             else
             {
-                loginUser(number,pass);
+                if (ConnectivityReceiver.isConnected()) {
+                    loginUser(number, pass);
+                }
+                else
+                {
+                    Intent intent = new Intent(LoginActivity.this, NoInternetConnection.class);
+                    startActivity(intent);
+                }
 
             }
 

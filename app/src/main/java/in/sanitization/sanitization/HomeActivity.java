@@ -15,20 +15,19 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 
 import in.sanitization.sanitization.Fragments.ABoutUsFragment;
 import in.sanitization.sanitization.Fragments.ContactFragment;
 import in.sanitization.sanitization.Fragments.EditProfileFragment;
+import in.sanitization.sanitization.Fragments.HelpActivity;
 import in.sanitization.sanitization.Fragments.HomeFragment;
 import in.sanitization.sanitization.Fragments.MyOrders;
 import in.sanitization.sanitization.Fragments.PrivacyFragment;
