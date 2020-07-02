@@ -44,7 +44,6 @@ import in.sanitization.sanitization.util.RecyclerTouchListener;
 import in.sanitization.sanitization.util.Session_management;
 import in.sanitization.sanitization.util.ToastMsg;
 
-import static in.sanitization.sanitization.Config.BaseUrl.GET_CANCEL_ORDERS;
 import static in.sanitization.sanitization.Config.BaseUrl.GET_ORDER_URL;
 import static in.sanitization.sanitization.Config.Constants.KEY_ID;
 

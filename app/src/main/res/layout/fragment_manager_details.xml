@@ -101,6 +101,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/lin_gen"
         android:layout_margin="@dimen/space_10"
         android:orientation="vertical"
         android:layout_width="match_parent"
