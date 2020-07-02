@@ -1,5 +1,6 @@
 package in.sanitization.sanitization.Fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -36,6 +37,8 @@ import in.sanitization.sanitization.Config.Module;
 import in.sanitization.sanitization.HomeActivity;
 import in.sanitization.sanitization.Model.OrderModel;
 import in.sanitization.sanitization.R;
+import in.sanitization.sanitization.networkconnectivity.NoInternetConnection;
+import in.sanitization.sanitization.util.ConnectivityReceiver;
 import in.sanitization.sanitization.util.CustomVolleyJsonRequest;
 import in.sanitization.sanitization.util.LoadingBar;
 import in.sanitization.sanitization.util.RecyclerTouchListener;
@@ -98,15 +101,15 @@ public class MyOrders extends Fragment {
         Session_management sessionManagement = new Session_management(getActivity());
         String user_id = sessionManagement.getUserDetails().get(KEY_ID);
 
-//    if (ConnectivityReceiver.isConnected())
-//
-//    {
+    if (ConnectivityReceiver.isConnected())
+
+    {
       makeGetOrderRequest(user_id);
-//    } else
-//
-//    {
-//      ((MainActivity) getActivity()).onNetworkConnectionChanged(false);
-//    }
+    }  else
+    {
+        Intent intent = new Intent(getActivity(), NoInternetConnection.class);
+        startActivity(intent);
+    }
 
         // recyclerview item click listener
         rv_myorder.addOnItemTouchListener(new

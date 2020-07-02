@@ -37,6 +37,7 @@ import in.sanitization.sanitization.ForgotActivity;
 import in.sanitization.sanitization.R;
 import in.sanitization.sanitization.RegistrationActivity;
 import in.sanitization.sanitization.SmsReceiver;
+import in.sanitization.sanitization.networkconnectivity.NoInternetConnection;
 import in.sanitization.sanitization.util.ConnectivityReceiver;
 import in.sanitization.sanitization.util.CustomVolleyJsonRequest;
 import in.sanitization.sanitization.util.LoadingBar;
@@ -78,7 +79,13 @@ public class VerifyOtpFragment extends Fragment implements OnOtpCompletionListen
         module = new Module(getActivity());
         checkAndRequestPermissions();
 //        getSmsOtp();
-        getMessageStatus();
+        if (ConnectivityReceiver.isConnected()) {
+            getMessageStatus();
+        } else
+        {
+            Intent intent = new Intent(getActivity(), NoInternetConnection.class);
+            startActivity(intent);
+        }
        type=getArguments().getString("type");
        gen_otp=getArguments().getString("otp");
      number= getArguments().getString("number");

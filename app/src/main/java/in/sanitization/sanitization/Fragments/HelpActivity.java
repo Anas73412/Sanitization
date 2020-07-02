@@ -1,4 +1,4 @@
-package in.sanitization.sanitization;
+package in.sanitization.sanitization.Fragments;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,7 +22,12 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 
+import in.sanitization.sanitization.AppController;
 import in.sanitization.sanitization.Config.Module;
+import in.sanitization.sanitization.HomeActivity;
+import in.sanitization.sanitization.R;
+import in.sanitization.sanitization.networkconnectivity.NoInternetConnection;
+import in.sanitization.sanitization.util.ConnectivityReceiver;
 import in.sanitization.sanitization.util.CustomVolleyJsonRequest;
 import in.sanitization.sanitization.util.LoadingBar;
 import in.sanitization.sanitization.util.Session_management;
@@ -85,7 +91,15 @@ public class HelpActivity extends Fragment implements View.OnClickListener {
             else
             {
                 String user_id=session_management.getUserDetails().get(KEY_ID).toString();
+                if (ConnectivityReceiver.isConnected())
+                {
                 sendQuery(user_id,message);
+                }
+                else
+                {
+                    Intent intent = new Intent(getActivity(), NoInternetConnection.class);
+                    startActivity(intent);
+                }
             }
         }
     }

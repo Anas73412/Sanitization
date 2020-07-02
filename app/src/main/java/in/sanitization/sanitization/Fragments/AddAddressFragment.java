@@ -1,6 +1,7 @@
 package in.sanitization.sanitization.Fragments;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.widget.Toolbar;
@@ -49,6 +50,8 @@ import in.sanitization.sanitization.Model.Socity_model;
 import in.sanitization.sanitization.Model.StateModel;
 import in.sanitization.sanitization.R;
 import in.sanitization.sanitization.SubscriptionActivity;
+import in.sanitization.sanitization.networkconnectivity.NoInternetConnection;
+import in.sanitization.sanitization.util.ConnectivityReceiver;
 import in.sanitization.sanitization.util.CustomVolleyJsonRequest;
 import in.sanitization.sanitization.util.LoadingBar;
 import in.sanitization.sanitization.util.Session_management;
@@ -316,21 +319,23 @@ public class AddAddressFragment extends Fragment implements View.OnClickListener
         {
             module.setErrorOnEditText(et_address,"Enter Address");
         }
-        else
-        {
-        String block=spin_block.getSelectedItem().toString();
-       if(block.isEmpty() || block.equalsIgnoreCase("Select City"))
-       {
-          toastMsg.toastIconError("Select Block");
-       }
-            String user_id=session_management.getUserDetails().get(KEY_ID).toString();
-            if(is_edit.equalsIgnoreCase("true"))
-            {
-                editAddress(elocation_id,user_id,name,mobile,state,district,block,pincode,address,details,module.getBuildingType(flagType));
+        else {
+            String block = spin_block.getSelectedItem().toString();
+            if (block.isEmpty() || block.equalsIgnoreCase("Select City")) {
+                toastMsg.toastIconError("Select Block");
+            }
+            String user_id = session_management.getUserDetails().get(KEY_ID).toString();
+            if (ConnectivityReceiver.isConnected()) {
+                if (is_edit.equalsIgnoreCase("true")) {
+                    editAddress(elocation_id, user_id, name, mobile, state, district, block, pincode, address, details, module.getBuildingType(flagType));
+                } else {
+                    addAddress(user_id, name, mobile, state, district, block, pincode, address, details, module.getBuildingType(flagType));
+                }
             }
             else
             {
-                addAddress(user_id,name,mobile,state,district,block,pincode,address,details,module.getBuildingType(flagType));
+                Intent intent = new Intent(getActivity(), NoInternetConnection.class);
+                startActivity(intent);
             }
         }
     }

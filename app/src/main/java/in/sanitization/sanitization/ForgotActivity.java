@@ -28,6 +28,8 @@ import java.util.Map;
 
 import in.sanitization.sanitization.Config.BaseUrl;
 import in.sanitization.sanitization.Config.Module;
+import in.sanitization.sanitization.networkconnectivity.NoInternetConnection;
+import in.sanitization.sanitization.util.ConnectivityReceiver;
 import in.sanitization.sanitization.util.CustomVolleyJsonRequest;
 
 
@@ -102,13 +104,17 @@ public class ForgotActivity extends AppCompatActivity implements View.OnClickLis
         }
         else
         {
-            if(n_pass.equals(c_pass))
-            {
-                getForgotRequest(num,n_pass);
+            if (ConnectivityReceiver.isConnected()) {
+                if (n_pass.equals(c_pass)) {
+                    getForgotRequest(num, n_pass);
+                } else {
+                    Toast.makeText(ForgotActivity.this, "Password must be matched", Toast.LENGTH_LONG).show();
+                }
             }
             else
             {
-                Toast.makeText(ForgotActivity.this,"Password must be matched", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(ForgotActivity.this, NoInternetConnection.class);
+                startActivity(intent);
             }
         }
 

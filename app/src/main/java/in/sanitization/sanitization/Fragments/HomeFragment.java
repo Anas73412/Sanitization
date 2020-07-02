@@ -56,6 +56,8 @@ import in.sanitization.sanitization.Model.PackageModel;
 import in.sanitization.sanitization.Model.Slider_model;
 import in.sanitization.sanitization.PackageDetails;
 import in.sanitization.sanitization.R;
+import in.sanitization.sanitization.networkconnectivity.NoInternetConnection;
+import in.sanitization.sanitization.util.ConnectivityReceiver;
 import in.sanitization.sanitization.util.CustomVolleyJsonArrayRequest;
 import in.sanitization.sanitization.util.CustomVolleyJsonRequest;
 import in.sanitization.sanitization.util.LoadingBar;
@@ -154,9 +156,13 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         rv_package=view.findViewById(R.id.rv_package);
         txt_view_more.setOnClickListener(this);
         txt_more_faq.setOnClickListener(this);
-
-        getAppSettingData();
-
+if (ConnectivityReceiver.isConnected()) {
+    getAppSettingData();
+} else
+{
+    Intent intent = new Intent(getActivity(), NoInternetConnection.class);
+    startActivity(intent);
+}
 
 
 

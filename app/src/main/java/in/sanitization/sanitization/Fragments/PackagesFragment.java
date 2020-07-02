@@ -36,6 +36,8 @@ import in.sanitization.sanitization.MainActivity;
 import in.sanitization.sanitization.Model.PackageModel;
 import in.sanitization.sanitization.PackageDetails;
 import in.sanitization.sanitization.R;
+import in.sanitization.sanitization.networkconnectivity.NoInternetConnection;
+import in.sanitization.sanitization.util.ConnectivityReceiver;
 import in.sanitization.sanitization.util.CustomVolleyJsonArrayRequest;
 import in.sanitization.sanitization.util.LoadingBar;
 import in.sanitization.sanitization.util.RecyclerTouchListener;
@@ -67,7 +69,13 @@ public class PackagesFragment extends Fragment {
         rv_package=view.findViewById(R.id.rv_package);
         module = new Module(getActivity());
         loadingBar = new LoadingBar(getActivity());
-        getplans();
+        if (ConnectivityReceiver.isConnected()) {
+            getplans();
+        } else
+        {
+            Intent intent = new Intent(getActivity(), NoInternetConnection.class);
+            startActivity(intent);
+        }
         rv_package.setLayoutManager(new GridLayoutManager(getActivity(),2));
     rv_package.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), rv_package, new RecyclerTouchListener.OnItemClickListener() {
         @Override

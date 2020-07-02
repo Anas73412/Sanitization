@@ -35,6 +35,8 @@ import java.util.Map;
 
 import in.sanitization.sanitization.Config.BaseUrl;
 import in.sanitization.sanitization.Config.Module;
+import in.sanitization.sanitization.networkconnectivity.NoInternetConnection;
+import in.sanitization.sanitization.util.ConnectivityReceiver;
 import in.sanitization.sanitization.util.CustomVolleyJsonRequest;
 import in.sanitization.sanitization.util.LoadingBar;
 
@@ -88,7 +90,14 @@ public class PackageDetails extends AppCompatActivity implements View.OnClickLis
       pckg_name.setText(title);
       pkg_product.setText(product);
       txt_title.setText(title);
-      getDetails(id);
+      if (ConnectivityReceiver.isConnected()) {
+          getDetails(id);
+      }
+      else
+      {
+          Intent intent = new Intent(PackageDetails.this, NoInternetConnection.class);
+          startActivity(intent);
+      }
 
     }
 
