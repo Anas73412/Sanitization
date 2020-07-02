@@ -12,6 +12,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -46,7 +47,8 @@ public class PaymentActivity extends AppCompatActivity implements View.OnClickLi
     Activity ctx=PaymentActivity.this;
     Module module;
     LoadingBar loadingBar;
-    Toolbar toolbar;
+    ImageView iv_back;
+    TextView tv_title;
     ToastMsg toastMsg;
     String user_id="";
     TextView tv_rev_name,tv_rev_mobile,tv_rev_pincode,tv_rev_address,tvItems,tvprice,tvMrp,tvDiscount,tvSubTotal;
@@ -71,29 +73,18 @@ public class PaymentActivity extends AppCompatActivity implements View.OnClickLi
     private void initViews() {
         module=new Module(ctx);
         toastMsg=new ToastMsg(ctx);
-        toolbar=findViewById(R.id.toolbar);
-        loadingBar=new LoadingBar(ctx);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        Drawable backArrow = getResources().getDrawable(R.drawable.ic_arrow_back_black_24dp);
-        backArrow.setColorFilter(getResources().getColor(R.color.green_500), PorterDuff.Mode.SRC_ATOP);
-        getSupportActionBar().setHomeAsUpIndicator(backArrow);
-        getSupportActionBar().setTitle("Subscription Details");
 
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+        loadingBar=new LoadingBar(ctx);
+        iv_back=findViewById(R.id.iv_back);
+        tv_title=findViewById(R.id.tv_title);
+
+        iv_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    onBackPressed();
-                }
-                catch (Exception ex)
-                {
-                    ex.printStackTrace();
-                }
-
+                onBackPressed();
             }
         });
+        tv_title.setText("Order Details");
         tv_rev_name=findViewById(R.id.tv_rev_name);
         tv_rev_mobile=findViewById(R.id.tv_rev_mobile);
         tv_rev_pincode=findViewById(R.id.tv_rev_pincode);

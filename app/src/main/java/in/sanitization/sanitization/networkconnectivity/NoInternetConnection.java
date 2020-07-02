@@ -3,6 +3,8 @@ package in.sanitization.sanitization.networkconnectivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -13,13 +15,15 @@ import in.sanitization.sanitization.SplashActivity;
 
 
 public class NoInternetConnection extends AppCompatActivity {
-  ImageView mCheckConnection;
+  Button mCheckConnection;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.actvity_no_internet_connection);
-    mCheckConnection = (ImageView) findViewById(R.id.no_internet_connection);
+    getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+            WindowManager.LayoutParams.FLAG_FULLSCREEN);
+    mCheckConnection = (Button) findViewById(R.id.no_internet_connection);
     mCheckConnection.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {

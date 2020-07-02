@@ -29,6 +29,7 @@
         <activity android:name=".MainActivity" />
         <activity android:name=".ForgotActivity" />
         <activity android:name=".Verfication_activity" />
+        <activity android:name=".networkconnectivity.NoInternetConnection" />
         <activity android:name=".SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

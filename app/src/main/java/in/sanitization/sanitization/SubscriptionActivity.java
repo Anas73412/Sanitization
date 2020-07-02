@@ -48,10 +48,10 @@ public class SubscriptionActivity extends AppCompatActivity{
     Activity ctx=SubscriptionActivity.this;
     Module module;
     LoadingBar loadingBar;
-    Toolbar toolbar;
+
     ToastMsg toastMsg;
     ImageView iv_back;
-    TextView toolbarTitle;
+    TextView tv_title;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,38 +77,21 @@ public class SubscriptionActivity extends AppCompatActivity{
     private void initViews() {
         module=new Module(ctx);
         toastMsg=new ToastMsg(ctx);
-        toolbar=findViewById(R.id.toolbar);
         loadingBar=new LoadingBar(ctx);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        Drawable backArrow = getResources().getDrawable(R.drawable.ic_arrow_back_black_24dp);
-        backArrow.setColorFilter(getResources().getColor(R.color.green_500), PorterDuff.Mode.SRC_ATOP);
-        getSupportActionBar().setHomeAsUpIndicator(backArrow);
+        iv_back=findViewById(R.id.iv_back);
+        tv_title=findViewById(R.id.tv_title);
 
-
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+        iv_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    Fragment fr = getSupportFragmentManager().findFragmentById(R.id.content_frame);
-
-                    final String fm_name = fr.getClass().getSimpleName();
-//                    module.showToast(""+fm_name);
-                    onBackPressed();
-                }
-                catch (Exception ex)
-                {
-                    ex.printStackTrace();
-                }
-
+                onBackPressed();
             }
         });
 
     }
     public void setTitle(String title)
     {
-        getSupportActionBar().setTitle(title);
+        tv_title.setText(title);
     }
 
 

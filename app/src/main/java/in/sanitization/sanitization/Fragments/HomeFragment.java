@@ -197,7 +197,6 @@ if (ConnectivityReceiver.isConnected()) {
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
-                        Log.d("sliders", response.toString());
                         try {
                             ArrayList<HashMap<String, String>> listarray = new ArrayList<>();
                             for (int i = 0; i < response.length(); i++) {
@@ -249,7 +248,7 @@ if (ConnectivityReceiver.isConnected()) {
                                     }
                                 });
 
-                                Log.e("assad",""+carList.size());
+
                                 carausalAdapter =new CarausalAdapter(carList,getActivity());
                                 viewPager.setAdapter(carausalAdapter);
                                 viewPager.setPadding(10,0,50,0);
@@ -320,7 +319,6 @@ if (ConnectivityReceiver.isConnected()) {
 
                             }
 
-                            Log.e("bannnerlist",""+bannerList.size());
                             carausalAdapter =new CarausalAdapter(bannerList,getActivity());
                             viewPager2.setAdapter(carausalAdapter);
                             viewPager2.setPadding(10,0,50,0);
@@ -355,7 +353,7 @@ if (ConnectivityReceiver.isConnected()) {
 
             @Override
             public void onResponse(JSONArray response) {
-                Log.d("plans", response.toString());
+
                 loadingBar.dismiss();
 
                 if (response != null && response.length() > 0) {
@@ -463,7 +461,6 @@ if (ConnectivityReceiver.isConnected()) {
         CustomVolleyJsonRequest request=new CustomVolleyJsonRequest(Request.Method.POST, BaseUrl.URL_UPDATER, map, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                Log.d("app_data",response.toString());
                 loadingBar.dismiss();
                 try
                 {

@@ -31,17 +31,20 @@ import in.sanitization.sanitization.Config.Module;
 import in.sanitization.sanitization.networkconnectivity.NoInternetConnection;
 import in.sanitization.sanitization.util.ConnectivityReceiver;
 import in.sanitization.sanitization.util.CustomVolleyJsonRequest;
+import in.sanitization.sanitization.util.LoadingBar;
+import in.sanitization.sanitization.util.ToastMsg;
 
 
 public class ForgotActivity extends AppCompatActivity implements View.OnClickListener {
 
     Module module;
     private static String TAG = ForgotActivity.class.getSimpleName();
-    ProgressDialog loadingBar ;
+    LoadingBar loadingBar ;
     private Button btn_continue;
     private EditText et_con_pass,et_new_pass;
     private TextView tv_email;
     String lan;
+    ToastMsg toastMsg;
     String num="";
     SharedPreferences preferences;
 
@@ -56,10 +59,10 @@ public class ForgotActivity extends AppCompatActivity implements View.OnClickLis
         num=getIntent().getStringExtra("mobile");
         et_new_pass=(EditText)findViewById(R.id.et_new_pass);
         et_con_pass=(EditText)findViewById(R.id.et_con_pass);
-        loadingBar=new ProgressDialog(ForgotActivity.this);
-        loadingBar.setMessage("Loading...");
-        loadingBar.setCanceledOnTouchOutside(false);
+        loadingBar=new LoadingBar(ForgotActivity.this);
+
         module=new Module(ForgotActivity.this);
+        toastMsg=new ToastMsg(ForgotActivity.this);
 
 
         btn_continue =  findViewById(R.id.btnContinue);
@@ -108,7 +111,7 @@ public class ForgotActivity extends AppCompatActivity implements View.OnClickLis
                 if (n_pass.equals(c_pass)) {
                     getForgotRequest(num, n_pass);
                 } else {
-                    Toast.makeText(ForgotActivity.this, "Password must be matched", Toast.LENGTH_LONG).show();
+                    toastMsg.toastIconError("Password must be matched");
                 }
             }
             else
@@ -139,8 +142,7 @@ public class ForgotActivity extends AppCompatActivity implements View.OnClickLis
 
                     if(responce)
                     {
-                       module.showToast(response.getString("data"));
-
+                        toastMsg.toastIconSuccess(""+response.getString("data"));
                         Intent intent=new Intent(ForgotActivity.this,LoginActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK| Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
@@ -148,7 +150,7 @@ public class ForgotActivity extends AppCompatActivity implements View.OnClickLis
                     }
                     else
                     {
-                       module.showToast("Password could not be updated ");
+                        toastMsg.toastIconError("Password could not be updated ");
 
                         Intent intent=new Intent(ForgotActivity.this,LoginActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK| Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -159,7 +161,7 @@ public class ForgotActivity extends AppCompatActivity implements View.OnClickLis
                 catch (Exception ex)
                 {
                     ex.printStackTrace();
-                    Toast.makeText(ForgotActivity.this,""+ ex.getMessage(), Toast.LENGTH_LONG).show();
+//                    Toast.makeText(ForgotActivity.this,""+ ex.getMessage(), Toast.LENGTH_LONG).show();
                 }
                 //  Toast.makeText(ForgotActivity.this,""+response.toString(),Toast.LENGTH_LONG).show();
 

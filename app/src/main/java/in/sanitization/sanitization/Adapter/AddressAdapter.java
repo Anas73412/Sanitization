@@ -112,9 +112,6 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHold
         holder.txtEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                Session_management sessionManagement = new Session_management(activity);
-                sessionManagement.clearSocities();
                 Bundle args = new Bundle();
                 Fragment fm = new AddAddressFragment();
                 args.putString("location_id",modelList.get(position).getLocation_id());

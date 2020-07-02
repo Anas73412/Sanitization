@@ -7,23 +7,29 @@
     android:background="@color/white"
     android:layout_gravity="center">
 
-
     <ImageView
-        android:id="@+id/no_internet_connection"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
         android:backgroundTint="@color/white"
         android:src="@drawable/no_connection"
         android:layout_gravity="center"
         android:gravity="center" />
     <in.sanitization.sanitization.Fonts.LatoBLack
-        android:layout_marginTop="-200dp"
         android:layout_width="match_parent"
         android:gravity="center"
-        android:text="Slow /No Internet Connection\n Check your connection \n &amp; \n Try Again !"
+        android:text="Slow or No Internet Connection\n Check your connection \n Try Again !"
         android:textAllCaps="false"
-
-
         android:layout_height="wrap_content"/>
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/address_edittext"
+        android:backgroundTint="@color/colorAccent"
+        android:layout_margin="@dimen/space_15"
+        android:id="@+id/no_internet_connection"
+        android:textAllCaps="false"
+        android:textSize="@dimen/space_14"
+        android:text="Check Now!"
+        android:textColor="@color/white"/>
 </LinearLayout>

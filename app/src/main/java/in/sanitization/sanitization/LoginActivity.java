@@ -28,6 +28,7 @@ import in.sanitization.sanitization.util.ConnectivityReceiver;
 import in.sanitization.sanitization.util.CustomVolleyJsonRequest;
 import in.sanitization.sanitization.util.LoadingBar;
 import in.sanitization.sanitization.util.Session_management;
+import in.sanitization.sanitization.util.ToastMsg;
 
 import static in.sanitization.sanitization.Config.BaseUrl.LOGIN;
 import static in.sanitization.sanitization.Config.BaseUrl.SIGN_UP;
@@ -41,6 +42,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     LoadingBar loadingBar ;
     Session_management session_management;
     Activity ctx=LoginActivity.this;
+    ToastMsg toastMsg;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,6 +61,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         tv_back=findViewById(R.id.txt_back);
         module=new Module(ctx);
        loadingBar=new LoadingBar(ctx);
+       toastMsg=new ToastMsg(ctx);
         session_management =new Session_management(ctx);
         btn_login.setOnClickListener(this);
         tv_create.setOnClickListener(this);
@@ -139,11 +142,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 try {
                     loadingBar.dismiss();
                     boolean resp=response.getBoolean("responce");
-                    Log.e("data_login",""+response.toString());
                     if(resp)
                     {
-
-                        //module.showToast(""+response.getString("message"));
                         JSONObject object=response.getJSONObject("data");
                         session_management.createLoginSession(object.getString("user_id"),object.getString("user_email"),object.getString("user_fullname"),object.getString("user_phone"),
                                 object.getString("state"),object.getString("district"),object.getString("block"),object.getString("pincode"),object.getString("address"),object.getString("district_manager_id"),object.getString("area_manager_id"));

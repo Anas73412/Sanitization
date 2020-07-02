@@ -5,6 +5,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -15,6 +16,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -59,6 +62,19 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
+        toggle.getDrawerArrowDrawable().setColor(getResources().getColor(R.color.black));
+//        Drawable drawable = ResourcesCompat.getDrawable(getResources(), R.drawable.drawer_icon, getTheme());
+//        toggle.setHomeAsUpIndicator(drawable);
+//        toggle.setToolbarNavigationClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (drawer.isDrawerVisible(GravityCompat.START)) {
+//                    drawer.closeDrawer(GravityCompat.START);
+//                } else {
+//                    drawer.openDrawer(GravityCompat.START);
+//                }
+//            }
+//        });
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setItemIconTintList(null);
         View header = ((NavigationView) findViewById(R.id.nav_view)).getHeaderView(0);
@@ -78,24 +94,25 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 try {
                     InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
-                    Fragment fr = getSupportFragmentManager().findFragmentById(R.id.contentPanel);
+                    Fragment fr = getSupportFragmentManager().findFragmentById(R.id.frame);
 
                     final String fm_name = fr.getClass().getSimpleName();
                     Log.e("backstack: ", ": " + fm_name);
                     if (fm_name.contentEquals("HomeFragment")) {
-                        drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
-                        toggle.setDrawerIndicatorEnabled(true);
-                        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-                        toggle.syncState();
+//                        drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+//                        toggle.setDrawerIndicatorEnabled(true);
+//                        toggle.getDrawerArrowDrawable().setColor(getResources().getColor(R.color.black));
+//                        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//                        toggle.syncState();
 
                     }
                      else {
 
-                        drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-
-                        toggle.setDrawerIndicatorEnabled(false);
-                        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-                        toggle.syncState();
+//                        drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+//                        toggle.getDrawerArrowDrawable().setColor(getResources().getColor(R.color.black));
+//                        toggle.setDrawerIndicatorEnabled(false);
+//                        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//                        toggle.syncState();
 
                         toggle.setToolbarNavigationClickListener(new View.OnClickListener() {
                             @Override

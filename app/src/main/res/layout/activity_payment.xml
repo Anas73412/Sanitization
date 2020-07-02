@@ -6,25 +6,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".PaymentActivity">
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/app_bar"
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:theme="@style/AppTheme.AppBarOverlay"
-        app:elevation="0dp">
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            app:titleTextColor="@color/black"
-            app:popupTheme="@style/AppTheme.PopupOverlay">
-
-
-        </androidx.appcompat.widget.Toolbar>
-
-    </com.google.android.material.appbar.AppBarLayout>
-
+        android:layout_height="match_parent">
+    <include layout="@layout/toolbar_layout"/>
     <ScrollView
         android:layout_below="@id/app_bar"
         android:layout_width="match_parent"
@@ -571,6 +557,7 @@
 
         </LinearLayout>
     </ScrollView>
+    </LinearLayout>
     <RelativeLayout
         android:layout_alignParentBottom="true"
         android:id="@+id/rel_order"

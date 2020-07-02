@@ -33,6 +33,7 @@ import in.sanitization.sanitization.networkconnectivity.NoInternetConnection;
 import in.sanitization.sanitization.util.ConnectivityReceiver;
 import in.sanitization.sanitization.util.CustomVolleyJsonRequest;
 import in.sanitization.sanitization.util.LoadingBar;
+import in.sanitization.sanitization.util.ToastMsg;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -45,6 +46,7 @@ public class SendOtpFragment extends Fragment {
     LoadingBar loadingBar ;
     Module module ;
     String type = "";
+    ToastMsg toastMsg;
     public SendOtpFragment() {
         // Required empty public constructor
     }
@@ -58,6 +60,7 @@ public class SendOtpFragment extends Fragment {
         btn_otp_verify=view.findViewById(R.id.btn_otp_verify);
         et_gen_otp=view.findViewById(R.id.et_gen_otp);
         loadingBar=new LoadingBar(getActivity());
+        toastMsg=new ToastMsg(getActivity());
         type = getActivity().getIntent().getStringExtra("type");
 
 
@@ -132,13 +135,13 @@ Log.e("ooooo",""+map.toString());
                     else
                     {
                         loadingBar.dismiss();
-                      Toast.makeText(getActivity(),response.getString("error"),Toast.LENGTH_LONG).show();
+                        toastMsg.toastIconError(""+response.getString("error"));
                     }
                 }
                 catch (Exception ex)
                 {        loadingBar.dismiss();
                     ex.printStackTrace();
-                    Toast.makeText(getActivity(),""+ex.getMessage(),Toast.LENGTH_LONG).show();
+
                 }
 
                 // Toast.makeText(OtpActivity.this,""+response,Toast.LENGTH_LONG).show();
@@ -190,13 +193,12 @@ Log.e("ooooo",""+map.toString());
                     else
                     {
                         loadingBar.dismiss();
-                        Toast.makeText(getActivity(),response.getString("error"),Toast.LENGTH_LONG).show();
+                        toastMsg.toastIconError(""+response.getString("error"));
                     }
                 }
                 catch (Exception ex)
                 {        loadingBar.dismiss();
                     ex.printStackTrace();
-                    Toast.makeText(getActivity(),""+ex.getMessage(),Toast.LENGTH_LONG).show();
                 }
 
                 // Toast.makeText(OtpActivity.this,""+response,Toast.LENGTH_LONG).show();

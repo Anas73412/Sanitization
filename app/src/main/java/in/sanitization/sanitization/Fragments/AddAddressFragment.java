@@ -152,6 +152,7 @@ public class AddAddressFragment extends Fragment implements View.OnClickListener
         eBlock=getArguments().getString("block");
         eDesc=getArguments().getString("desc");
         eAddType=getArguments().getString("add_type");
+        ((SubscriptionActivity)getActivity()).setTitle("Add Address");
         et_state.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -172,6 +173,7 @@ public class AddAddressFragment extends Fragment implements View.OnClickListener
                 String dis=et_district.getText().toString().trim();
                 if(!dis.isEmpty())
                 {
+//                    Log.e("district_id",""+module.getDistrictId(districtModelList,dis));
                     getBlock(module.getDistrictId(districtModelList,dis),true,"");
                 }
             }
@@ -182,13 +184,14 @@ public class AddAddressFragment extends Fragment implements View.OnClickListener
         if(is_edit.equalsIgnoreCase("true"))
         {
             btn_submit.setText("Update Address");
+            ((SubscriptionActivity)getActivity()).setTitle("Update Address");
             et_name.setText(eName);
             et_number.setText(eMobile);
             et_state.setText(eState);
 //            et_district.setText(eDistrict);
             et_pincode.setText(ePincode);
-            getDistrict(module.getStateId(stateModelList,eState),false,eDistrict);
-            getBlock(module.getDistrictId(districtModelList,eDistrict),false,eBlock);
+
+
             if(!eState.isEmpty())
             {
                 distict_name=eDistrict;
@@ -247,25 +250,10 @@ public class AddAddressFragment extends Fragment implements View.OnClickListener
         }
         else if(v.getId()==R.id.btn_submit)
         {
+
             validateData();
         }
 
-
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
- if(!et_state.getText().toString().isEmpty())
- {
-//     getcities(et_state.getText().toString(),false,city_name);
-     getDistrict(et_state.getText().toString(),false,distict_name);
- }
- if(!et_district.getText().toString().isEmpty())
- {
-     getBlock(et_district.getText().toString(),false,block_name);
- }
 
     }
 
@@ -368,7 +356,7 @@ public class AddAddressFragment extends Fragment implements View.OnClickListener
                     }
                     else
                     {
-                        module.showToast(""+response.getString("error"));
+                        toastMsg.toastIconError(""+response.getString("error"));
                     }
                 }
                 catch (Exception ex)
@@ -420,7 +408,7 @@ public class AddAddressFragment extends Fragment implements View.OnClickListener
                     }
                     else
                     {
-                        module.showToast(""+response.getString("error"));
+                        toastMsg.toastIconError(""+response.getString("error"));
                     }
                 }
                 catch (Exception ex)
@@ -493,11 +481,14 @@ public class AddAddressFragment extends Fragment implements View.OnClickListener
                             state_list.add(stateModelList.get(i).getState_name().toString());
 
                         }
-                        Log.e("asdasdasd",""+stateModelList.size()+" - "+state_list.size());
                         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
                                 getActivity(), android.R.layout.simple_list_item_1,state_list);
                         et_state.setAdapter(arrayAdapter);
                         et_state.setThreshold(1);
+                        if(is_edit.equalsIgnoreCase("true"))
+                        {
+                            getDistrict(module.getStateId(stateModelList,eState),false,eDistrict);
+                        }
 
                     }
                 } catch (JSONException e) {
@@ -536,9 +527,8 @@ public class AddAddressFragment extends Fragment implements View.OnClickListener
 
 
     private void getDistrict(String stateId, final boolean flag,final String dis_name) {
-        Map<String, String> params = new HashMap<String, String>();
+        final Map<String, String> params = new HashMap<String, String>();
         params.put("state_id",stateId);
-        Log.e("asdsdasd",""+params.toString());
         districtModelList.clear();
         district_list.clear();
         final CustomVolleyJsonRequest jsonObjReq = new CustomVolleyJsonRequest(Request.Method.POST,
@@ -546,7 +536,6 @@ public class AddAddressFragment extends Fragment implements View.OnClickListener
 
             @Override
             public void onResponse(JSONObject response) {
-                Log.d("states", response.toString());
                 try {
                     boolean status = response.getBoolean("responce");
                     if (status)
@@ -560,29 +549,27 @@ public class AddAddressFragment extends Fragment implements View.OnClickListener
                             district_list.add(districtModelList.get(i).getDistrict_name().toString());
 
                         }
-                        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
-                                getActivity(), android.R.layout.simple_list_item_1,district_list);
-                        et_district.setAdapter(arrayAdapter);
-                        et_district.setThreshold(1);
+
                         tempDisList.clear();
                         tempDisList.addAll(district_list);
                         if(!flag)
                         {
                             if(!dis_name.isEmpty())
                             {
-                                int idx=-1;
-                                for(int i=0; i<district_list.size();i++)
-                                {
-                                    if(district_list.get(i).toString().equalsIgnoreCase(dis_name))
-                                    {
-                                        idx=i;
-                                        break;
-                                    }
-                                }
-                                et_district.setSelection(idx);
-                                et_district.setText(dis_name);
 
+
+//                                et_district.setSelection(module.getStringListIndex(district_list,dis_name));
+                                et_district.setText(district_list.get(module.getStringListIndex(district_list,dis_name)));
                             }
+                        }
+                        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
+                                getActivity(), android.R.layout.simple_list_item_1,district_list);
+                        et_district.setAdapter(arrayAdapter);
+                        et_district.setThreshold(1);
+
+                        if(is_edit.equalsIgnoreCase("true"))
+                        {
+                            getBlock(module.getDistrictId(districtModelList,eDistrict),false,eBlock);
                         }
 
                     }
@@ -612,7 +599,7 @@ public class AddAddressFragment extends Fragment implements View.OnClickListener
 
     private void getBlock(String districtId, final boolean flag,final String block_name) {
         loadingBar.show();
-        Map<String, String> params = new HashMap<String, String>();
+        final Map<String, String> params = new HashMap<String, String>();
         params.put("dis_id",districtId);
         blockModelList.clear();
         block_list.clear();
@@ -621,6 +608,7 @@ public class AddAddressFragment extends Fragment implements View.OnClickListener
 
             @Override
             public void onResponse(JSONObject response) {
+                Log.e("block_details - "+flag,""+params.toString()+" - "+response.toString());
                 loadingBar.dismiss();
                 try {
                     boolean status = response.getBoolean("responce");
@@ -643,16 +631,8 @@ public class AddAddressFragment extends Fragment implements View.OnClickListener
                         {
                             if(!block_name.isEmpty())
                             {
-                                int idx=-1;
-                                for(int i=0; i<block_list.size();i++)
-                                {
-                                    if(block_list.get(i).toString().equalsIgnoreCase(block_name))
-                                    {
-                                        idx=i;
-                                        break;
-                                    }
-                                }
-                                spin_block.setSelection(idx);
+
+                                spin_block.setSelection(module.getStringListIndex(block_list,block_name));
                             }
                         }
                     }

@@ -44,17 +44,17 @@ import static in.sanitization.sanitization.Config.BaseUrl.BASE_URL;
 import static in.sanitization.sanitization.Config.BaseUrl.IMG_PLAN_URL;
 
 public class PackageDetails extends AppCompatActivity implements View.OnClickListener {
-    TextView pckg_name ,pckg_price,pkg_product ,txt_title ,pkg_mrp ,pkg_discount;
+    TextView pckg_name ,pckg_price,pkg_product ,txt_title ,pkg_mrp ,pkg_discount,tv_expiry,tv_work_days;
     ImageView img_back;
     SliderLayout pkg_img ;
-   HashMap<String ,Object> img_map;
+    HashMap<String ,Object> img_map;
     int sp , mp ,diff ;
     Button btn_buy ;
     Module module ;
     String sPrice="",sMrp="",sTitle="";
     LoadingBar loadingBar ;
     Activity activity= PackageDetails.this;
-    String title= "",price="",product="",status="",id="";
+    String title= "",price="",product="",status="",id="",plan_expiry="",working_days="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,13 +66,15 @@ public class PackageDetails extends AppCompatActivity implements View.OnClickLis
     private void initViews() {
         pkg_img = findViewById(R.id.pkg_img);
         pckg_name=findViewById(R.id.package_name);
-       pckg_price = findViewById(R.id.package_price);
-       pkg_product = findViewById(R.id.description);
-       pkg_mrp = findViewById(R.id.package_mrp);
-       pkg_discount = findViewById(R.id.package_dis);
-       btn_buy = findViewById(R.id.buy_now);
-       txt_title= findViewById(R.id.tv_title);
-       img_back = findViewById(R.id.iv_back);
+        pckg_price = findViewById(R.id.package_price);
+        pkg_product = findViewById(R.id.description);
+        pkg_mrp = findViewById(R.id.package_mrp);
+        pkg_discount = findViewById(R.id.package_dis);
+        tv_work_days = findViewById(R.id.tv_work_days);
+        tv_expiry=findViewById(R.id.tv_expiry);
+        btn_buy = findViewById(R.id.buy_now);
+        txt_title= findViewById(R.id.tv_title);
+        img_back = findViewById(R.id.iv_back);
         loadingBar = new LoadingBar(activity);
         module = new Module(activity);
         btn_buy.setOnClickListener(this);
@@ -80,25 +82,24 @@ public class PackageDetails extends AppCompatActivity implements View.OnClickLis
 
 
         price = getIntent().getStringExtra("plan_price");
-      product= getIntent().getStringExtra("plan_product");
         title = getIntent().getStringExtra("plan_name");
         status = getIntent().getStringExtra("plan_status");
         id = getIntent().getStringExtra("plan_id");
 
 
-      pckg_price.setText(getResources().getString(R.string.currency)+""+price);
-      pckg_name.setText(title);
-      pkg_product.setText(product);
-      txt_title.setText(title);
-      if (ConnectivityReceiver.isConnected()) {
-          getDetails(id);
-      }
-      else
-      {
-          Intent intent = new Intent(PackageDetails.this, NoInternetConnection.class);
-          startActivity(intent);
-      }
+        pckg_price.setText(getResources().getString(R.string.currency)+""+price);
+        pckg_name.setText(title);
+        txt_title.setText(title);
 
+        if(ConnectivityReceiver.isConnected())
+        {
+        getDetails(id);
+    }
+        else
+    {
+        Intent intent = new Intent(PackageDetails.this, NoInternetConnection.class);
+        startActivity(intent);
+    }
     }
 
     @Override
@@ -115,17 +116,9 @@ public class PackageDetails extends AppCompatActivity implements View.OnClickLis
             intent.putExtra("name",sTitle);
             intent.putExtra("price",sPrice);
             intent.putExtra("mrp",sMrp);
+            intent.putExtra("working_days",working_days);
+            intent.putExtra("plan_expiry",plan_expiry);
             startActivity(intent);
-//            AlertDialog.Builder builder=new AlertDialog.Builder(PackageDetails.this);
-//            builder.setMessage(getResources().getString(R.string.order_soon));
-//            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-//                @Override
-//                public void onClick(DialogInterface dialog, int which) {
-//                   dialog.dismiss();
-//                }
-//            });
-//            AlertDialog alertDialog=builder.create();
-//            alertDialog.show();
         }
     }
 
@@ -150,44 +143,33 @@ public class PackageDetails extends AppCompatActivity implements View.OnClickLis
                         HashMap<String, String> url_maps = new HashMap<String, String>();
                         JSONObject data = response.getJSONObject("data");
                         String img_obj = data.getString("plan_image");
+                        plan_expiry=data.getString("plan_expiry");
+                        working_days=data.getString("plan_no_of_working_days");
+                        tv_expiry.setText("Package will expire after "+plan_expiry+" of subscription date");
+                        tv_work_days.setText(working_days);
                         JSONArray img_arr = new JSONArray(img_obj);
                         if(img_obj.isEmpty())
                         {
-                            module.showToast("No Images Available");
+                            module.showToast("No Images Avalaible");
                         }
                         else
                         {
 
                         }
-                       for (int i = 0 ;i<img_arr.length();i++)
-                       {
+                        for (int i = 0 ;i<img_arr.length();i++)
+                        {
 
 
-                           CustomSlider textSliderView = new CustomSlider(PackageDetails.this);
-                           // initialize a SliderLayout
-                           Log.e("ddddd",""+IMG_PLAN_URL +img_arr.get(i).toString());
-                           textSliderView
-                                   .image(IMG_PLAN_URL +img_arr.get(i).toString())
-                                   .setScaleType(CustomSlider.ScaleType.CenterInside);
-                           pkg_img.addSlider(textSliderView);
+                            CustomSlider textSliderView = new CustomSlider(PackageDetails.this);
+                            // initialize a SliderLayout
+                            Log.e("ddddd",""+IMG_PLAN_URL +img_arr.get(i).toString());
+                            textSliderView
+                                    .image(IMG_PLAN_URL +img_arr.get(i).toString())
+                                    .setScaleType(CustomSlider.ScaleType.CenterInside);
+                            pkg_img.addSlider(textSliderView);
 
 
-                       }
-//                        for(String name : url_maps.keySet()){
-//
-//                           CustomSlider textSliderView = new CustomSlider(PackageDetails.this);
-//                            textSliderView
-//                                    .description(name)
-//                                    .image(url_maps.get(name))
-//                                    .setScaleType(BaseSliderView.ScaleType.Fit);
-//
-//                            textSliderView.bundle(new Bundle());
-//                            textSliderView.getBundle()
-//                                    .putString("extra",name);
-//                           pkg_img.addSlider(textSliderView);
-//                        }
-//                        pkg_img.setPresetTransformer(SliderLayout.Transformer.Accordion);
-//                        pkg_img.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
+                        }
                         pkg_img.setDuration(10000);
                         pkg_product.setText(data.getString("plan_description"));
                         pckg_name.setText(data.getString("plan_name"));
@@ -196,7 +178,7 @@ public class PackageDetails extends AppCompatActivity implements View.OnClickLis
                         sMrp=data.getString("plan_mrp").toString();
                         sp = Integer.parseInt(data.getString("plan_price"));
                         mp = Integer.parseInt(data.getString("plan_mrp"));
-                      diff = module.getDiscount(data.getString("plan_price"),data.getString("plan_mrp"));
+                        diff = module.getDiscount(data.getString("plan_price"),data.getString("plan_mrp"));
 
                         if (diff<= 0)
                         {
@@ -205,7 +187,7 @@ public class PackageDetails extends AppCompatActivity implements View.OnClickLis
                         else
                         {
                             pkg_discount.setVisibility(View.VISIBLE);
-                        pkg_discount.setText(""+diff + "% OFF");}
+                            pkg_discount.setText(""+diff + "% OFF");}
 
                         pckg_price.setText(getResources().getString(R.string.currency)+""+sp);
                         pkg_mrp.setText(getResources().getString(R.string.currency)+""+mp);

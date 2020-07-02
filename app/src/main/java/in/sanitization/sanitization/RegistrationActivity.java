@@ -43,6 +43,7 @@ import in.sanitization.sanitization.networkconnectivity.NoInternetConnection;
 import in.sanitization.sanitization.util.ConnectivityReceiver;
 import in.sanitization.sanitization.util.CustomVolleyJsonRequest;
 import in.sanitization.sanitization.util.LoadingBar;
+import in.sanitization.sanitization.util.ToastMsg;
 
 import static in.sanitization.sanitization.Config.BaseUrl.SIGN_UP;
 
@@ -61,6 +62,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     ArrayList<DistrictModel> districtModelList;
     ArrayList<BlockModel> blockModelList;
     Activity ctx=RegistrationActivity.this;
+    ToastMsg toastMsg;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,6 +86,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         btn_reg=findViewById(R.id.btn_reg);
        tv_back=findViewById(R.id.txt_back);
         module=new Module(ctx);
+        toastMsg=new ToastMsg(ctx);
         loadingBar=new LoadingBar(ctx);
         district_list = new ArrayList<>();
         state_list = new ArrayList<>();
@@ -101,9 +104,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 et_district.setText("");
                 if(!state.isEmpty())
                 {
-
                     getDistrict(module.getStateId(stateModelList,state));
-
                 }
             }
         });
@@ -375,13 +376,14 @@ loadingBar.dismiss();
                     boolean resp=response.getBoolean("responce");
                     if(resp)
                     {
-                        module.showToast(""+response.getString("message"));
+                        toastMsg.toastIconSuccess(response.getString("message"));
+
                         Intent intent = new Intent(RegistrationActivity.this,LoginActivity.class);
                         startActivity(intent);
                     }
                     else
                     {
-                        module.showToast(""+response.getString("error"));
+                        toastMsg.toastIconError(response.getString("error"));
                     }
                 }
                 catch (Exception ex)

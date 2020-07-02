@@ -225,7 +225,9 @@ public class Module {
                   break;
               }
         }
-        return String.valueOf(id+1);
+
+            return String.valueOf(id+1);
+
     }
 
     public String getDistrictId(ArrayList<DistrictModel> list, String dis_name)
@@ -235,11 +237,11 @@ public class Module {
         {
             if(list.get(i).getDistrict_name().toString().equalsIgnoreCase(dis_name))
             {
-                id=i;
+                id=Integer.parseInt(list.get(i).getD_id().toString());
                 break;
             }
         }
-        return String.valueOf(id+1);
+        return String.valueOf(id);
     }
 
     public String getBlockId(ArrayList<BlockModel> list, String block_name)
@@ -249,11 +251,11 @@ public class Module {
         {
             if(list.get(i).getBlock_name().toString().equalsIgnoreCase(block_name))
             {
-                id=i;
+                id=Integer.parseInt(list.get(i).getB_id().toString());
                 break;
             }
         }
-        return String.valueOf(id+1);
+        return String.valueOf(id);
     }
 
     public String getCurrentDate()
@@ -274,6 +276,46 @@ public class Module {
         Date date=new Date();
         SimpleDateFormat simpleDateFormat=new SimpleDateFormat("ddMMyyyyhhmmss");
         return (type+simpleDateFormat.format(date).toString());
+    }
+
+    public int getStringListIndex(ArrayList<String> list,String str)
+    {
+        int index=0;
+        for(int i=0; i<list.size();i++)
+        {
+            if(list.get(i).equalsIgnoreCase(str))
+            {
+                index=i;
+                break;
+            }
+        }
+        return index;
+    }
+    public String getDistrictName(ArrayList<DistrictModel> list,String id)
+    {
+        String name="";
+        for(int i =0; i<list.size();i++)
+        {
+            if(list.get(i).getD_id().toString().equalsIgnoreCase(id))
+            {
+                name=list.get(i).getDistrict_name().toString();
+                break;
+            }
+        }
+        return name;
+    }
+    public String getBlockName(ArrayList<BlockModel> list,String id)
+    {
+        String name="";
+        for(int i =0; i<list.size();i++)
+        {
+            if(list.get(i).getB_id().toString().equalsIgnoreCase(id))
+            {
+                name=list.get(i).getBlock_name().toString();
+                break;
+            }
+        }
+        return name;
     }
 }
 
