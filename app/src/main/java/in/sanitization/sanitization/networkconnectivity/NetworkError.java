@@ -7,8 +7,8 @@ import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import binplus.SagarOnline.R;
-import binplus.SagarOnline.SplashActivity;
+import in.sanitization.sanitization.R;
+import in.sanitization.sanitization.SplashActivity;
 
 
 public class NetworkError extends AppCompatActivity {
