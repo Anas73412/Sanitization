@@ -58,8 +58,9 @@ public class Order_adapter extends RecyclerView.Adapter<Order_adapter.MyViewHold
             tv_price = (TextView) view.findViewById(R.id.tv_order_price);
             tv_item = (TextView) view.findViewById(R.id.tv_order_item);
             tv_email = (TextView) view.findViewById(R.id.email);
+            tv_methid1 = (TextView) view.findViewById(R.id.method1);
             user_address = (TextView) view.findViewById(R.id.user_address);
-
+            relative_background=view.findViewById(R.id.relative_background);
             cardView = view.findViewById(R.id.card_view);
 
         }
@@ -78,109 +79,42 @@ public class Order_adapter extends RecyclerView.Adapter<Order_adapter.MyViewHold
     public void onBindViewHolder(Order_adapter.MyViewHolder holder, int position) {
       OrderModel  mList = modelList.get(position);
 
-//        holder.tv_orderno.setText("JF_ID"+mList.getSale_id());
-//
-//        if (mList.getStatus().equals("0")) {
-//            holder.tv_status.setText(context.getResources().getString(R.string.pending));
-//            holder.lin_expected.setVisibility(View.GONE);
-//            holder.relativetextstatus.setText(context.getResources().getString(R.string.pending));
-//            holder.relative_background.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
-//        } else if (mList.getStatus().equals("1")) {
-//            holder.tv_confirm_date.setVisibility(View.VISIBLE);
-//            holder.view1.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
-//            holder.view2.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
-//            holder.relative_background.setBackgroundColor(context.getResources().getColor(R.color.orange));
-//            holder.Confirm.setImageResource(R.color.colorPrimary);
-//            holder.tv_status.setText(context.getResources().getString(R.string.confirm));
-//            holder.relativetextstatus.setText(context.getResources().getString(R.string.confirm));
-//            holder.tv_status.setTextColor(context.getResources().getColor(R.color.colorPrimary));
-//        } else if (mList.getStatus().equals("2")) {
-//            holder.tv_confirm_date.setVisibility(View.VISIBLE);
-//            holder.tv_delevered_date.setVisibility(View.VISIBLE);
-//            holder.view1.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
-//            holder.relative_background.setBackgroundColor(context.getResources().getColor(R.color.purple));
-//            holder.view2.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
-//            holder.view3.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
-//            holder.view4.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
-//            holder.Confirm.setImageResource(R.color.colorPrimary);
-//            holder.Out_For_Deliverde.setImageResource(R.color.colorPrimary);
-//            holder.tv_status.setText(context.getResources().getString(R.string.outfordeliverd));
-//            holder.relativetextstatus.setText(context.getResources().getString(R.string.outfordeliverd));
-//            holder.tv_status.setTextColor(context.getResources().getColor(R.color.colorPrimary));
-//        }
-//        else if (mList.getStatus().equals("4")) {
-//            holder.linearLayout.setVisibility(View.GONE);
-//        }
-//
-//        if (mList.getPayment_method().equals("Store Pick Up")) {
-//            holder.tv_methid1.setText("Store Pick Up");
-//        } else if (mList.getPayment_method().equals("Cash On Delivery")) {
-//            holder.tv_methid1.setText(context.getResources().getString(R.string.cash));
-//        } else if (mList.getPayment_method().equals("Debit / Credit Card")) {
-//            holder.tv_methid1.setText("PrePaid");
-//        } else if (mList.getPayment_method().equals("Online Payment on delivery via Paytm/Upi.")) {
-//            holder.tv_methid1.setText("Online Payment on delivery via Paytm/Upi");
-//        }
-//        else if(mList.getPayment_method().equals("Wallet"))
-//        {
-//            holder.tv_methid1.setText("Wallet");
-//        }
-//        holder.tv_date.setText(mList.getOn_date());
-//        holder.tv_tracking_date.setText(mList.getDelivered_date());
-//
-//        preferences = context.getSharedPreferences("lan", MODE_PRIVATE);
-//        String language=preferences.getString("language","");
-//
-//        if (language.contains("spanish")) {
-//            String timefrom=mList.getDelivery_time_from();
-//            String timeto=mList.getDelivery_time_to();
-//
-//            timefrom=timefrom.replace("pm","م");
-//            timefrom=timefrom.replace("am","ص");
-//
-//            timeto=timeto.replace("pm","م");
-//            timeto=timeto.replace("am","ص");
-//
-//            //String time=timefrom + "-" + timeto;
-//            String time=timefrom;
-//
-//            holder.tv_time.setText(time);
-//        }else {
-//
-//            String timefrom=mList.getDelivery_time_from();
-//            String timeto=mList.getDelivery_time_to();
-//            String time=timefrom + "-" + timeto;
-//
-//            holder.tv_time.setText(time);
-//
-//        }
-//
-//        holder.tv_price.setText(context.getResources().getString(R.string.currency) + mList.getTotal_amount());
-//        holder.tv_item.setText( mList.getTotal_items());
-////        holder.tv_pending_time.setText(mList.getDelivery_time_from() + "-" + mList.getDelivery_time_to());
-//        holder.tv_pending_date.setText(mList.getOn_date());
-////        holder.tv_confirm_time.setText(mList.getDelivery_time_from() + "-" + mList.getDelivery_time_to());
-////        holder.tv_confirm_date.setText(mList.getOn_date());
-//////        holder.tv_delevered_time.setText(mList.getDelivery_time_from() + "-" + mList.getDelivery_time_to());
-////        holder.tv_delevered_date.setText(mList.getOn_date());
-//////        holder.tv_cancel_time.setText(mList.getDelivery_time_from() + "-" + mList.getDelivery_time_to());
-////        holder.tv_cancel_date.setText(mList.getOn_date());
-//
-//        holder.tv_confirm_date.setText(mList.getConfirm_date());
-//        holder.tv_delevered_date.setText(mList.getOut_date());
-//
-//
-//        holder.tv_cancel_date.setText(mList.getDelivered_date());
-//
-//
-//
-////        holder.tv_delevered_time.setText(mList.getDelivery_time_from() + "-" + mList.getDelivery_time_to());
-//        // holder.tv_delevered_date.setText(mList.getOn_date());
-////        holder.tv_cancel_time.setText(mList.getDelivery_time_from() + "-" + mList.getDelivery_time_to());
-//        // holder.tv_cancel_date.setText(mList.getOn_date());
-//
-//        holder.tv_email.setText(mList.getReceiver_mobile());
-//        holder.user_address.setText(mList.getReceiver_name());
+        holder.tv_orderno.setText("ID"+mList.getOrder_id());
+
+
+        if (mList.getStatus().equals("0")) {
+            holder.tv_status.setText(context.getResources().getString(R.string.pending));
+            holder.tv_status.setTextColor(context.getResources().getColor(R.color.red_600));
+            holder.relative_background.setBackgroundTintList(context.getResources().getColorStateList(R.color.color_1));
+            holder.relativetextstatus.setText(context.getResources().getString(R.string.pending));
+
+        } else if (mList.getStatus().equals("1")) {
+            holder.tv_status.setTextColor(context.getResources().getColor(R.color.green_500));
+            holder.relative_background.setBackgroundTintList(context.getResources().getColorStateList(R.color.color_3));
+            holder.tv_status.setText(context.getResources().getString(R.string.confirm));
+            holder.relativetextstatus.setText(context.getResources().getString(R.string.confirm));
+
+        }
+        else if (mList.getStatus().equals("3")) {
+            holder.relative_background.setBackgroundTintList(context.getResources().getColorStateList(R.color.color_2));
+            holder.tv_status.setText("Cancelled");
+            holder.relativetextstatus.setText("Cancelled");
+
+        }
+        else if (mList.getStatus().equals("4")) {
+            holder.linearLayout.setVisibility(View.GONE);
+        }
+
+        holder.tv_date.setText(mList.getOrder_date());
+
+            String created_at=mList.getCreated_at();
+            String time = created_at.substring(11,created_at.length());
+            holder.tv_time.setText(time);
+
+     holder.tv_email.setText(mList.getReceiver_mobile());
+     holder.tv_price.setText(context.getResources().getString(R.string.currency)+mList.getPackage_price());
+      holder.user_address.setText(mList.getReceiver_name());
+      holder.tv_methid1.setText(mList.getPayment());
     }
     public void removeddata(int postion){
         modelList.remove(postion);

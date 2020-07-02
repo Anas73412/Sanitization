@@ -3,6 +3,7 @@ package in.sanitization.sanitization.Fragments;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
@@ -115,16 +116,32 @@ public class MyOrders extends Fragment {
         {
             @Override
             public void onItemClick(View view, int position) {
-
+                OrderModel model = my_order_modelList.get(position);
+            Bundle bundle = new Bundle();
+            Log.e("pack_id",model.getPackage_id());
 //        Intent intent=new Intent(getContext(), MyOrderDetail.class);
-//        intent.putExtra("sale_id", sale_id);
-//        intent.putExtra("date", date);
-//        intent.putExtra("time", time);
-//        intent.putExtra("total", total);
-//        intent.putExtra("status", status);
-//        intent.putExtra("deli_charge", deli_charge);
-//        intent.putExtra("type", "past");
-//        startActivity(intent);
+        bundle.putString("order_id",model.getOrder_id());
+        bundle.putString("user_id",model.getUser_id());
+        bundle.putString("worker_id",model.getWorker_id());
+        bundle.putString("package_id",model.getPackage_id());
+        bundle.putString("package_name",model.getPackage_name());
+        bundle.putString("package_price",model.getPackage_price());
+        bundle.putString("package_duration",model.getPackage_duration());
+        bundle.putString("date", model.getCreated_at());
+//        bundle.putString("time", model.getCreated_at().substring(11,18));
+        bundle.putString("status",model.getStatus());
+        bundle.putString("duration",model.getPackage_duration());
+        bundle.putString("r_name",model.getReceiver_name());
+        bundle.putString("r_mobile",model.getReceiver_mobile());
+        bundle.putString("location_id",model.getLocation_id());
+//        bundle.putString("description",model.getP);
+        Fragment fm = new My_order_detail_fragment();
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                fm.setArguments(bundle);
+                fragmentManager.beginTransaction()
+                        .replace( R.id.frame,fm)
+                        .addToBackStack(null)
+                        .commit();
 
             }
 
@@ -170,7 +187,7 @@ public class MyOrders extends Fragment {
 
     private void makeGetOrderRequest(String userid) {
         loadingBar.show();
-
+        my_order_modelList.clear();
         Map<String, String> params = new HashMap<String, String>();
         params.put("user_id", userid);
 
@@ -203,6 +220,9 @@ public class MyOrders extends Fragment {
                             model.setOrder_date(obj.getString("order_date"));
                             model.setStatus(obj.getString("status"));
                             model.setCreated_at(obj.getString("created_at"));
+                            model.setReceiver_mobile(obj.getString("receiver_mobile"));
+                            model.setReceiver_name(obj.getString("receiver_name"));
+                            model.setLocation_id(obj.getString("location_id"));
 
                                 my_order_modelList.add(model);
 //                Log.d("orderlist0", String.valueOf(my_order_modelList.size()));

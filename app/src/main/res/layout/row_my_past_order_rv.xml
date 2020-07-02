@@ -58,7 +58,7 @@
                     android:layout_weight="2"
                     android:gravity="center"
                     android:paddingBottom="@dimen/space_8"
-                    android:textColor="@color/colorPrimary"
+
                     android:textSize="@dimen/text_size_normal" />
             </LinearLayout>
 
@@ -111,6 +111,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:visibility="gone"
                 android:weightSum="4">
 
                 <in.sanitization.sanitization.Fonts.LatoBLack
@@ -150,12 +151,13 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingTop="@dimen/space_10"
                 android:weightSum="4">
                 <in.sanitization.sanitization.Fonts.LatoBLack
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="Mobile No: "
-                    android:textSize="11sp"
+                    android:textSize="13sp"
                     android:layout_weight="1"
                     android:textColor="@color/dark_gray"/>
                 <in.sanitization.sanitization.Fonts.LatoBLack
@@ -164,14 +166,14 @@
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:text="something@gmail.com"
-                    android:textSize="11sp"
+                    android:textSize="13sp"
 
                     android:textColor="@color/dark_black"/>
                 <in.sanitization.sanitization.Fonts.LatoBLack
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="Delivering to : "
-                    android:textSize="11sp"
+                    android:textSize="13sp"
                     android:layout_weight="1"
                     android:textAlignment="viewStart"
                     android:textColor="@color/dark_gray"/>
@@ -182,7 +184,7 @@
 
                     android:layout_height="wrap_content"
                     android:text="your address"
-                    android:textSize="11sp"
+                    android:textSize="13sp"
                     android:textColor="@color/dark_black"/>
             </LinearLayout>
         </LinearLayout>
@@ -231,7 +233,7 @@
 
                 <LinearLayout
                     android:id="@+id/lin_expected"
-                    android:visibility="visible"
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/space_10"
@@ -268,6 +270,8 @@
                     android:layout_marginRight="@dimen/space_10"
                     android:layout_marginTop="@dimen/space_14"
                     android:gravity="center"
+
+
                     android:background="@drawable/bg_rounded_button">
 
                     <in.sanitization.sanitization.Fonts.LatoBLack
@@ -317,7 +321,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:text="@string/cash"
-                        android:textColor="@color/colorPrimary"
+
                         android:textSize="@dimen/text_size_small" />
 
 

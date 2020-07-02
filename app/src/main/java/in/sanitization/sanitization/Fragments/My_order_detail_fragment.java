@@ -1,8 +1,8 @@
 package in.sanitization.sanitization.Fragments;
 
-import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.DialogInterface;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -34,10 +35,13 @@ import java.util.Map;
 
 import in.sanitization.sanitization.Adapter.Order_detail_adapter;
 import in.sanitization.sanitization.AppController;
+import in.sanitization.sanitization.Config.BaseUrl;
 import in.sanitization.sanitization.Config.Module;
+import in.sanitization.sanitization.CustomSlider;
 import in.sanitization.sanitization.HomeActivity;
 import in.sanitization.sanitization.MainActivity;
 import in.sanitization.sanitization.Model.My_order_detail_model;
+import in.sanitization.sanitization.PackageDetails;
 import in.sanitization.sanitization.R;
 import in.sanitization.sanitization.util.ConnectivityReceiver;
 import in.sanitization.sanitization.util.CustomVolleyJsonArrayRequest;
@@ -47,6 +51,7 @@ import in.sanitization.sanitization.util.Session_management;
 import in.sanitization.sanitization.util.ToastMsg;
 
 import static in.sanitization.sanitization.Config.BaseUrl.DELETE_ORDER_URL;
+import static in.sanitization.sanitization.Config.BaseUrl.IMG_PLAN_URL;
 import static in.sanitization.sanitization.Config.BaseUrl.ORDER_DETAIL_URL;
 import static in.sanitization.sanitization.Config.Constants.KEY_ID;
 
@@ -55,11 +60,11 @@ public class My_order_detail_fragment extends Fragment {
 
     private static String TAG = My_order_detail_fragment.class.getSimpleName();
     Module module;
-    private TextView tv_date, tv_time, tv_total, tv_delivery_charge;
+    private TextView tv_p_name ,tv_duration ,tv_price,tv_status,tv_desc,tv_r_name,tv_r_mobile,tv_address,w_mobile,w_name,w_email ,tv_date,tv_id;
     private RelativeLayout btn_cancle;
     private RecyclerView rv_detail_order;
     List<String> image_list;
-    private String sale_id;
+    private String package_id ,worker_id,location_id,user_id,date,time ,name,mobile,status,order_id;
    LoadingBar loadingBar;
     private List<My_order_detail_model> my_order_detail_modelList = new ArrayList<>();
 
@@ -80,53 +85,67 @@ public class My_order_detail_fragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_my_order_detail, container, false);
         loadingBar = new LoadingBar(getActivity());
         module=new Module(getActivity());
-        tv_date = (TextView) view.findViewById(R.id.tv_order_Detail_date);
-        tv_time = (TextView) view.findViewById(R.id.tv_order_Detail_time);
-        tv_delivery_charge = (TextView) view.findViewById(R.id.tv_order_Detail_deli_charge);
-        tv_total = (TextView) view.findViewById(R.id.tv_order_Detail_total);
-        btn_cancle = (RelativeLayout) view.findViewById(R.id.btn_order_detail_cancle);
-        rv_detail_order = (RecyclerView) view.findViewById(R.id.rv_order_detail);
-        image_list=new ArrayList<>();
-        rv_detail_order.setLayoutManager(new LinearLayoutManager(getActivity()));
+
         ((HomeActivity) getActivity()).setTitle("Order Details");
-
-        sale_id = getArguments().getString("sale_id");
-        String total_rs = getArguments().getString("total");
-        String date = getArguments().getString("date");
-        String time = getArguments().getString("time");
-        String status = getArguments().getString("status");
-        String deli_charge = getArguments().getString("deli_charge");
-        String type = getArguments().getString("type");
-
-        if (status.equals("0")) {
-            btn_cancle.setVisibility(View.VISIBLE);
-        } else {
-            btn_cancle.setVisibility(View.GONE);
-        }
-
-        tv_total.setText(total_rs);
-        tv_date.setText(getResources().getString(R.string.date) + date);
-        tv_time.setText(getResources().getString(R.string.time) + time);
-//        tv_delivery_charge.setText(getResources().getString(R.string.delivery_charge) + deli_charge);
-
-        // check internet connection
-//        if (ConnectivityReceiver.isConnected()) {
-            makeGetOrderDetailRequest(sale_id);
-//        } else {
-//            ((MainActivity) getActivity()).onNetworkConnectionChanged(false);
-//        }
-
+      initViews(view);
         btn_cancle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 showDeleteDialog();
-
-
-
             }
         });
 
         return view;
+    }
+
+    void initViews(View v)
+    {
+        tv_address= v.findViewById(R.id.address);
+        tv_id= v.findViewById(R.id.order_id);
+        tv_desc= v.findViewById(R.id.description);
+        tv_duration= v.findViewById(R.id.duration);
+        tv_status= v.findViewById(R.id.status);
+        tv_date= v.findViewById(R.id.date);
+        tv_price= v.findViewById(R.id.price);
+        tv_r_mobile= v.findViewById(R.id.mobile);
+        tv_r_name= v.findViewById(R.id.r_name);
+        tv_p_name= v.findViewById(R.id.name);
+        w_email= v.findViewById(R.id.w_email);
+        w_mobile= v.findViewById(R.id.w_mobile);
+        w_name= v.findViewById(R.id.w_name);
+       btn_cancle= v.findViewById(R.id.btn_order_detail_cancle);
+        worker_id =getArguments().getString("worker_id");
+        package_id =getArguments().getString("package_id");
+        location_id =getArguments().getString("location_id");
+        user_id =getArguments().getString("user_id");
+        order_id =getArguments().getString("order_id");
+       date =getArguments().getString("date");
+        time =getArguments().getString("time");
+        status =getArguments().getString("status");
+        name =getArguments().getString("r_name");
+       mobile =getArguments().getString("r_mobile");
+       tv_id.setText(order_id);
+       tv_date.setText(date);
+       tv_r_name.setText(name);
+       tv_r_mobile.setText(mobile);
+       tv_price.setText(getActivity().getResources().getString(R.string.currency)+getArguments().getString("package_price"));
+       tv_p_name.setText(getArguments().getString("package_name"));
+       tv_duration.setText(getArguments().getString("package_duration"));
+        getDetails(package_id);
+        if (status.equals("0"))
+        {
+            tv_status.setText("Pending");
+        }
+        else if (status.equals("1"))
+        {
+            tv_status.setText("Confirmed");
+        }
+        else if (status.equals("3"))
+        {
+            tv_status.setText("Cancelled");
+        }
+
+
     }
 
     // alertdialog for cancle order
@@ -148,7 +167,7 @@ public class My_order_detail_fragment extends Fragment {
 
                 // check internet connection
                 if (ConnectivityReceiver.isConnected()) {
-                    makeDeleteOrderRequest(sale_id, user_id);
+//                    makeDeleteOrderRequest(sale_id, user_id);
                 }
 
                 dialogInterface.dismiss();
@@ -257,12 +276,88 @@ public class My_order_detail_fragment extends Fragment {
         // Adding request to request queue
         AppController.getInstance().addToRequestQueue(jsonObjReq, tag_json_obj);
     }
-//    private void cancelorderredirect()
-//    {
-//        Fragment fm = new Home_fragment();
-//        FragmentManager fragmentManager = getFragmentManager();
-//        fragmentManager.beginTransaction().replace(R.id.contentPanel, fm)
-//                .addToBackStack(null).commit();
-//    }
+
+    private void getDetails( String id){
+        loadingBar.show();
+
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("plan_id",id);
+
+        CustomVolleyJsonRequest jsonObjReq = new CustomVolleyJsonRequest(Request.Method.POST,
+                BaseUrl.GET_DETAILS, params, new Response.Listener<JSONObject>() {
+
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.d("plan_details", response.toString());
+                loadingBar.dismiss();
+                try {
+                    boolean status = response.getBoolean("responce");
+                    if (status)
+                    {
+                        ArrayList<String> imgList=new ArrayList<>();
+                        HashMap<String, String> url_maps = new HashMap<String, String>();
+                        JSONObject data = response.getJSONObject("data");
+                        String img_obj = data.getString("plan_image");
+                        JSONArray img_arr = new JSONArray(img_obj);
+                        if(img_obj.isEmpty())
+                        {
+                            module.showToast("No Images Avalaible");
+                        }
+                        else
+                        {
+
+                        }
+
+//                        for(String name : url_maps.keySet()){
+//
+//                           CustomSlider textSliderView = new CustomSlider(PackageDetails.this);
+//                            textSliderView
+//                                    .description(name)
+//                                    .image(url_maps.get(name))
+//                                    .setScaleType(BaseSliderView.ScaleType.Fit);
+//
+//                            textSliderView.bundle(new Bundle());
+//                            textSliderView.getBundle()
+//                                    .putString("extra",name);
+//                           pkg_img.addSlider(textSliderView);
+//                        }
+//                        pkg_img.setPresetTransformer(SliderLayout.Transformer.Accordion);
+//                        pkg_img.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
+
+                        tv_desc.setText(data.getString("plan_description"));
+                        tv_p_name.setText(data.getString("plan_name"));
+//                        sTitle=data.getString("plan_name").toString();
+                       String sPrice=data.getString("plan_price").toString();
+                       String sMrp=data.getString("plan_mrp").toString();
+                       int sp = Integer.parseInt(data.getString("plan_price"));
+                       int mp = Integer.parseInt(data.getString("plan_mrp"));
+                       int diff = module.getDiscount(data.getString("plan_price"),data.getString("plan_mrp"));
+
+//
+//                       tv_price.setText(getResources().getString(R.string.currency)+""+sp);
+//                        pkg_mrp.setText(getResources().getString(R.string.currency)+""+mp);
+//                        pkg_mrp.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                loadingBar.dismiss();
+                String msg=module.VolleyErrorMessage(error);
+                if(!msg.equals(""))
+                {
+                    Toast.makeText(getActivity(),""+msg,Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
+        // Adding request to request queue
+        AppController.getInstance().addToRequestQueue(jsonObjReq,"plans");
+
+    }
 
 }
