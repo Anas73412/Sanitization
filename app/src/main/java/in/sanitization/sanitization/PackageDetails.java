@@ -52,7 +52,7 @@ public class PackageDetails extends AppCompatActivity implements View.OnClickLis
     String sPrice="",sMrp="",sTitle="";
     LoadingBar loadingBar ;
     Activity activity= PackageDetails.this;
-    String title= "",price="",product="",status="",id="",plan_expiry="",working_days="";
+    String title= "",price="",product="",status="",plan_id="",plan_expiry="",working_days="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,13 +82,13 @@ public class PackageDetails extends AppCompatActivity implements View.OnClickLis
         price = getIntent().getStringExtra("plan_price");
         title = getIntent().getStringExtra("plan_name");
         status = getIntent().getStringExtra("plan_status");
-        id = getIntent().getStringExtra("plan_id");
+        plan_id = getIntent().getStringExtra("plan_id");
 
 
       pckg_price.setText(getResources().getString(R.string.currency)+""+price);
       pckg_name.setText(title);
       txt_title.setText(title);
-      getDetails(id);
+      getDetails(plan_id);
 
     }
 
@@ -102,7 +102,7 @@ public class PackageDetails extends AppCompatActivity implements View.OnClickLis
         else if (id == R.id.buy_now)
         {
             Intent intent=new Intent(PackageDetails.this,SubscriptionActivity.class);
-            intent.putExtra("id",String.valueOf(id));
+            intent.putExtra("id",String.valueOf(plan_id));
             intent.putExtra("name",sTitle);
             intent.putExtra("price",sPrice);
             intent.putExtra("mrp",sMrp);

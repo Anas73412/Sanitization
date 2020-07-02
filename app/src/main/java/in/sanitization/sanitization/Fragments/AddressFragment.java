@@ -136,7 +136,9 @@ public class AddressFragment extends Fragment implements View.OnClickListener{
           bundle.putExtra("socity_id",addressMap.get("socity_id"));
           bundle.putExtra("plan_expiry",plan_expiry);
           bundle.putExtra("working_days",working_days);
-         startActivity(bundle);
+          Log.e("addreess_fragment",""+plan_id.toString());
+          startActivity(bundle);
+
 
 
         }
