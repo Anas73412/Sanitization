@@ -31,15 +31,18 @@ import in.sanitization.sanitization.util.Session_management;
 import in.sanitization.sanitization.util.ToastMsg;
 
 import static in.sanitization.sanitization.Config.Constants.KEY_ID;
+import static in.sanitization.sanitization.Fragments.HomeFragment.gst;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class DeliveryDetailsFragment extends Fragment implements View.OnClickListener{
 
-    TextView tv_rev_name,tv_rev_mobile,tv_rev_pincode,tv_rev_address,tvItems,tvprice,tvMrp,tvDiscount,tvSubTotal;
+    TextView tv_rev_name,tv_rev_mobile,tv_rev_pincode,tv_rev_address,tvItems,tvprice,tvMrp,tvDiscount,tvSubTotal ,tv_gst;
     RelativeLayout rel_order;
-    String loc_id="",rev_name,rev_mobile,rev_address,rev_state,rev_city,rev_pincode,rev_soc_id,plan_id,plan_name,mrp,price,working_days,plan_expiry;
+    float tot;
+
+    String loc_id="",gst_price,rev_name,rev_mobile,rev_address,rev_state,rev_city,rev_pincode,rev_soc_id,plan_id,plan_name,mrp,price,working_days,plan_expiry;
     Session_management session_management;
     Module module;
     LoadingBar loadingBar;
@@ -58,8 +61,6 @@ public class DeliveryDetailsFragment extends Fragment implements View.OnClickLis
     }
 
     private void initViews(View v) {
-        toastMsg=new ToastMsg(getActivity());
-        loadingBar=new LoadingBar(getActivity());
         tv_rev_name=v.findViewById(R.id.tv_rev_name);
         tv_rev_mobile=v.findViewById(R.id.tv_rev_mobile);
         tv_rev_pincode=v.findViewById(R.id.tv_rev_pincode);
@@ -67,6 +68,7 @@ public class DeliveryDetailsFragment extends Fragment implements View.OnClickLis
         tvItems=v.findViewById(R.id.tvItems);
         tvprice=v.findViewById(R.id.tvprice);
         tvMrp=v.findViewById(R.id.tvMrp);
+        tv_gst=v.findViewById(R.id.tvGst);
         session_management=new Session_management(getActivity());
         tvDiscount=v.findViewById(R.id.tvDiscount);
         tvSubTotal=v.findViewById(R.id.tvSubTotal);
@@ -97,10 +99,8 @@ public class DeliveryDetailsFragment extends Fragment implements View.OnClickLis
         tvItems.setText("1");
         tvprice.setText(getResources().getString(R.string.currency)+" "+price);
         tvMrp.setText(getResources().getString(R.string.currency)+" "+mrp);
-        tvSubTotal.setText(getResources().getString(R.string.currency)+" "+price);
-
-        Double dmrp=Double.parseDouble(mrp);
-        Double dprice=Double.parseDouble(price);
+        float dmrp=Float.parseFloat(mrp);
+    float dprice=Float.parseFloat(price);
         int dis=(int)(dmrp-dprice);
         if(dis<=0)
         {
@@ -110,8 +110,10 @@ public class DeliveryDetailsFragment extends Fragment implements View.OnClickLis
         {
             tvDiscount.setText("-"+getResources().getString(R.string.currency)+" "+dis);
         }
-
-
+//        gst =new Module(getActivity()).getGSt(gst,price)
+//         tot =  dprice+;
+//        tvSubTotal.setText(getResources().getString(R.string.currency)+" "+tot);
+//        tv_gst.setText(getResources().getString(R.string.currency)+" "+module.getGSt(price));
 
     }
 

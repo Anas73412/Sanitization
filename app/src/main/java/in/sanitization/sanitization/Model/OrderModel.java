@@ -6,6 +6,8 @@ public class OrderModel {
     String user_id;
     String location_id;
     String payment;
+    String gst;
+    String gross_amount;
     String transaction_id;
     String package_id;
     String package_name;
@@ -157,5 +159,21 @@ public class OrderModel {
 
     public void setCreated_at(String created_at) {
         this.created_at = created_at;
+    }
+
+    public String getGst() {
+        return gst;
+    }
+
+    public void setGst(String gst) {
+        this.gst = gst;
+    }
+
+    public String getGross_amount() {
+        return gross_amount;
+    }
+
+    public void setGross_amount(String gross_amount) {
+        this.gross_amount = gross_amount;
     }
 }

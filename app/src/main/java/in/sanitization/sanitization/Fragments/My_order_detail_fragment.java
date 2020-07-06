@@ -67,7 +67,8 @@ public class My_order_detail_fragment extends Fragment implements View.OnClickLi
 
     private static String TAG = My_order_detail_fragment.class.getSimpleName();
     Module module;
-    private TextView tv_p_name ,tv_expire,tv_duration ,tv_price,tv_status,tv_desc,tv_r_name,tv_r_mobile,tv_address,w_mobile,w_name,w_email ,tv_date,tv_id;
+    private TextView tv_p_name ,tv_expire,tv_duration ,tv_price,tv_status,tv_desc,tv_r_name,tv_r_mobile,tv_address,
+            w_mobile,w_name,w_email ,tv_date,tv_id,tv_tot,tv_gst;
     private RelativeLayout btn_cancle;
     private RecyclerView rv_detail_order;
     ImageView plan_img , w_img ;
@@ -77,6 +78,7 @@ public class My_order_detail_fragment extends Fragment implements View.OnClickLi
     private List<My_order_detail_model> my_order_detail_modelList = new ArrayList<>();
     CardView card_worker;
     JSONArray worker_arr;
+    float gst_per ;
     public My_order_detail_fragment() {
         // Required empty public constructor
     }
@@ -117,6 +119,8 @@ public class My_order_detail_fragment extends Fragment implements View.OnClickLi
         tv_status= v.findViewById(R.id.status);
         tv_date= v.findViewById(R.id.date);
         tv_price= v.findViewById(R.id.price);
+        tv_tot= v.findViewById(R.id.total);
+        tv_gst= v.findViewById(R.id.tvGst);
         plan_img= v.findViewById(R.id.plan_img);
         w_img= v.findViewById(R.id.w_img);
         tv_r_mobile= v.findViewById(R.id.mobile);
@@ -137,11 +141,13 @@ public class My_order_detail_fragment extends Fragment implements View.OnClickLi
         status =getArguments().getString("status");
         name =getArguments().getString("r_name");
        mobile =getArguments().getString("r_mobile");
-       tv_id.setText(order_id);
+       tv_id.setText("A2Z_ID"+order_id);
        tv_date.setText(date);
        tv_r_name.setText(name);
        tv_r_mobile.setText(mobile);
-//       tv_price.setText(getActivity().getResources().getString(R.string.currency)+getArguments().getString("package_price"));
+       gst_per= new Module(getActivity()).getGSt(getArguments().getString("gst"),getArguments().getString("package_price"));
+      tv_tot.setText(getActivity().getResources().getString(R.string.currency)+getArguments().getString("total"));
+      tv_gst.setText(getActivity().getResources().getString(R.string.currency)+gst_per);
 //       tv_p_name.setText(getArguments().getString("package_name"));
 //       tv_duration.setText(getArguments().getString("package_duration"));
        if (worker_id.equals("0") || worker_id.equals("null"))
@@ -306,7 +312,7 @@ public class My_order_detail_fragment extends Fragment implements View.OnClickLi
         loadingBar.show();
 
         Map<String, String> params = new HashMap<String, String>();
-        params.put("worker_id","1");
+        params.put("worker_id",worker_id);
         params.put("plan_id",plan_id);
         params.put("location_id",location_id);
 

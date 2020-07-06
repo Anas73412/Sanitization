@@ -116,13 +116,57 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <in.sanitization.sanitization.Fonts.LatoBLack
+
             android:text="Gender"
             android:textSize="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
     </LinearLayout>
+    <LinearLayout
+        android:id="@+id/lin_adhar"
+        android:layout_margin="@dimen/space_10"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:padding="@dimen/space_10"
+        android:layout_gravity="center_vertical"
+        android:layout_height="wrap_content">
+        <in.sanitization.sanitization.Fonts.LatoBLack
+            android:id="@+id/tv_adhar"
+            android:text=""
+            android:textSize="16dp"
+            android:textColor="@color/black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <in.sanitization.sanitization.Fonts.LatoBLack
 
+            android:text="Adhaar Number"
+            android:textSize="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/lin_code"
+        android:layout_margin="@dimen/space_10"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:padding="@dimen/space_10"
+        android:layout_gravity="center_vertical"
+        android:layout_height="wrap_content">
+        <in.sanitization.sanitization.Fonts.LatoBLack
+            android:id="@+id/tv_code"
+            android:text=""
+            android:textSize="16dp"
+            android:textColor="@color/black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <in.sanitization.sanitization.Fonts.LatoBLack
+
+            android:text="Reg. Code"
+            android:textSize="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
 </LinearLayout>
 
 

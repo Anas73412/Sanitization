@@ -42,6 +42,7 @@ import static in.sanitization.sanitization.Config.Constants.KEY_EMAIL;
 import static in.sanitization.sanitization.Config.Constants.KEY_ID;
 import static in.sanitization.sanitization.Config.Constants.KEY_MOBILE;
 import static in.sanitization.sanitization.Config.Constants.KEY_NAME;
+import static in.sanitization.sanitization.Fragments.HomeFragment.gst;
 
 public class PaymentActivity extends AppCompatActivity implements View.OnClickListener{
     Activity ctx=PaymentActivity.this;
@@ -51,8 +52,9 @@ public class PaymentActivity extends AppCompatActivity implements View.OnClickLi
     TextView tv_title;
     ToastMsg toastMsg;
     String user_id="";
-    TextView tv_rev_name,tv_rev_mobile,tv_rev_pincode,tv_rev_address,tvItems,tvprice,tvMrp,tvDiscount,tvSubTotal;
+    TextView tv_rev_name,tv_rev_mobile,tv_rev_pincode,tv_rev_address,tvItems,tvprice,tvMrp,tvDiscount,tvSubTotal,tvGst;
     RelativeLayout rel_order;
+    float tot ;
     String loc_id="",rev_name,rev_mobile,rev_address,rev_state,rev_city,rev_pincode,rev_soc_id,plan_id,plan_name,mrp,price,working_days,plan_expiry;
     Session_management session_management;
     //payments
@@ -92,6 +94,7 @@ public class PaymentActivity extends AppCompatActivity implements View.OnClickLi
         tvItems=findViewById(R.id.tvItems);
         tvprice=findViewById(R.id.tvprice);
         tvMrp=findViewById(R.id.tvMrp);
+        tvGst=findViewById(R.id.tvGst);
         session_management=new Session_management(ctx);
         tvDiscount=findViewById(R.id.tvDiscount);
         tvSubTotal=findViewById(R.id.tvSubTotal);
@@ -121,10 +124,8 @@ public class PaymentActivity extends AppCompatActivity implements View.OnClickLi
         tvItems.setText("1");
         tvprice.setText(getResources().getString(R.string.currency)+" "+price);
         tvMrp.setText(getResources().getString(R.string.currency)+" "+mrp);
-        tvSubTotal.setText(getResources().getString(R.string.currency)+" "+price);
-
-        Double dmrp=Double.parseDouble(mrp);
-        Double dprice=Double.parseDouble(price);
+        float dmrp=Float.parseFloat(mrp);
+        float dprice=Float.parseFloat(price);
         int dis=(int)(dmrp-dprice);
         if(dis<=0)
         {
@@ -134,6 +135,9 @@ public class PaymentActivity extends AppCompatActivity implements View.OnClickLi
         {
             tvDiscount.setText("-"+getResources().getString(R.string.currency)+" "+dis);
         }
+        tot =  dprice+module.getGSt(gst,price);
+        tvSubTotal.setText(getResources().getString(R.string.currency)+" "+tot);
+        tvGst.setText(getResources().getString(R.string.currency)+" "+module.getGSt(gst,price));
 
 
 
@@ -153,13 +157,13 @@ public class PaymentActivity extends AppCompatActivity implements View.OnClickLi
             firstname=session_management.getUserDetails().get(KEY_NAME);
             email=session_management.getUserDetails().get(KEY_EMAIL);
 
-            attemptOrder(user_id,"paid",loc_id,txnid,plan_id,plan_name,mrp,price,plan_expiry,module.getCurrentDate());
+            attemptOrder(user_id,"paid",loc_id,txnid,plan_id,plan_name,mrp,price,gst, String.valueOf(tot),plan_expiry,module.getCurrentDate());
 //            startpay();
 
         }
     }
 
-    private void attemptOrder(String user_id, String payment_status,String loc_id, String trans_id, String plan_id, String plan_name, String mrp, String price, String plan_expiry, String currentDate) {
+    private void attemptOrder(String user_id, String payment_status,String loc_id, String trans_id, String plan_id, String plan_name, String mrp, String price,String gst,String gross, String plan_expiry, String currentDate) {
         loadingBar.show();
         HashMap<String,String> params=new HashMap<>();
         params.put("user_id",user_id);
@@ -169,6 +173,8 @@ public class PaymentActivity extends AppCompatActivity implements View.OnClickLi
         params.put("package_name",plan_name);
         params.put("package_mrp",mrp);
         params.put("package_price",price);
+        params.put("gst",gst);
+        params.put("gross_amount",gross);
         params.put("package_duration",plan_expiry);
         params.put("order_date",currentDate);
         params.put("location_id",loc_id);
@@ -295,7 +301,7 @@ public class PaymentActivity extends AppCompatActivity implements View.OnClickLi
                 if(transactionResponse.getTransactionStatus().equals( TransactionResponse.TransactionStatus.SUCCESSFUL )){
 
                     Log.e("taransactionsdsadasd",""+transactionResponse.getTransactionDetails().toString());
-                    attemptOrder(user_id,"paid",loc_id,txnid,plan_id,plan_name,mrp,price,plan_expiry,module.getCurrentDate());
+                    attemptOrder(user_id,"paid",loc_id,txnid,plan_id,plan_name,mrp,price,gst, String.valueOf(tot),plan_expiry,module.getCurrentDate());
 
 //                    addTranscation(tv_points.getText().toString(),tv_amt.getText().toString(),sessionManagment.getUserDetails().get(KEY_ID),txnid,"success");
                     //Success Transaction

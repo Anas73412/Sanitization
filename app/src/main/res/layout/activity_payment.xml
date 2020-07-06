@@ -406,7 +406,34 @@
                                     />
                             </RelativeLayout>
 
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="@dimen/space_2"
+                                >
 
+                                <in.sanitization.sanitization.Fonts.LatoBLack       android:id="@+id/txtDis"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:padding="2dp"
+
+                                    android:text="Gst Amount :"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="@dimen/space_14" />
+
+                                <in.sanitization.sanitization.Fonts.LatoBLack
+                                    android:id="@+id/tvGst"
+                                    android:layout_toRightOf="@id/txtDis"
+                                    android:layout_width="wrap_content"
+                                    android:layout_alignParentRight="true"
+                                    android:padding="@dimen/space_2"
+                                    android:textAlignment="viewEnd"
+                                    android:layout_marginRight="20dp"
+                                    android:textSize="@dimen/space_14"
+                                    android:layout_height="wrap_content"
+                                    android:text="0"
+                                    />
+                            </RelativeLayout>
                             <RelativeLayout
                                 android:visibility="gone"
                                 android:layout_width="match_parent"

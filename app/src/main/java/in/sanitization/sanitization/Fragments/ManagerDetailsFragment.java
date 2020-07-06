@@ -31,11 +31,11 @@ import in.sanitization.sanitization.R;
  */
 public class ManagerDetailsFragment extends Fragment implements View.OnClickListener{
     ImageView iv_pic,iv_whatsapp,iv_call;
-    TextView tv_name,tv_mobile,tv_email,tv_gen;
+    TextView tv_name,tv_mobile,tv_email,tv_gen,tv_adhar,tv_code;
     String arr="",type="",mobile="";
     JSONArray jsonArray=null;
     Module module;
-    LinearLayout lin_gen ;
+    LinearLayout lin_gen,lin_adhar,lin_code ;
 
     public ManagerDetailsFragment() {
         // Required empty public constructor
@@ -59,7 +59,11 @@ public class ManagerDetailsFragment extends Fragment implements View.OnClickList
         tv_name=v.findViewById(R.id.tv_name);
         tv_email=v.findViewById(R.id.tv_email);
         tv_gen=v.findViewById(R.id.tv_gen);
+        tv_adhar=v.findViewById(R.id.tv_adhar);
+        tv_code=v.findViewById(R.id.tv_code);
         lin_gen=v.findViewById(R.id.lin_gen);
+        lin_adhar=v.findViewById(R.id.lin_adhar);
+        lin_code=v.findViewById(R.id.lin_code);
         module=new Module(getActivity());
         arr=getArguments().getString("arr");
         type=getArguments().getString("type");
@@ -70,6 +74,9 @@ public class ManagerDetailsFragment extends Fragment implements View.OnClickList
             jsonArray = new JSONArray(arr.toString());
 
             if (type.equalsIgnoreCase("area")) {
+                lin_code.setVisibility(View.GONE);
+                lin_adhar.setVisibility(View.GONE);
+                lin_gen.setVisibility(View.VISIBLE);
                 String picString = jsonArray.getJSONObject(0).getString("user_photo").toString();
                 if (picString == null || picString.isEmpty()) {
                 } else {
@@ -87,7 +94,11 @@ public class ManagerDetailsFragment extends Fragment implements View.OnClickList
                     tv_gen.setText("" + jsonArray.getJSONObject(0).getString("user_gender").toString());
                 }
 
-            } else if (type.equalsIgnoreCase("dis")) {
+            }
+            else if (type.equalsIgnoreCase("dis")) {
+                lin_code.setVisibility(View.GONE);
+                lin_adhar.setVisibility(View.GONE);
+                lin_gen.setVisibility(View.VISIBLE);
                 String picString = jsonArray.getJSONObject(0).getString("user_photo").toString();
                 if (picString == null || picString.isEmpty()) {
                 } else {
@@ -107,6 +118,9 @@ public class ManagerDetailsFragment extends Fragment implements View.OnClickList
 
             } else if (type.equalsIgnoreCase("worker")) {
 
+                lin_code.setVisibility(View.VISIBLE);
+                lin_adhar.setVisibility(View.VISIBLE);
+                lin_gen.setVisibility(View.GONE);
                 JSONObject worker = jsonArray.getJSONObject(0);
                 JSONArray w_ar= new JSONArray(worker.getString("photo"));
                 if (w_ar.length()==0) {
@@ -123,8 +137,9 @@ public class ManagerDetailsFragment extends Fragment implements View.OnClickList
                     tv_name.setText("" + jsonArray.getJSONObject(0).getString("name").toString());
                     tv_email.setText("" + jsonArray.getJSONObject(0).getString("email").toString());
                     tv_mobile.setText("" + jsonArray.getJSONObject(0).getString("mobile").toString());
+                    tv_adhar.setText("" + jsonArray.getJSONObject(0).getString("adhaar_no").toString());
+                    tv_code.setText("" + jsonArray.getJSONObject(0).getString("worker_code").toString());
 
-                   lin_gen.setVisibility(View.GONE);
                 }
 
             }

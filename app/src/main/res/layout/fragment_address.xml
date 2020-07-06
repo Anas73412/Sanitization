@@ -117,6 +117,7 @@
                        android:layout_height="wrap_content"/>
 
                </LinearLayout>
+
                <View
                    android:layout_marginTop="@dimen/space_2"
                    android:layout_marginBottom="@dimen/space_2"

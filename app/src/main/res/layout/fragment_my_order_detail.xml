@@ -67,7 +67,7 @@
 
                             <in.sanitization.sanitization.Fonts.LatoBLack
                                 android:id="@+id/txtid"
-                                android:layout_width="67dp"
+                                android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:layout_alignParentTop="true"
                                 android:layout_marginTop="0dp"
@@ -78,7 +78,7 @@
 
                             <in.sanitization.sanitization.Fonts.LatoBLack
                                 android:id="@+id/order_id"
-                                android:layout_toRightOf="@id/txtid"
+
                                 android:layout_width="wrap_content"
                                 android:layout_alignParentRight="true"
                                 android:padding="@dimen/space_2"
@@ -100,7 +100,7 @@
 
                             <in.sanitization.sanitization.Fonts.LatoBLack
                                 android:id="@+id/sts"
-                                android:layout_width="67dp"
+                                android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:layout_alignParentTop="true"
                                 android:layout_marginTop="0dp"
@@ -111,7 +111,7 @@
 
                             <in.sanitization.sanitization.Fonts.LatoBLack
                                 android:id="@+id/status"
-                                android:layout_toRightOf="@id/sts"
+
                                 android:layout_width="wrap_content"
                                 android:layout_alignParentRight="true"
                                 android:padding="@dimen/space_2"
@@ -123,6 +123,7 @@
                                 android:text=""
                                 />
                         </RelativeLayout>
+
                         <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -130,8 +131,72 @@
                             android:layout_margin="@dimen/space_2"
                             >
 
-                            <in.sanitization.sanitization.Fonts.LatoBLack                                    android:id="@+id/txtpin"
-                                android:layout_width="67dp"
+                            <in.sanitization.sanitization.Fonts.LatoBLack
+                                android:id="@+id/txttot"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_alignParentTop="true"
+                                android:layout_marginTop="0dp"
+                                android:padding="2dp"
+                                android:text="Order Total :"
+                                android:textColor="@android:color/black"
+                                android:textSize="@dimen/space_14" />
+
+                            <in.sanitization.sanitization.Fonts.LatoBLack
+                                android:id="@+id/total"
+
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:layout_marginRight="20dp"
+                                android:padding="@dimen/space_2"
+                                android:text=""
+                                android:textAlignment="viewEnd"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/space_14" />
+                        </RelativeLayout>
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+
+                            android:layout_margin="@dimen/space_2"
+                            >
+
+                            <in.sanitization.sanitization.Fonts.LatoBLack
+                                android:id="@+id/txtgst"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_alignParentTop="true"
+                                android:layout_marginTop="0dp"
+                                android:padding="2dp"
+                                android:text="Gst Charge :"
+                                android:textColor="@android:color/black"
+                                android:textSize="@dimen/space_14" />
+
+                            <in.sanitization.sanitization.Fonts.LatoBLack
+                                android:id="@+id/tvGst"
+
+                                android:layout_width="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:padding="@dimen/space_2"
+                                android:textAlignment="viewEnd"
+                                android:layout_marginRight="20dp"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/space_14"
+                                android:layout_height="wrap_content"
+                                android:text=""
+                                />
+                        </RelativeLayout>
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+
+                            android:layout_margin="@dimen/space_2"
+                            >
+
+                            <in.sanitization.sanitization.Fonts.LatoBLack
+                                android:id="@+id/txtdate"
+                                android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:layout_alignParentTop="true"
                                 android:layout_marginTop="0dp"
@@ -142,7 +207,7 @@
 
                             <in.sanitization.sanitization.Fonts.LatoBLack
                                 android:id="@+id/date"
-                                android:layout_toRightOf="@id/txtpin"
+
                                 android:layout_width="wrap_content"
                                 android:layout_alignParentRight="true"
                                 android:padding="@dimen/space_2"
@@ -163,7 +228,7 @@
 
                             <in.sanitization.sanitization.Fonts.LatoBLack
                                 android:id="@+id/nm"
-                                android:layout_width="67dp"
+                                android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:layout_alignParentTop="true"
                                 android:layout_marginTop="0dp"
@@ -195,7 +260,7 @@
 
                             <in.sanitization.sanitization.Fonts.LatoBLack
                                 android:id="@+id/mob"
-                                android:layout_width="67dp"
+                                android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:layout_alignParentTop="true"
                                 android:layout_marginTop="0dp"

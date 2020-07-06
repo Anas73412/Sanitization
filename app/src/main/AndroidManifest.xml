@@ -28,6 +28,7 @@
         <activity android:name=".DemoActivity" />
         <activity android:name=".MainActivity" />
         <activity android:name=".ForgotActivity" />
+        <activity android:name=".networkconnectivity.NoInternetConnection" />
         <activity android:name=".Verfication_activity" />
         <activity android:name=".networkconnectivity.NoInternetConnection" />
         <activity android:name=".SplashActivity">

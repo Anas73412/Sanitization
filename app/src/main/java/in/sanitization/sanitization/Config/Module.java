@@ -34,6 +34,9 @@ import in.sanitization.sanitization.Model.StateModel;
 import in.sanitization.sanitization.R;
 import in.sanitization.sanitization.util.ToastMsg;
 
+import static in.sanitization.sanitization.Fragments.HomeFragment.gst;
+
+
 public class Module {
 
     Context context;
@@ -225,9 +228,7 @@ public class Module {
                   break;
               }
         }
-
-            return String.valueOf(id+1);
-
+        return String.valueOf(id+1);
     }
 
     public String getDistrictId(ArrayList<DistrictModel> list, String dis_name)
@@ -317,5 +318,14 @@ public class Module {
         }
         return name;
     }
+    public float getGSt(String gst ,String price )
+    {
+        Float g_per = Float.parseFloat(gst);
+        Float p = Float.parseFloat(price);
+        Float g = (g_per /100)*p;
+        return g ;
+
+    }
+
 }
 

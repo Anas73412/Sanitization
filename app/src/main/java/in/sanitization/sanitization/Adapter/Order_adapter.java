@@ -79,7 +79,7 @@ public class Order_adapter extends RecyclerView.Adapter<Order_adapter.MyViewHold
     public void onBindViewHolder(Order_adapter.MyViewHolder holder, int position) {
       OrderModel  mList = modelList.get(position);
 
-        holder.tv_orderno.setText("ID"+mList.getOrder_id());
+        holder.tv_orderno.setText("A2Z_ID"+mList.getOrder_id());
 
 
         if (mList.getStatus().equals("0")) {
@@ -112,7 +112,7 @@ public class Order_adapter extends RecyclerView.Adapter<Order_adapter.MyViewHold
             holder.tv_time.setText(time);
 
      holder.tv_email.setText(mList.getReceiver_mobile());
-     holder.tv_price.setText(context.getResources().getString(R.string.currency)+mList.getPackage_price());
+     holder.tv_price.setText(context.getResources().getString(R.string.currency)+mList.getGross_amount());
       holder.user_address.setText(mList.getReceiver_name());
       holder.tv_methid1.setText(mList.getPayment());
     }

@@ -86,7 +86,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     CarausalAdapter carausalAdapter;
     int current_position=0;
     Timer timer;
-
+    public static  String gst ;
     PackageAdapter packageAdapter;
     ArrayList<PackageModel> list;
      RecyclerView rv_package ;
@@ -477,6 +477,7 @@ if (ConnectivityReceiver.isConnected()) {
 
                         version_code=Integer.parseInt(obj.getString("version"));
                         app_link=obj.getString("app_link");
+                        gst=obj.getString("gst");
 
                         if(getUpdaterInfo())
                         {

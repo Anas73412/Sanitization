@@ -131,6 +131,8 @@ public class MyOrders extends Fragment {
         bundle.putString("package_price",model.getPackage_price());
         bundle.putString("package_duration",model.getPackage_duration());
         bundle.putString("date", model.getCreated_at());
+        bundle.putString("gst", model.getGst());
+        bundle.putString("total", model.getGross_amount());
 //        bundle.putString("time", model.getCreated_at().substring(11,18));
         bundle.putString("status",model.getStatus());
         bundle.putString("duration",model.getPackage_duration());
@@ -218,6 +220,8 @@ public class MyOrders extends Fragment {
                             model.setPackage_name(obj.getString("package_name"));
                             model.setPackage_mrp(obj.getString("package_mrp"));
                             model.setPackage_price(obj.getString("package_price"));
+                            model.setGst(obj.getString("gst"));
+                            model.setGross_amount(obj.getString("gross_amount"));
                             model.setPackage_duration(obj.getString("package_duration"));
                             model.setWorker_id(obj.getString("worker_id"));
                             model.setOrder_date(obj.getString("order_date"));
