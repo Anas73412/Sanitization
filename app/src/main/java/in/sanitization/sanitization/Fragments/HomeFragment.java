@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
+import android.os.Handler;
 import android.text.Html;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -41,6 +42,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import in.sanitization.sanitization.Adapter.CarausalAdapter;
 import in.sanitization.sanitization.Adapter.FAQAdapter;
@@ -81,6 +84,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     ArrayList<FAQModel>faq_list;
     ViewPager viewPager ,viewPager2;
     CarausalAdapter carausalAdapter;
+    int current_position=0;
+    Timer timer;
 
     PackageAdapter packageAdapter;
     ArrayList<PackageModel> list;
@@ -477,13 +482,13 @@ if (ConnectivityReceiver.isConnected()) {
                         {
                             getplans();
                             makeGetSliderRequest();
+                            autoSlide();
                             makeGetBannerSliderRequest();
                             getfaqs();
 
                         }
                         else
                         {
-
                             AlertDialog.Builder builder=new AlertDialog.Builder(getActivity());
                             builder.setCancelable(false);
                             builder.setMessage("The new version of app is available please update to get access.");
@@ -551,4 +556,23 @@ if (ConnectivityReceiver.isConnected()) {
         return st;
     }
 
+    public void autoSlide()
+    {
+        final Handler handler=new Handler();
+        final Runnable runnable=new Runnable() {
+            @Override
+            public void run() {
+                if(current_position == Integer.MAX_VALUE)
+                    current_position=0;
+                viewPager.setCurrentItem(current_position++,true);
+            }
+        };
+        timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                handler.post(runnable);
+            }
+        },250,2500);
+    }
 }

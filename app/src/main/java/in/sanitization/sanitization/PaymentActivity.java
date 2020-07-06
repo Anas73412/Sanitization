@@ -153,7 +153,8 @@ public class PaymentActivity extends AppCompatActivity implements View.OnClickLi
             firstname=session_management.getUserDetails().get(KEY_NAME);
             email=session_management.getUserDetails().get(KEY_EMAIL);
 
-            startpay();
+            attemptOrder(user_id,"paid",loc_id,txnid,plan_id,plan_name,mrp,price,plan_expiry,module.getCurrentDate());
+//            startpay();
 
         }
     }

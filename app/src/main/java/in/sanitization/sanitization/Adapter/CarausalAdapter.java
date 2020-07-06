@@ -1,6 +1,7 @@
 package in.sanitization.sanitization.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +29,7 @@ public class CarausalAdapter extends PagerAdapter {
     ArrayList<Slider_model> list;
     Context context;
     LayoutInflater layoutInflater;
+    int custom_position=0;
 
     public CarausalAdapter(ArrayList<Slider_model> list, Context context) {
         this.list = list;
@@ -36,7 +38,7 @@ public class CarausalAdapter extends PagerAdapter {
 
     @Override
     public int getCount() {
-        return list.size();
+        return Integer.MAX_VALUE;
     }
 
     @Override
@@ -49,18 +51,24 @@ public class CarausalAdapter extends PagerAdapter {
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
         layoutInflater=LayoutInflater.from(context);
         View view=layoutInflater.inflate(R.layout.row_caraosal,container,false);
+        if(custom_position>=list.size())
+        {
+            custom_position=0;
+        }
         ImageView img_slider;
         TextView tv_title;
+        Slider_model model=list.get(custom_position);
+        custom_position++;
         img_slider=view.findViewById(R.id.img_slider);
         tv_title=view.findViewById(R.id.tv_title);
         Glide.with(context)
-                .load(IMG_SLIDER_URL + list.get(position).getSlider_image())
+                .load(IMG_SLIDER_URL + model.getSlider_image())
                 .placeholder(R.drawable.logo)
                 .crossFade()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .dontAnimate()
                 .into(img_slider);
-        tv_title.setText(""+list.get(position).getSlider_title());
+        tv_title.setText(""+model.getSlider_title());
         container.addView(view,0);
         return view;
     }
