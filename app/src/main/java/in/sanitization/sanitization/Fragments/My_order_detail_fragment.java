@@ -146,8 +146,8 @@ public class My_order_detail_fragment extends Fragment implements View.OnClickLi
        tv_r_name.setText(name);
        tv_r_mobile.setText(mobile);
        gst_per= new Module(getActivity()).getGSt(getArguments().getString("gst"),getArguments().getString("package_price"));
-      tv_tot.setText(getActivity().getResources().getString(R.string.currency)+getArguments().getString("total"));
-      tv_gst.setText(getActivity().getResources().getString(R.string.currency)+gst_per);
+      tv_tot.setText(getActivity().getResources().getString(R.string.currency)+String.format("%.02f",getArguments().getString("total")));
+      tv_gst.setText(getActivity().getResources().getString(R.string.currency)+String.format("%.02f",gst_per));
 //       tv_p_name.setText(getArguments().getString("package_name"));
 //       tv_duration.setText(getArguments().getString("package_duration"));
        if (worker_id.equals("0") || worker_id.equals("null"))

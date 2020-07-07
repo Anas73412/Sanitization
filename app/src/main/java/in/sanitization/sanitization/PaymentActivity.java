@@ -136,8 +136,9 @@ public class PaymentActivity extends AppCompatActivity implements View.OnClickLi
             tvDiscount.setText("-"+getResources().getString(R.string.currency)+" "+dis);
         }
         tot =  dprice+module.getGSt(gst,price);
-        tvSubTotal.setText(getResources().getString(R.string.currency)+" "+tot);
-        tvGst.setText(getResources().getString(R.string.currency)+" "+module.getGSt(gst,price));
+
+        tvSubTotal.setText(getResources().getString(R.string.currency)+" "+String.format("%.02f", tot));
+        tvGst.setText(getResources().getString(R.string.currency)+" "+String.format("%.02f",module.getGSt(gst,price)));
 
 
 
