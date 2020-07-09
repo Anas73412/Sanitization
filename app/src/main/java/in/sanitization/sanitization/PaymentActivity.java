@@ -26,6 +26,7 @@ import com.payumoney.sdkui.ui.utils.PayUmoneyFlowManager;
 
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
 import java.util.HashMap;
 
 import in.sanitization.sanitization.Config.BaseUrl;
@@ -135,10 +136,12 @@ public class PaymentActivity extends AppCompatActivity implements View.OnClickLi
         {
             tvDiscount.setText("-"+getResources().getString(R.string.currency)+" "+dis);
         }
-        tot =  dprice+module.getGSt(gst,price);
 
-        tvSubTotal.setText(getResources().getString(R.string.currency)+" "+String.format("%.02f", tot));
-        tvGst.setText(getResources().getString(R.string.currency)+" "+String.format("%.02f",module.getGSt(gst,price)));
+        DecimalFormat precision = new DecimalFormat("0.0");
+        tot =  Float.parseFloat(precision.format(dprice+module.getGSt(gst,price))+"0");
+
+        tvSubTotal.setText(getResources().getString(R.string.currency)+" "+ tot+"0");
+        tvGst.setText(getResources().getString(R.string.currency)+" "+precision.format(module.getGSt(gst,price))+"0");
 
 
 
@@ -151,15 +154,15 @@ public class PaymentActivity extends AppCompatActivity implements View.OnClickLi
             module.showToast("Please wait..");
              user_id=session_management.getUserDetails().get(KEY_ID);
             txnid=module.getUniqueId("a2z");
-            amount=price;
+            amount=String.valueOf(tot);
 //            amount="12";
             phone=session_management.getUserDetails().get(KEY_MOBILE);
             prodname=plan_name;
             firstname=session_management.getUserDetails().get(KEY_NAME);
             email=session_management.getUserDetails().get(KEY_EMAIL);
 
-            attemptOrder(user_id,"paid",loc_id,txnid,plan_id,plan_name,mrp,price,gst, String.valueOf(tot),plan_expiry,module.getCurrentDate());
-//            startpay();
+//            attemptOrder(user_id,"paid",loc_id,txnid,plan_id,plan_name,mrp,price,gst, String.valueOf(tot),plan_expiry,module.getCurrentDate());
+            startpay();
 
         }
     }

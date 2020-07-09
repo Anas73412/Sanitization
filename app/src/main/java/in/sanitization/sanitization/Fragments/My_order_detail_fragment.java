@@ -34,6 +34,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.Type;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -145,9 +146,10 @@ public class My_order_detail_fragment extends Fragment implements View.OnClickLi
        tv_date.setText(date);
        tv_r_name.setText(name);
        tv_r_mobile.setText(mobile);
-       gst_per= new Module(getActivity()).getGSt(getArguments().getString("gst"),getArguments().getString("package_price"));
-      tv_tot.setText(getActivity().getResources().getString(R.string.currency)+String.format("%.02f",getArguments().getString("total")));
-      tv_gst.setText(getActivity().getResources().getString(R.string.currency)+String.format("%.02f",gst_per));
+        DecimalFormat precision = new DecimalFormat("0.0");
+       gst_per=  new Module(getActivity()).getGSt(getArguments().getString("gst"),getArguments().getString("package_price"));
+      tv_tot.setText(getActivity().getResources().getString(R.string.currency)+getArguments().getString("total"));
+      tv_gst.setText(getActivity().getResources().getString(R.string.currency)+precision.format(gst_per)+"0");
 //       tv_p_name.setText(getArguments().getString("package_name"));
 //       tv_duration.setText(getArguments().getString("package_duration"));
        if (worker_id.equals("0") || worker_id.equals("null"))
