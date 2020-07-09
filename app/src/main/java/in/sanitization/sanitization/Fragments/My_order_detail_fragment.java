@@ -34,6 +34,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.Type;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -73,7 +74,7 @@ public class My_order_detail_fragment extends Fragment implements View.OnClickLi
     private RecyclerView rv_detail_order;
     ImageView plan_img , w_img ;
     List<String> image_list;
-    private String package_id ,worker_id,location_id,user_id,date,time ,name,mobile,status,order_id,gst , tot;
+    private String package_id ,worker_id,location_id,user_id,date,time ,name,mobile,status,order_id;
    LoadingBar loadingBar;
     private List<My_order_detail_model> my_order_detail_modelList = new ArrayList<>();
     CardView card_worker;
@@ -141,15 +142,14 @@ public class My_order_detail_fragment extends Fragment implements View.OnClickLi
         status =getArguments().getString("status");
         name =getArguments().getString("r_name");
        mobile =getArguments().getString("r_mobile");
-       tot =getArguments().getString("total");
-       gst=getArguments().getString("gst");
        tv_id.setText("A2Z_ID"+order_id);
        tv_date.setText(date);
        tv_r_name.setText(name);
        tv_r_mobile.setText(mobile);
-       gst_per= new Module(getActivity()).getGSt(getArguments().getString("gst"),getArguments().getString("package_price"));
-      tv_tot.setText(getActivity().getResources().getString(R.string.currency)+tot);
-      tv_gst.setText(getActivity().getResources().getString(R.string.currency)+String.format("%.02f",gst_per));
+        DecimalFormat precision = new DecimalFormat("0.0");
+       gst_per=  new Module(getActivity()).getGSt(getArguments().getString("gst"),getArguments().getString("package_price"));
+      tv_tot.setText(getActivity().getResources().getString(R.string.currency)+getArguments().getString("total"));
+      tv_gst.setText(getActivity().getResources().getString(R.string.currency)+precision.format(gst_per)+"0");
 //       tv_p_name.setText(getArguments().getString("package_name"));
 //       tv_duration.setText(getArguments().getString("package_duration"));
        if (worker_id.equals("0") || worker_id.equals("null"))
