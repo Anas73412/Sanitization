@@ -142,6 +142,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 try {
                     loadingBar.dismiss();
                     boolean resp=response.getBoolean("responce");
+                    Log.e("login",response.toString());
                     if(resp)
                     {
                         JSONObject object=response.getJSONObject("data");

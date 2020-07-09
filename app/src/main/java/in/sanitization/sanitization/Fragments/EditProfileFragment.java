@@ -492,6 +492,7 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
         HashMap<String,String> params=new HashMap<>();
         params.put("dis_id",dis_id);
         params.put("area_id",area_id);
+        Log.e("man_params",params.toString());
         CustomVolleyJsonRequest request=new CustomVolleyJsonRequest(Request.Method.POST, BaseUrl.GET_MANAGERS_URL, params, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {

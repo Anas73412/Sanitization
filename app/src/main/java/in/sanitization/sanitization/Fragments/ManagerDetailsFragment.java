@@ -134,6 +134,7 @@ public class ManagerDetailsFragment extends Fragment implements View.OnClickList
                             .diskCacheStrategy(DiskCacheStrategy.ALL)
                             .dontAnimate()
                             .into(iv_pic);
+                    mobile = jsonArray.getJSONObject(0).getString("mobile").toString();
                     tv_name.setText("" + jsonArray.getJSONObject(0).getString("name").toString());
                     tv_email.setText("" + jsonArray.getJSONObject(0).getString("email").toString());
                     tv_mobile.setText("" + jsonArray.getJSONObject(0).getString("mobile").toString());
