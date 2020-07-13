@@ -328,7 +328,34 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"/>
         </LinearLayout>
+        <LinearLayout
+            android:layout_marginTop="10dp"
+            android:background="@drawable/edittext_layout"
+            android:layout_marginLeft="@dimen/space_20"
+            android:layout_marginRight="@dimen/space_20"
+            android:weightSum="8"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:orientation="horizontal">
+            <ImageView
+                android:src="@drawable/icons8_informatics_50px"
+                android:layout_weight="1"
+                android:layout_marginLeft="@dimen/space_5"
+                android:padding="@dimen/space_10"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"/>
+            <EditText
+                android:id="@+id/et_ref"
+                android:background="@drawable/edittext_layout"
+                android:layout_weight="6"
+                android:paddingLeft="@dimen/space_5"
+                android:hint="Referral Code"
+                android:singleLine="true"
 
+                android:textSize="@dimen/space_14"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"/>
+        </LinearLayout>
 
         <Button
             android:id="@+id/btn_reg"
@@ -340,6 +367,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
     </LinearLayout>
+
+
         </LinearLayout>
     </ScrollView>
     <TextView

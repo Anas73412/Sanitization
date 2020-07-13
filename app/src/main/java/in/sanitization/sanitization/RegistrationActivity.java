@@ -49,7 +49,7 @@ import static in.sanitization.sanitization.Config.BaseUrl.SIGN_UP;
 
 public class RegistrationActivity extends AppCompatActivity implements View.OnClickListener{
 
-    EditText et_name,et_number,et_email,et_address,et_pass,et_con_pass,et_pin ;
+    EditText et_name,et_number,et_email,et_address,et_pass,et_con_pass,et_pin,et_ref ;
     AutoCompleteTextView et_district ,et_state,et_block;
     TextView tv_back;
     Spinner spin_block;
@@ -82,6 +82,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         spin_block=findViewById(R.id.spin_block);
         et_pin=findViewById(R.id.et_pincode);
         et_pass=findViewById(R.id.et_pass);
+        et_ref=findViewById(R.id.et_ref);
         et_con_pass=findViewById(R.id.et_con_pass);
         btn_reg=findViewById(R.id.btn_reg);
        tv_back=findViewById(R.id.txt_back);
@@ -251,6 +252,7 @@ loadingBar.dismiss();
             String district=et_district.getText().toString();
             String state=et_state.getText().toString();
             String pin=et_pin.getText().toString();
+            String ref=et_ref.getText().toString();
 
             if(name.isEmpty())
             {
@@ -332,7 +334,7 @@ loadingBar.dismiss();
                    else
                    {
 
-                       registerUser(name,number,email,state,district,block,pin,address,pass);
+                       registerUser(name,number,email,state,district,block,pin,address,pass,ref);
                    }
 
                }
@@ -353,7 +355,7 @@ loadingBar.dismiss();
         }
     }
 
-    private void registerUser(String name, String number, String email,String state ,String district,String block ,String pincode, String address, String pass )
+    private void registerUser(String name, String number, String email,String state ,String district,String block ,String pincode, String address, String pass,String ref )
     {
         loadingBar.show();
         HashMap<String,String> params=new HashMap<>();
@@ -366,6 +368,7 @@ loadingBar.dismiss();
         params.put("pincode",pincode);
         params.put("address",address);
         params.put("password",pass);
+        params.put("referral_by",ref);
 
         Log.e("adsdasd",""+params.toString());
         CustomVolleyJsonRequest customVolleyJsonRequest=new CustomVolleyJsonRequest(Request.Method.POST, SIGN_UP, params, new Response.Listener<JSONObject>() {
