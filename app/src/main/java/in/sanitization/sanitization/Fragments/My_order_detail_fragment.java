@@ -86,7 +86,7 @@ public class My_order_detail_fragment extends Fragment implements View.OnClickLi
             w_mobile,w_name,w_email ,tv_date,tv_id,tv_tot,tv_gst;
     private RelativeLayout btn_cancle;
     private RecyclerView rv_logs,rv_detail_order,rv_complain;
-    ImageView plan_img , w_img ,iv_logs;
+    ImageView plan_img , w_img ,iv_logs ,log_icon;
     List<String> image_list;
     private String package_id ,worker_id,location_id,user_id,date,time,name,mobile,status,order_id;
    LoadingBar loadingBar;
@@ -155,6 +155,7 @@ public class My_order_detail_fragment extends Fragment implements View.OnClickLi
         tv_price= v.findViewById(R.id.price);
         tv_tot= v.findViewById(R.id.total);
         tv_gst= v.findViewById(R.id.tvGst);
+        iv_logs= v.findViewById(R.id.iv_logs);
         complainList=new ArrayList<>();
         plan_img= v.findViewById(R.id.plan_img);
         w_img= v.findViewById(R.id.w_img);
@@ -271,29 +272,26 @@ public class My_order_detail_fragment extends Fragment implements View.OnClickLi
                 loadingBar.dismiss();
                 try {
                     boolean status = response.getBoolean("responce");
-                    if (status)
-                    {
+                    if (status) {
                         JSONArray loc_arr = response.getJSONArray("location");
                         JSONArray plan_arr = response.getJSONArray("plan");
                         JSONArray logs_arr = response.getJSONArray("order_details");
-                 worker_arr = response.getJSONArray("worker");
-                        ArrayList<String> imgList=new ArrayList<>();
+                        worker_arr = response.getJSONArray("worker");
+                        ArrayList<String> imgList = new ArrayList<>();
                         HashMap<String, String> url_maps = new HashMap<String, String>();
-                        if (plan_arr.length()>0)
-                        {
+                        if (plan_arr.length() > 0) {
                             JSONObject data = plan_arr.getJSONObject(0);
                             String img_obj = data.getString("plan_image");
                             JSONArray img_arr = new JSONArray(img_obj);
-                            if(img_obj.isEmpty())
-                            {
+                            if (img_obj.isEmpty()) {
                                 module.showToast("No Images Available");
                                 plan_img.setVisibility(View.GONE);
                             }
 
 
                             Glide.with(getActivity())
-                                    .load( IMG_PLAN_URL + img_arr.get(0))
-                                    .placeholder( R.drawable.logo)
+                                    .load(IMG_PLAN_URL + img_arr.get(0))
+                                    .placeholder(R.drawable.logo)
                                     .crossFade()
                                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                                     .dontAnimate()
@@ -302,68 +300,68 @@ public class My_order_detail_fragment extends Fragment implements View.OnClickLi
 
                             tv_desc.setText(data.getString("plan_description"));
                             tv_p_name.setText(data.getString("plan_name"));
-                            tv_price.setText(getResources().getString(R.string.currency)+""+(data.getString("plan_price")));
-                            tv_duration.setText(data.getString("plan_no_of_working_days")+" days");
-                            tv_expire.setText(data.getString("plan_expiry")+" days of Subscription");
+                            tv_price.setText(getResources().getString(R.string.currency) + "" + (data.getString("plan_price")));
+                            tv_duration.setText(data.getString("plan_no_of_working_days") + " days");
+                            tv_expire.setText(data.getString("plan_expiry") + " days of Subscription");
                         }
-                      if (loc_arr.length()>0) {
-                          JSONObject loc = loc_arr.getJSONObject(0);
-                          tv_address.setText(loc.getString("address")
-                                  +"\nBlock : "+loc.getString("block_name")
-                                  +"\n District : "+loc.getString("district_name")
-                                  +"\n State : "+loc.getString("state") +" ( "+loc.getString("pincode")+")");
+                        if (loc_arr.length() > 0) {
+                            JSONObject loc = loc_arr.getJSONObject(0);
+                            tv_address.setText(loc.getString("address")
+                                    + "\nBlock : " + loc.getString("block_name")
+                                    + "\n District : " + loc.getString("district_name")
+                                    + "\n State : " + loc.getString("state") + " ( " + loc.getString("pincode") + ")");
 
-                      }
+                        }
 
-                        if (worker_arr.length()>0)
-                        {
+                        if (worker_arr.length() > 0) {
                             card_worker.setVisibility(View.VISIBLE);
-                        JSONObject worker = worker_arr.getJSONObject(0);
-                        w_email.setText("Email : "+worker.getString("email"));
-                        w_name.setText("Name : "+worker.getString("name"));
-                        w_mobile.setText("Mobile : "+worker.getString("mobile"));
-                            JSONArray w_ar= new JSONArray(worker.getString("photo"));
+                            JSONObject worker = worker_arr.getJSONObject(0);
+                            w_email.setText("Email : " + worker.getString("email"));
+                            w_name.setText("Name : " + worker.getString("name"));
+                            w_mobile.setText("Mobile : " + worker.getString("mobile"));
+                            JSONArray w_ar = new JSONArray(worker.getString("photo"));
 
                             Glide.with(getActivity())
-                                    .load( BaseUrl.IMG_WORKER_URL +w_ar.get(0))
-                                    .placeholder( R.drawable.logo)
+                                    .load(BaseUrl.IMG_WORKER_URL + w_ar.get(0))
+                                    .placeholder(R.drawable.logo)
                                     .crossFade()
                                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                                     .dontAnimate()
                                     .into(w_img);
-                        }
-                        else
-                        {
+                        } else {
                             card_worker.setVisibility(View.GONE);
                         }
-                        String logStr=logs_arr.getJSONObject(0).getString("activity_log");
-                        JSONObject logObj=new JSONObject(logStr);
-                        Log.e("activity_logs",""+logObj.toString());
-                        ArrayList<KeyValuePairModel> logsList=module.getValuesFromJSON(logObj);
-                        for(int l=0; l<logsList.size();l++)
-                        {
-                            logsList.get(l).setDays(String.valueOf(module.getDateDiff(logsList.get(l).getKey().toString())));
-                        }
-                        Collections.sort(logsList,camp_date);
-                        if(logsList.size()<=0)
-                        {
-                            if(rel_log.getVisibility()==View.VISIBLE)
-                            {
+                        String logStr = logs_arr.getJSONObject(0).getString("activity_log");
+                     Log.e("logstr",logStr.toString());
+                        if (logStr.equals("null")||logStr==null || logStr.isEmpty()) {
+                            if (rel_log.getVisibility() == View.VISIBLE) {
                                 rel_log.setVisibility(View.GONE);
                             }
-                        }
-                        else
-                        {
-                            if(rel_log.getVisibility()==View.GONE)
-                            {
-                                rel_log.setVisibility(View.VISIBLE);
+                        } else {
+                            JSONObject logObj = new JSONObject(logStr);
+                            Log.e("activity_logs", "" + logObj.toString());
+                            ArrayList<KeyValuePairModel> logsList = module.getValuesFromJSON(logObj);
+                            for (int l = 0; l < logsList.size(); l++) {
+                                logsList.get(l).setDays(String.valueOf(module.getDateDiff(logsList.get(l).getKey().toString())));
                             }
-                            rv_logs.setLayoutManager(new LinearLayoutManager(getActivity()));
-                            logsAdapter=new LogsAdapter(logsList,getActivity());
-                            rv_logs.setAdapter(logsAdapter);
-                            logsAdapter.notifyDataSetChanged();
+                            Collections.sort(logsList, camp_date);
+                            if (logsList.size() <= 0) {
+                                if (rel_log.getVisibility() == View.VISIBLE) {
+                                    rel_log.setVisibility(View.GONE);
+                                }
+
+                            } else {
+                                if (rel_log.getVisibility() == View.GONE) {
+                                    rel_log.setVisibility(View.VISIBLE);
+
+                                }
+                                rv_logs.setLayoutManager(new LinearLayoutManager(getActivity()));
+                                logsAdapter = new LogsAdapter(logsList, getActivity());
+                                rv_logs.setAdapter(logsAdapter);
+                                logsAdapter.notifyDataSetChanged();
+                            }
                         }
-                                          }
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -406,10 +404,12 @@ public class My_order_detail_fragment extends Fragment implements View.OnClickLi
             if(rel_rvlogs.getVisibility()==View.GONE)
             {
                 rel_rvlogs.setVisibility(View.VISIBLE);
+                iv_logs.setBackground(getActivity().getResources().getDrawable(R.drawable.icons8_minus_30px));
             }
             else if(rel_rvlogs.getVisibility()==View.VISIBLE)
             {
                 rel_rvlogs.setVisibility(View.GONE);
+                iv_logs.setBackground(getActivity().getResources().getDrawable(R.drawable.icons8_plus_30px));
             }
         }
         else if(v.getId() == R.id.btn_complaints)
@@ -469,6 +469,7 @@ public class My_order_detail_fragment extends Fragment implements View.OnClickLi
             {
                 getAllComplaints(order_id);
                 rel_rvcpl.setVisibility(View.VISIBLE);
+
             }
             else if(rel_rvcpl.getVisibility()==View.VISIBLE)
             {
@@ -533,10 +534,16 @@ public class My_order_detail_fragment extends Fragment implements View.OnClickLi
                   Type listType=new TypeToken<List<ComplainModel>>(){}.getType();
                   complainList=gson.fromJson(response.toString(),listType);
                   complainAdapter=new ComplainAdapter(complainList,getActivity());
-                  rv_complain.setLayoutManager(new LinearLayoutManager(getActivity()));
-                  rv_complain.setAdapter(complainAdapter);
-                  complainAdapter.notifyDataSetChanged();
-
+                  if (complainList.size()>0) {
+                      btn_view.setText("Hide Previous Complaints");
+                      rv_complain.setLayoutManager(new LinearLayoutManager(getActivity()));
+                      rv_complain.setAdapter(complainAdapter);
+                      complainAdapter.notifyDataSetChanged();
+                  }
+                  else
+                  {
+                      new ToastMsg(getActivity()).toastIconError("No Previous Complaints");
+                  }
 
               }
               catch (Exception ex)

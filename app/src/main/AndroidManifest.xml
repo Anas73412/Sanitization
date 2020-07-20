@@ -17,7 +17,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:allowBackup">
-        <activity android:name=".ThanksActivity"></activity>
+        <activity android:name=".IntroductionActivity"></activity>
+        <activity android:name=".ThanksActivity" />
         <activity android:name=".PaymentActivity" />
         <activity android:name=".SubscriptionActivity" /> <!-- <activity android:name=".HelpActivity" /> -->
         <activity android:name=".RegistrationActivity" />
