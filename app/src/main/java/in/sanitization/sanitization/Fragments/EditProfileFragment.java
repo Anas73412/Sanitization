@@ -93,6 +93,7 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
     CircleImageView img_dis,img_area;
     TextView tv_dis_name,tv_dis_mobile,tv_area_name,tv_area_mobile;
     LinearLayout lin_area,lin_dis;
+    String dis_id="",block_id="";
     public EditProfileFragment() {
         // Required empty public constructor
     }
@@ -147,11 +148,12 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String state=et_state.getText().toString().trim();
+                module.showToast(""+state);
                 et_district.setText("");
                 if(!state.isEmpty())
                 {
 
-                    getDistrict(module.getStateId(stateModelList,state));
+                    getDistrict(module.getStateId(stateModelList,state),false);
 
                 }
             }
@@ -162,7 +164,7 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
                 String dis=et_district.getText().toString().trim();
                 if(!dis.isEmpty())
                 {
-                    getBlock(module.getDistrictId(districtModelList,dis));
+                    getBlock(module.getDistrictId(districtModelList,dis),false);
                 }
             }
         });
@@ -170,15 +172,14 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
         et_name.setText(session_management.getUserDetails().get(KEY_NAME));
         et_email.setText(session_management.getUserDetails().get(KEY_EMAIL));
         et_state.setText(session_management.getUserDetails().get(KEY_STATE));
-        et_district.setText(session_management.getUserDetails().get(KEY_DISTRICT));
+       dis_id= session_management.getUserDetails().get(KEY_DISTRICT);
+       block_id= session_management.getUserDetails().get(KEY_BLOCK);
         et_pin.setText(session_management.getUserDetails().get(KEY_PINCODE));
         et_address.setText(session_management.getUserDetails().get(KEY_ADDRESS));
         id = session_management.getUserDetails().get(KEY_ID);
         if (ConnectivityReceiver.isConnected()) {
             getstates();
-            getDistrict(module.getStateId(stateModelList, et_state.getText().toString()));
-            getBlock(module.getDistrictId(districtModelList, et_district.getText().toString()));
-            getmanagers(session_management.getUserDetails().get(KEY_DISTRICT_MANAGER).toString(), session_management.getUserDetails().get(KEY_AREA_MANAGER).toString());
+            getmanagers(session_management.getUserDetails().get(KEY_DISTRICT).toString(), session_management.getUserDetails().get(KEY_BLOCK).toString());
         }
         else
         {
@@ -194,7 +195,7 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
             String number = et_mobile.getText().toString();
             String email = et_email.getText().toString();
             String address = et_address.getText().toString();
-           String district = et_district.getText().toString();
+            String district = et_district.getText().toString();
             String state = et_state.getText().toString();
             String pin = et_pin.getText().toString();
 
@@ -241,7 +242,8 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
                 }
                 else
                 {
-                    updateProfile(name,number,email,state,district,block,pin,address);
+                    String user_id=session_management.getUserDetails().get(KEY_ID);
+                    updateProfile(user_id,name,email,state,district,block,pin,address);
                 }
 
             }
@@ -286,11 +288,11 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
                             state_list.add(stateModelList.get(i).getState_name().toString());
 
                         }
-                        Log.e("asdasdasd",""+stateModelList.size()+" - "+state_list.size());
                         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
                                 getActivity(), android.R.layout.simple_list_item_1,state_list);
                         et_state.setAdapter(arrayAdapter);
                         et_state.setThreshold(1);
+                        getDistrict(module.getStateId(stateModelList, session_management.getUserDetails().get(KEY_STATE).toString()),true);
 
                     }
                 } catch (JSONException e) {
@@ -315,7 +317,7 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
         AppController.getInstance().addToRequestQueue(jsonObjReq,"plans");
 
     }
-    private void getDistrict(String stateId) {
+    private void getDistrict(String stateId, final boolean flag) {
         Map<String, String> params = new HashMap<String, String>();
         params.put("state_id",stateId);
         Log.e("asdsdasd",""+params.toString());
@@ -340,10 +342,20 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
                             district_list.add(districtModelList.get(i).getDistrict_name().toString());
 
                         }
+
                         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
                                 getActivity(), android.R.layout.simple_list_item_1,district_list);
                         et_district.setAdapter(arrayAdapter);
                         et_district.setThreshold(1);
+                        if(flag)
+                        {
+                            if(!dis_id.isEmpty())
+                            {
+                                et_district.setText(module.getDistrictName(districtModelList,dis_id));
+                            }
+                        }
+
+                        getBlock(module.getDistrictId(districtModelList, et_district.getText().toString()),true);
 
                     }
                 } catch (JSONException e) {
@@ -449,7 +461,7 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
                         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                         fragmentManager.beginTransaction().replace(R.id.frame, fm)
                                 .addToBackStack(null).commit();
-                        session_management.updateProfile(name,email,state,district,block,pincode,address);
+                        session_management.updateProfile(name,email,state,module.getDistrictId(districtModelList,district),module.getBlockId(blockModelList,block),pincode,address);
 
                     }
                     else
@@ -514,10 +526,11 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
                         Glide.with(getActivity())
                                 .load( BaseUrl.IMG_DISTRICT_URL + disArr.getJSONObject(0).getString("user_photo").toString())
                                 .placeholder( R.drawable.logo)
-                                .crossFade()
+
                                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                                 .dontAnimate()
                                 .into(img_dis);
+
                             tv_dis_name.setText(disArr.getJSONObject(0).getString("user_name").toString());
                             tv_dis_mobile.setText(disArr.getJSONObject(0).getString("user_mobile").toString());
                         }
@@ -531,7 +544,6 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
                              Glide.with(getActivity())
                                      .load(BaseUrl.IMG_AREA_URL + areaArr.getJSONObject(0).getString("user_photo").toString())
                                      .placeholder(R.drawable.logo)
-                                     .crossFade()
                                      .diskCacheStrategy(DiskCacheStrategy.ALL)
                                      .dontAnimate()
                                      .into(img_area);
@@ -562,7 +574,7 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
         });
         AppController.getInstance().addToRequestQueue(request);
     }
-    private void getBlock(String districtId) {
+    private void getBlock(String districtId, final boolean flag) {
         loadingBar.show();
         Map<String, String> params = new HashMap<String, String>();
         params.put("dis_id",districtId);
@@ -588,7 +600,15 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
 
                         }
                         module.setSpinAdapter(block_list,spin_block,getActivity(),"Select Block");
+                        if(flag)
+                        {
+                            if(!block_id.isEmpty())
+                            {
+                                String block_name=module.getBlockName(blockModelList,block_id);
+                                spin_block.setSelection(module.getStringListIndex(block_list,block_name));
+                            }
 
+                        }
 
                     }
                 } catch (JSONException e) {

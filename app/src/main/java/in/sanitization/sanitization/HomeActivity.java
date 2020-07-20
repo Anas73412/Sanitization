@@ -99,20 +99,20 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                     final String fm_name = fr.getClass().getSimpleName();
                     Log.e("backstack: ", ": " + fm_name);
                     if (fm_name.contentEquals("HomeFragment")) {
-//                        drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
-//                        toggle.setDrawerIndicatorEnabled(true);
-//                        toggle.getDrawerArrowDrawable().setColor(getResources().getColor(R.color.black));
-//                        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-//                        toggle.syncState();
+                        drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+                        toggle.setDrawerIndicatorEnabled(true);
+                        toggle.getDrawerArrowDrawable().setColor(getResources().getColor(R.color.black));
+                        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                        toggle.syncState();
 
                     }
                      else {
 
-//                        drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-//                        toggle.getDrawerArrowDrawable().setColor(getResources().getColor(R.color.black));
-//                        toggle.setDrawerIndicatorEnabled(false);
-//                        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-//                        toggle.syncState();
+                        drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+                        toggle.setDrawerIndicatorEnabled(false);
+                        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_keyboard_backspace_black_24dp);
+                        toggle.syncState();
 
                         toggle.setToolbarNavigationClickListener(new View.OnClickListener() {
                             @Override

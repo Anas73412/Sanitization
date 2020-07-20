@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.telephony.PhoneNumberUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -24,17 +23,21 @@ import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 
+import org.json.JSONObject;
+
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.concurrent.TimeUnit;
 
 import in.sanitization.sanitization.Model.BlockModel;
 import in.sanitization.sanitization.Model.DistrictModel;
+import in.sanitization.sanitization.Model.KeyValuePairModel;
 import in.sanitization.sanitization.Model.StateModel;
 import in.sanitization.sanitization.R;
 import in.sanitization.sanitization.util.ToastMsg;
-
-import static in.sanitization.sanitization.Fragments.HomeFragment.gst;
 
 
 public class Module {
@@ -318,6 +321,19 @@ public class Module {
         }
         return name;
     }
+
+//    public int getBlockId(ArrayList<String> list,String str_name)
+//    {
+//       int index=0;
+//       for(int i=0;i<list.size();i++)
+//       {
+//           if(list.get(i).toString().equalsIgnoreCase(str_name))
+//           {
+//               index=i;
+//           }
+//       }
+//       return index;
+//    }
     public float getGSt(String gst ,String price )
     {
         Float g_per = Float.parseFloat(gst);
@@ -327,5 +343,47 @@ public class Module {
 
     }
 
+    public ArrayList<KeyValuePairModel> getValuesFromJSON(JSONObject jsonObject)
+    {
+        ArrayList<KeyValuePairModel> list=new ArrayList<>();
+        list.clear();
+        Iterator keys=jsonObject.keys();
+        try {
+            while (keys.hasNext())
+            {
+
+                String cKey=(String) keys.next();
+                String cValue=jsonObject.getString(cKey);
+                list.add(new KeyValuePairModel(cKey,cValue));
+            }
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+        }
+
+        return list;
+    }
+
+    public int getDateDiff(String dt_str)
+    {//02-07-2020
+        int days=0;
+        SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date date=new Date();
+        SimpleDateFormat smpl=new SimpleDateFormat("yyyy-MM-dd");
+        String inputString2 = dt_str;
+        String c_date=smpl.format(date);
+
+        try {
+            Date date1 = myFormat.parse(c_date);
+            Date date2 = myFormat.parse(inputString2);
+            long diff = date1.getTime() - date2.getTime();
+//            Log.e("days_count","Days: " + TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS));
+            days=(int) TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return days;
+    }
 }
 

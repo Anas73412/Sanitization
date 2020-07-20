@@ -8,9 +8,9 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="20dp"
-        android:layout_margin="@dimen/space_8"
-        android:paddingBottom="@dimen/space_10">
+        app:cardCornerRadius="5dp"
+        android:layout_margin="@dimen/space_5"
+         >
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -22,6 +22,7 @@
                 android:layout_height="150dp"/>
             <in.sanitization.sanitization.Fonts.LatoBLack
                 android:id="@+id/tv_title"
+                android:visibility="gone"
                 android:textColor="#262626"
                 android:textSize="10sp"
                 android:layout_marginBottom="@dimen/space_10"

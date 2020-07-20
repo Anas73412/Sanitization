@@ -13,21 +13,12 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-            <com.daimajia.slider.library.SliderLayout
-                android:visibility="gone"
-                android:layout_alignParentTop="true"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_margin="@dimen/space_10"
 
-                app:indicator_visibility="visible"
-                android:scrollIndicators="bottom"
-                android:id="@+id/slider"/>
             <RelativeLayout
 
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_marginBottom="5dp">
+                android:layout_height="155dp"
+                >
                 <androidx.viewpager.widget.ViewPager
                     android:id="@+id/viewPager"
                     android:overScrollMode="never"
@@ -176,7 +167,7 @@
                 android:layout_centerInParent="true"
                 android:foregroundGravity="center"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"/>
+                android:layout_height="155dp"/>
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 app:cardCornerRadius="@dimen/space_5"

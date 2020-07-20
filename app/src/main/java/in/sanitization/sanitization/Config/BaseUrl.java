@@ -2,9 +2,7 @@ package in.sanitization.sanitization.Config;
 
 public class BaseUrl {
 
-
-
-    public static String BASE_URL = "https://a2zindia.org/";//http://a2zindia.org/
+    public static String BASE_URL = "https://a2zindia.org/";
     public static final String IMG_SLIDER_URL =BASE_URL+"uploads/sliders/" ;
     public static final String IMG_PLAN_URL =BASE_URL+"uploads/plan/" ;
     public static final String IMG_WORKER_URL =BASE_URL+"uploads/workers/" ;
@@ -44,6 +42,8 @@ public class BaseUrl {
     public static String  ORDER_DETAIL_URL = BASE_URL + "index.php/api/order_details";
     public static String  DELETE_ORDER_URL = BASE_URL + "index.php/api/cancel_order";
     public static String  ATTEMPT_ORDER_URL = BASE_URL + "index.php/api/submit_order";
+    public static String  ADD_COMPLAIN_URL = BASE_URL + "index.php/api/suggestion";
+    public static String  GET_COMPLAIN_URL = BASE_URL + "index.php/api/get_all_complaints";
 
     //Payment Base Urls
     public static final String PAYMENT_BASE_URL = "https://a2zindia.org/";

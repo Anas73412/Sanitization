@@ -797,6 +797,78 @@
                 </LinearLayout>
 
             </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/rel_log"
+                android:background="@color/colorAccent"
+                android:layout_width="wrap_content"
+                android:padding="5dp"
+                android:layout_height="wrap_content">
+
+                <in.sanitization.sanitization.Fonts.LatoBLack
+                    android:id="@+id/tv_logs"
+                    android:layout_width="wrap_content"
+                    android:textColor="@color/white"
+                    android:text="Activity Logs"
+                    android:layout_height="wrap_content"/>
+                <ImageView
+                    android:id="@+id/iv_logs"
+                    android:layout_marginLeft="@dimen/space_5"
+                    android:layout_toRightOf="@id/tv_logs"
+                    android:src="@drawable/icons8_plus_30px"
+                    android:layout_width="@dimen/space_20"
+                    android:layout_height="20dp"/>
+
+            </RelativeLayout>
+            <RelativeLayout
+                android:visibility="gone"
+                android:layout_marginTop="@dimen/space_5"
+                android:id="@+id/rel_rvlogs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_logs"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false"/>
+            </RelativeLayout>
+            <Button
+                android:id="@+id/btn_complaints"
+                android:text="Add Complaints"
+                android:textColor="@color/white"
+                android:layout_margin="@dimen/space_20"
+                android:textAllCaps="false"
+                android:background="@drawable/button_background"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <Button
+                android:id="@+id/btn_view"
+                android:text="View Previous Complaints"
+                android:textColor="@color/white"
+                android:layout_marginLeft="@dimen/space_20"
+                android:layout_marginRight="@dimen/space_20"
+                android:textAllCaps="false"
+                android:background="@drawable/button_background"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <RelativeLayout
+                android:id="@+id/rel_rvcpl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_5"
+                android:visibility="gone">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_complain"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false" />
+            </RelativeLayout>
+
+
         </LinearLayout>
     </ScrollView>
 

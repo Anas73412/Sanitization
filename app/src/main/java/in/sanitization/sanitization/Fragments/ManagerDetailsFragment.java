@@ -24,6 +24,7 @@ import java.net.URLEncoder;
 
 import in.sanitization.sanitization.Config.BaseUrl;
 import in.sanitization.sanitization.Config.Module;
+import in.sanitization.sanitization.HomeActivity;
 import in.sanitization.sanitization.R;
 
 /**
@@ -37,6 +38,7 @@ public class ManagerDetailsFragment extends Fragment implements View.OnClickList
     Module module;
     LinearLayout lin_gen,lin_adhar,lin_code ;
 
+    String title="";
     public ManagerDetailsFragment() {
         // Required empty public constructor
     }
@@ -65,6 +67,7 @@ public class ManagerDetailsFragment extends Fragment implements View.OnClickList
         lin_adhar=v.findViewById(R.id.lin_adhar);
         lin_code=v.findViewById(R.id.lin_code);
         module=new Module(getActivity());
+
         arr=getArguments().getString("arr");
         type=getArguments().getString("type");
 
@@ -74,6 +77,7 @@ public class ManagerDetailsFragment extends Fragment implements View.OnClickList
             jsonArray = new JSONArray(arr.toString());
 
             if (type.equalsIgnoreCase("area")) {
+                title="Area Manager";
                 lin_code.setVisibility(View.GONE);
                 lin_adhar.setVisibility(View.GONE);
                 lin_gen.setVisibility(View.VISIBLE);
@@ -96,6 +100,7 @@ public class ManagerDetailsFragment extends Fragment implements View.OnClickList
 
             }
             else if (type.equalsIgnoreCase("dis")) {
+                title="District Manager";
                 lin_code.setVisibility(View.GONE);
                 lin_adhar.setVisibility(View.GONE);
                 lin_gen.setVisibility(View.VISIBLE);
@@ -118,6 +123,7 @@ public class ManagerDetailsFragment extends Fragment implements View.OnClickList
 
             } else if (type.equalsIgnoreCase("worker")) {
 
+                title="Worker";
                 lin_code.setVisibility(View.VISIBLE);
                 lin_adhar.setVisibility(View.VISIBLE);
                 lin_gen.setVisibility(View.GONE);
@@ -146,7 +152,7 @@ public class ManagerDetailsFragment extends Fragment implements View.OnClickList
             }
 
 
-
+            ((HomeActivity) getActivity()).setTitle(title);
         }
         catch (Exception ex)
         {

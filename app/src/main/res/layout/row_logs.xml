@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="@color/white"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <in.sanitization.sanitization.Fonts.LatoBLack
+        android:id="@+id/tv_log"
+        android:textColor="@color/black"
+        android:paddingTop="@dimen/space_5"
+        android:paddingBottom="@dimen/space_5"
+        android:layout_width="match_parent"
+        android:paddingLeft="@dimen/space_10"
+        android:paddingRight="@dimen/space_10"
+        android:layout_height="wrap_content"/>
+
+    <View
+        android:layout_marginTop="@dimen/space_5"
+        android:background="@color/black"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
+</LinearLayout>

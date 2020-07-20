@@ -71,7 +71,7 @@ import in.sanitization.sanitization.util.RecyclerTouchListener;
  */
 public class HomeFragment extends Fragment implements View.OnClickListener {
     RecyclerView rv_faq;
-    SliderLayout home_slider ,home_banner;
+    SliderLayout home_banner;
     TextView txt_contact,txt_message ,txt_about,txt_version,txt_view_more,txt_more_faq;
     Module module ;
     LoadingBar loadingBar ;
@@ -139,7 +139,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private void initViews(View view) {
 
         rv_faq=view.findViewById(R.id.rv_faq);
-        home_slider = view.findViewById(R.id.slider);
+//        home_slider = view.findViewById(R.id.slider);
 //        home_banner = view.findViewById(R.id.banner);
         txt_about= view.findViewById(R.id.txt_about);
         txt_contact = view.findViewById(R.id.txt_contact);
@@ -227,7 +227,7 @@ if (ConnectivityReceiver.isConnected()) {
                                 textSliderView.bundle(new Bundle());
                                 textSliderView.getBundle().putString("extra", name.get("slider_title"));
 //                                textSliderView.getBundle().putString("extra", name.get("sub_cat"));
-                                home_slider.addSlider(textSliderView);
+//                                home_slider.addSlider(textSliderView);
                                 final String sub_cat = (String) textSliderView.getBundle().get("extra");
                                 textSliderView.setOnSliderClickListener(new BaseSliderView.OnSliderClickListener() {
                                     @Override

@@ -1,5 +1,6 @@
 package in.sanitization.sanitization.Fragments;
 
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Paint;
@@ -8,6 +9,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -34,12 +38,17 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.Type;
+import java.security.KeyPair;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
+import in.sanitization.sanitization.Adapter.ComplainAdapter;
+import in.sanitization.sanitization.Adapter.LogsAdapter;
 import in.sanitization.sanitization.Adapter.Order_detail_adapter;
 import in.sanitization.sanitization.AppController;
 import in.sanitization.sanitization.Config.BaseUrl;
@@ -47,6 +56,8 @@ import in.sanitization.sanitization.Config.Module;
 import in.sanitization.sanitization.CustomSlider;
 import in.sanitization.sanitization.HomeActivity;
 import in.sanitization.sanitization.MainActivity;
+import in.sanitization.sanitization.Model.ComplainModel;
+import in.sanitization.sanitization.Model.KeyValuePairModel;
 import in.sanitization.sanitization.Model.My_order_detail_model;
 import in.sanitization.sanitization.PackageDetails;
 import in.sanitization.sanitization.R;
@@ -58,10 +69,13 @@ import in.sanitization.sanitization.util.LoadingBar;
 import in.sanitization.sanitization.util.Session_management;
 import in.sanitization.sanitization.util.ToastMsg;
 
+import static in.sanitization.sanitization.Config.BaseUrl.ADD_COMPLAIN_URL;
 import static in.sanitization.sanitization.Config.BaseUrl.DELETE_ORDER_URL;
+import static in.sanitization.sanitization.Config.BaseUrl.GET_COMPLAIN_URL;
 import static in.sanitization.sanitization.Config.BaseUrl.IMG_PLAN_URL;
 import static in.sanitization.sanitization.Config.BaseUrl.ORDER_DETAIL_URL;
 import static in.sanitization.sanitization.Config.Constants.KEY_ID;
+import static in.sanitization.sanitization.Model.KeyValuePairModel.camp_date;
 
 
 public class My_order_detail_fragment extends Fragment implements View.OnClickListener {
@@ -71,15 +85,23 @@ public class My_order_detail_fragment extends Fragment implements View.OnClickLi
     private TextView tv_p_name ,tv_expire,tv_duration ,tv_price,tv_status,tv_desc,tv_r_name,tv_r_mobile,tv_address,
             w_mobile,w_name,w_email ,tv_date,tv_id,tv_tot,tv_gst;
     private RelativeLayout btn_cancle;
-    private RecyclerView rv_detail_order;
-    ImageView plan_img , w_img ;
+    private RecyclerView rv_logs,rv_detail_order,rv_complain;
+    ImageView plan_img , w_img ,iv_logs;
     List<String> image_list;
-    private String package_id ,worker_id,location_id,user_id,date,time ,name,mobile,status,order_id;
+    private String package_id ,worker_id,location_id,user_id,date,time,name,mobile,status,order_id;
    LoadingBar loadingBar;
     private List<My_order_detail_model> my_order_detail_modelList = new ArrayList<>();
     CardView card_worker;
     JSONArray worker_arr;
     float gst_per ;
+    RelativeLayout rel_log,rel_rvlogs,rel_rvcpl;
+    LogsAdapter logsAdapter;
+    boolean logs_flag=false;
+    Button btn_complaints,btn_view,btn_yes,btn_no;
+    Dialog dialog;
+    EditText et_remark;
+    ArrayList<ComplainModel> complainList;
+    ComplainAdapter complainAdapter;
     public My_order_detail_fragment() {
         // Required empty public constructor
     }
@@ -112,6 +134,17 @@ public class My_order_detail_fragment extends Fragment implements View.OnClickLi
 
     void initViews(View v)
     {
+        dialog=new Dialog(getActivity());
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.complaints_layout);
+        dialog.setCanceledOnTouchOutside(false);
+
+        rv_logs= v.findViewById(R.id.rv_logs);
+        rv_complain= v.findViewById(R.id.rv_complain);
+        rel_rvlogs= v.findViewById(R.id.rel_rvlogs);
+        rel_rvcpl= v.findViewById(R.id.rel_rvcpl);
+        rel_log= v.findViewById(R.id.rel_log);
+        iv_logs= v.findViewById(R.id.iv_logs);
         tv_address= v.findViewById(R.id.address);
         tv_id= v.findViewById(R.id.order_id);
         tv_desc= v.findViewById(R.id.description);
@@ -122,6 +155,7 @@ public class My_order_detail_fragment extends Fragment implements View.OnClickLi
         tv_price= v.findViewById(R.id.price);
         tv_tot= v.findViewById(R.id.total);
         tv_gst= v.findViewById(R.id.tvGst);
+        complainList=new ArrayList<>();
         plan_img= v.findViewById(R.id.plan_img);
         w_img= v.findViewById(R.id.w_img);
         tv_r_mobile= v.findViewById(R.id.mobile);
@@ -130,6 +164,8 @@ public class My_order_detail_fragment extends Fragment implements View.OnClickLi
         w_email= v.findViewById(R.id.w_email);
         w_mobile= v.findViewById(R.id.w_mobile);
         w_name= v.findViewById(R.id.w_name);
+        btn_complaints= v.findViewById(R.id.btn_complaints);
+        btn_view= v.findViewById(R.id.btn_view);
       card_worker= v.findViewById(R.id.card_worker);
        btn_cancle= v.findViewById(R.id.btn_order_detail_cancle);
         worker_id =getArguments().getString("worker_id");
@@ -146,6 +182,9 @@ public class My_order_detail_fragment extends Fragment implements View.OnClickLi
        tv_date.setText(date);
        tv_r_name.setText(name);
        tv_r_mobile.setText(mobile);
+       rel_log.setOnClickListener(this);
+       btn_complaints.setOnClickListener(this);
+       btn_view.setOnClickListener(this);
         DecimalFormat precision = new DecimalFormat("0.0");
        gst_per=  new Module(getActivity()).getGSt(getArguments().getString("gst"),getArguments().getString("package_price"));
       tv_tot.setText(getActivity().getResources().getString(R.string.currency)+getArguments().getString("total"));
@@ -157,7 +196,7 @@ public class My_order_detail_fragment extends Fragment implements View.OnClickLi
            card_worker.setVisibility(View.GONE);
        }
        if (ConnectivityReceiver.isConnected()) {
-           getDetails(location_id, package_id, worker_id);
+           getDetails(location_id, package_id, worker_id,order_id);
        } else
        {
            Intent intent = new Intent(getActivity(), NoInternetConnection.class);
@@ -211,105 +250,9 @@ public class My_order_detail_fragment extends Fragment implements View.OnClickLi
 
     }
 
-    private void makeGetOrderDetailRequest(String sale_id) {
 
-        // Tag used to cancel the request
-        String tag_json_obj = "json_order_detail_req";
 
-        Map<String, String> params = new HashMap<String, String>();
-        params.put("sale_id", sale_id);
-
-        CustomVolleyJsonArrayRequest jsonObjReq = new CustomVolleyJsonArrayRequest(Request.Method.POST,
-               ORDER_DETAIL_URL, params, new Response.Listener<JSONArray>() {
-
-            @Override
-            public void onResponse(JSONArray response) {
-                Log.d("saleeee", response.toString());
-
-                Gson gson = new Gson();
-                Type listType = new TypeToken<List<My_order_detail_model>>() {
-                }.getType();
-
-                my_order_detail_modelList = gson.fromJson(response.toString(), listType);
-
-               Order_detail_adapter adapter = new Order_detail_adapter(my_order_detail_modelList);
-                rv_detail_order.setAdapter(adapter);
-                adapter.notifyDataSetChanged();
-
-                if (my_order_detail_modelList.isEmpty()) {
-                   new ToastMsg(getActivity()).toastIconError("No Record Found");
-                }
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                String msg=module.VolleyErrorMessage(error);
-                if(!msg.equals(""))
-                {
-                    Toast.makeText(getActivity(),""+msg, Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-
-        // Adding request to request queue
-        AppController.getInstance().addToRequestQueue(jsonObjReq, tag_json_obj);
-
-    }
-
-    /**
-     * Method to make json object request where json response starts wtih
-     */
-    private void makeDeleteOrderRequest(String sale_id, String user_id) {
-
-        // Tag used to cancel the request
-        String tag_json_obj = "json_delete_order_req";
-
-        Map<String, String> params = new HashMap<String, String>();
-        params.put("sale_id", sale_id);
-        params.put("user_id", user_id);
-
-        CustomVolleyJsonRequest jsonObjReq = new CustomVolleyJsonRequest(Request.Method.POST,
-                DELETE_ORDER_URL, params, new Response.Listener<JSONObject>() {
-
-            @Override
-            public void onResponse(JSONObject response) {
-                Log.d(TAG, response.toString());
-
-                try {
-                    Boolean status = response.getBoolean("responce");
-                    if (status) {
-
-                        String msg = response.getString("message");
-                        Toast.makeText(getActivity(), "" + msg, Toast.LENGTH_SHORT).show();
-
-                        ((MainActivity) getActivity()).onBackPressed();
-
-                    } else {
-                        String error = response.getString("error");
-                        Toast.makeText(getActivity(), "" + error, Toast.LENGTH_SHORT).show();
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }, new Response.ErrorListener() {
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                String msg=module.VolleyErrorMessage(error);
-                if(!msg.equals(""))
-                {
-                    Toast.makeText(getActivity(),""+msg, Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-
-        // Adding request to request queue
-        AppController.getInstance().addToRequestQueue(jsonObjReq, tag_json_obj);
-    }
-
-    private void getDetails(String location_id, String plan_id, final String worker_id)
+    private void getDetails(String location_id, String plan_id, final String worker_id,String order_id)
     {
         loadingBar.show();
 
@@ -317,6 +260,7 @@ public class My_order_detail_fragment extends Fragment implements View.OnClickLi
         params.put("worker_id",worker_id);
         params.put("plan_id",plan_id);
         params.put("location_id",location_id);
+        params.put("order_id",order_id);
 
         CustomVolleyJsonRequest jsonObjReq = new CustomVolleyJsonRequest(Request.Method.POST,
                 ORDER_DETAIL_URL, params, new Response.Listener<JSONObject>() {
@@ -331,6 +275,7 @@ public class My_order_detail_fragment extends Fragment implements View.OnClickLi
                     {
                         JSONArray loc_arr = response.getJSONArray("location");
                         JSONArray plan_arr = response.getJSONArray("plan");
+                        JSONArray logs_arr = response.getJSONArray("order_details");
                  worker_arr = response.getJSONArray("worker");
                         ArrayList<String> imgList=new ArrayList<>();
                         HashMap<String, String> url_maps = new HashMap<String, String>();
@@ -391,6 +336,33 @@ public class My_order_detail_fragment extends Fragment implements View.OnClickLi
                         {
                             card_worker.setVisibility(View.GONE);
                         }
+                        String logStr=logs_arr.getJSONObject(0).getString("activity_log");
+                        JSONObject logObj=new JSONObject(logStr);
+                        Log.e("activity_logs",""+logObj.toString());
+                        ArrayList<KeyValuePairModel> logsList=module.getValuesFromJSON(logObj);
+                        for(int l=0; l<logsList.size();l++)
+                        {
+                            logsList.get(l).setDays(String.valueOf(module.getDateDiff(logsList.get(l).getKey().toString())));
+                        }
+                        Collections.sort(logsList,camp_date);
+                        if(logsList.size()<=0)
+                        {
+                            if(rel_log.getVisibility()==View.VISIBLE)
+                            {
+                                rel_log.setVisibility(View.GONE);
+                            }
+                        }
+                        else
+                        {
+                            if(rel_log.getVisibility()==View.GONE)
+                            {
+                                rel_log.setVisibility(View.VISIBLE);
+                            }
+                            rv_logs.setLayoutManager(new LinearLayoutManager(getActivity()));
+                            logsAdapter=new LogsAdapter(logsList,getActivity());
+                            rv_logs.setAdapter(logsAdapter);
+                            logsAdapter.notifyDataSetChanged();
+                        }
                                           }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -429,5 +401,156 @@ public class My_order_detail_fragment extends Fragment implements View.OnClickLi
                     .addToBackStack(null)
                     .commit();
         }
+        else if(v.getId()==R.id.rel_log)
+        {
+            if(rel_rvlogs.getVisibility()==View.GONE)
+            {
+                rel_rvlogs.setVisibility(View.VISIBLE);
+            }
+            else if(rel_rvlogs.getVisibility()==View.VISIBLE)
+            {
+                rel_rvlogs.setVisibility(View.GONE);
+            }
+        }
+        else if(v.getId() == R.id.btn_complaints)
+        {
+            btn_no=(Button)dialog.findViewById(R.id.btn_no);
+            btn_yes=(Button)dialog.findViewById(R.id.btn_yes);
+            et_remark=(EditText) dialog.findViewById(R.id.et_remark);
+            dialog.show();
+            et_remark.setText("");
+
+            btn_yes.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+
+
+
+                    String remark=et_remark.getText().toString();
+                    if(remark.isEmpty())
+                    {
+                        et_remark.setError("Please provide a reason");
+                        et_remark.requestFocus();
+                    }
+                    else if(remark.length()<20)
+                    {
+                        et_remark.setError("Too short");
+                        et_remark.requestFocus();
+
+                    }
+                    else
+                    {
+                        if (ConnectivityReceiver.isConnected()) {
+                          addComplaints(user_id,order_id,et_remark.getText().toString());
+
+                        }
+
+                    }
+                    // check internet connection
+                }
+            });
+
+            btn_no.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+
+
+
+                    dialog.dismiss();
+                }
+            });
+
+        }
+        else if(v.getId() == R.id.btn_view)
+        {
+            if(rel_rvcpl.getVisibility()==View.GONE)
+            {
+                getAllComplaints(order_id);
+                rel_rvcpl.setVisibility(View.VISIBLE);
+            }
+            else if(rel_rvcpl.getVisibility()==View.VISIBLE)
+            {
+                rel_rvcpl.setVisibility(View.GONE);
+            }
+
+
+        }
+    }
+
+    private void addComplaints(String user_id, String order_id, String complain) {
+        loadingBar.show();
+        HashMap<String,String> params=new HashMap<>();
+        params.put("user_id",user_id);
+        params.put("order_id",order_id);
+        params.put("complain",complain);
+        CustomVolleyJsonRequest request=new CustomVolleyJsonRequest(Request.Method.POST, ADD_COMPLAIN_URL, params, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                loadingBar.dismiss();
+             try {
+                 boolean status = response.getBoolean("responce");
+                 if (status) {
+
+                     String msg = response.getString("message");
+                     dialog.dismiss();
+                     module.showToast(""+msg);
+
+                 } else {
+                     String error = response.getString("error");
+
+                     module.showToast(""+error);
+                 }
+             }
+             catch (Exception ex)
+             {
+                 ex.printStackTrace();
+             }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                loadingBar.dismiss();
+                module.errMessage(error);
+            }
+        });
+        AppController.getInstance().addToRequestQueue(request);
+    }
+
+    public void getAllComplaints(String order_id)
+    {
+        loadingBar.show();
+        HashMap<String,String> params=new HashMap<>();
+        params.put("order_id",order_id);
+        complainList.clear();
+        CustomVolleyJsonArrayRequest arrayRequest=new CustomVolleyJsonArrayRequest(Request.Method.POST, GET_COMPLAIN_URL, params, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                loadingBar.dismiss();
+              try {
+                  Gson gson=new Gson();
+                  Type listType=new TypeToken<List<ComplainModel>>(){}.getType();
+                  complainList=gson.fromJson(response.toString(),listType);
+                  complainAdapter=new ComplainAdapter(complainList,getActivity());
+                  rv_complain.setLayoutManager(new LinearLayoutManager(getActivity()));
+                  rv_complain.setAdapter(complainAdapter);
+                  complainAdapter.notifyDataSetChanged();
+
+
+              }
+              catch (Exception ex)
+              {
+                  ex.printStackTrace();
+              }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                loadingBar.dismiss();
+                module.errMessage(error);
+            }
+        });
+        AppController.getInstance().addToRequestQueue(arrayRequest);
     }
 }

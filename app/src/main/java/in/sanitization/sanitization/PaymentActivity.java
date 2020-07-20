@@ -161,13 +161,13 @@ public class PaymentActivity extends AppCompatActivity implements View.OnClickLi
             firstname=session_management.getUserDetails().get(KEY_NAME);
             email=session_management.getUserDetails().get(KEY_EMAIL);
 
-//            attemptOrder(user_id,"paid",loc_id,txnid,plan_id,plan_name,mrp,price,gst, String.valueOf(tot),plan_expiry,module.getCurrentDate());
-            startpay();
+            attemptOrder(user_id,"paid",loc_id,txnid,plan_id,plan_name,mrp,price,gst, String.valueOf(tot),plan_expiry,module.getCurrentDate(),working_days);
+//            startpay();
 
         }
     }
 
-    private void attemptOrder(String user_id, String payment_status,String loc_id, String trans_id, String plan_id, String plan_name, String mrp, String price,String gst,String gross, String plan_expiry, String currentDate) {
+    private void attemptOrder(String user_id, String payment_status,String loc_id, String trans_id, String plan_id, String plan_name, String mrp, String price,String gst,String gross, String plan_expiry, String currentDate,String working_days) {
         loadingBar.show();
         HashMap<String,String> params=new HashMap<>();
         params.put("user_id",user_id);
@@ -182,6 +182,7 @@ public class PaymentActivity extends AppCompatActivity implements View.OnClickLi
         params.put("package_duration",plan_expiry);
         params.put("order_date",currentDate);
         params.put("location_id",loc_id);
+        params.put("no_of_working_days",working_days);
         Log.e("paramssss",""+params.toString());
         CustomVolleyJsonRequest request=new CustomVolleyJsonRequest(Request.Method.POST, BaseUrl.ATTEMPT_ORDER_URL, params, new Response.Listener<JSONObject>() {
             @Override
@@ -305,7 +306,7 @@ public class PaymentActivity extends AppCompatActivity implements View.OnClickLi
                 if(transactionResponse.getTransactionStatus().equals( TransactionResponse.TransactionStatus.SUCCESSFUL )){
 
                     Log.e("taransactionsdsadasd",""+transactionResponse.getTransactionDetails().toString());
-                    attemptOrder(user_id,"paid",loc_id,txnid,plan_id,plan_name,mrp,price,gst, String.valueOf(tot),plan_expiry,module.getCurrentDate());
+                    attemptOrder(user_id,"paid",loc_id,txnid,plan_id,plan_name,mrp,price,gst, String.valueOf(tot),plan_expiry,module.getCurrentDate(),working_days);
 
 //                    addTranscation(tv_points.getText().toString(),tv_amt.getText().toString(),sessionManagment.getUserDetails().get(KEY_ID),txnid,"success");
                     //Success Transaction
