@@ -19,7 +19,7 @@
         tools:replace="android:allowBackup">
         <activity android:name=".ThanksActivity"></activity>
         <activity android:name=".PaymentActivity" />
-        <activity android:name=".SubscriptionActivity" /> <!-- <activity android:name=".HelpActivity" /> -->
+        <activity android:name=".SubscriptionActivity" />
         <activity android:name=".RegistrationActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".HomeActivity" />
