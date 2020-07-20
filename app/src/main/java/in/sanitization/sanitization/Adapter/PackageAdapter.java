@@ -48,26 +48,56 @@ public class PackageAdapter extends RecyclerView.Adapter<PackageAdapter.ViewHold
         holder.tv_amount.setText(activity.getResources().getString(R.string.currency)+" "+model.getPlan_price());
         holder.tv_desc.setText(model.getPlan_name());
 
-      switch (position%4)
+        if (model.getPlan_name().toLowerCase().contains("apartment"))
         {
-            case 0:
-//                holder.lin_container.getBackground().setTint(activity.getResources().getColor(R.color.color_1));
-                holder.iv_back.getBackground().setTint(activity.getResources().getColor(R.color.color_3));
-                break;
-
-            case 1:
-//                holder.lin_container.getBackground().setTint(activity.getResources().getColor(R.color.color_2));
-                holder.iv_back.getBackground().setTint(activity.getResources().getColor(R.color.color_4));
-                break;
-            case 2:
-//                holder.lin_container.getBackground().setTint(activity.getResources().getColor(R.color.color_3));
-                holder.iv_back.getBackground().setTint(activity.getResources().getColor(R.color.color_1));
-                break;
-            case 3:
-//                holder.lin_container.getBackground().setTint(activity.getResources().getColor(R.color.color_4));
-                holder.iv_back.getBackground().setTint(activity.getResources().getColor(R.color.color_2));
-                break;
+            holder.iv_pack.setBackground(activity.getResources().getDrawable(R.drawable.apartmentsanitization));
         }
+        else if (model.getPlan_name().toLowerCase().contains("showroom"))
+        {
+            holder.iv_pack.setBackground(activity.getResources().getDrawable(R.drawable.showroom));
+        }
+        else if (model.getPlan_name().toLowerCase().contains("bank"))
+        {
+            holder.iv_pack.setBackground(activity.getResources().getDrawable(R.drawable.banksanitization));
+        }
+        else if (model.getPlan_name().toLowerCase().contains("school"))
+        {
+            holder.iv_pack.setBackground(activity.getResources().getDrawable(R.drawable.schoolsanitization));
+        }
+        else if (model.getPlan_name().toLowerCase().contains("office"))
+        {
+            holder.iv_pack.setBackground(activity.getResources().getDrawable(R.drawable.officesanitization));
+        }
+        else if (model.getPlan_name().toLowerCase().contains("residential"))
+        {
+            holder.iv_pack.setBackground(activity.getResources().getDrawable(R.drawable.residentialsanitization));
+        }
+//        else if (model.getPlan_name().toLowerCase().contains("colony"))
+        else
+        {
+            holder.iv_pack.setBackground(activity.getResources().getDrawable(R.drawable.commonsanitization));
+        }
+
+//      switch (position%4)
+//        {
+//            case 0:
+////                holder.lin_container.getBackground().setTint(activity.getResources().getColor(R.color.color_1));
+////                holder.iv_back.getBackground().setTint(activity.getResources().getColor(R.color.color_3));
+//                break;
+//
+//            case 1:
+////                holder.lin_container.getBackground().setTint(activity.getResources().getColor(R.color.color_2));
+////                holder.iv_back.getBackground().setTint(activity.getResources().getColor(R.color.color_4));
+//                break;
+//            case 2:
+////                holder.lin_container.getBackground().setTint(activity.getResources().getColor(R.color.color_3));
+////                holder.iv_back.getBackground().setTint(activity.getResources().getColor(R.color.color_1));
+//                break;
+//            case 3:
+////                holder.lin_container.getBackground().setTint(activity.getResources().getColor(R.color.color_4));
+////                holder.iv_back.getBackground().setTint(activity.getResources().getColor(R.color.color_2));
+//                break;
+//        }
     }
 
     @Override
@@ -85,14 +115,15 @@ public class PackageAdapter extends RecyclerView.Adapter<PackageAdapter.ViewHold
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         LinearLayout lin_container;
-        ImageView iv_back;
+        ImageView iv_back ,iv_pack;
         TextView tv_pck_name,tv_amount,tv_desc;
         RelativeLayout rel_pack;
         public ViewHolder(@NonNull View v) {
             super(v);
             lin_container=v.findViewById(R.id.lin_container);
             rel_pack=v.findViewById(R.id.rel_package);
-            iv_back=v.findViewById(R.id.iv_back);
+//            iv_back=v.findViewById(R.id.iv_back);
+            iv_pack=v.findViewById(R.id.iv_img);
             tv_pck_name=v.findViewById(R.id.tv_pck_name);
             tv_amount=v.findViewById(R.id.tv_amount);
             tv_desc=v.findViewById(R.id.tv_desc);

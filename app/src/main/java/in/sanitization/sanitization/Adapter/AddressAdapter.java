@@ -1,7 +1,9 @@
 package in.sanitization.sanitization.Adapter;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -31,6 +34,7 @@ import in.sanitization.sanitization.AppController;
 import in.sanitization.sanitization.Config.BaseUrl;
 import in.sanitization.sanitization.Config.Module;
 import in.sanitization.sanitization.Fragments.AddAddressFragment;
+import in.sanitization.sanitization.MainActivity;
 import in.sanitization.sanitization.Model.AddressModel;
 import in.sanitization.sanitization.R;
 import in.sanitization.sanitization.SubscriptionActivity;
@@ -103,10 +107,29 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHold
         holder.txtDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                AlertDialog.Builder builder=new AlertDialog.Builder(activity);
+                builder.setTitle("Confirmation");
+                builder.setMessage("Are you sure want to delete this address?");
+                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if(ConnectivityReceiver.isConnected()){
+                            makeDeleteAddressRequest(modelList.get(position).getLocation_id(),position);
+                        }
 
-                if(ConnectivityReceiver.isConnected()){
-                    makeDeleteAddressRequest(modelList.get(position).getLocation_id(),position);
-                }
+                    }
+                })
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                                dialog.dismiss();
+                            }
+                        });
+                AlertDialog dialog=builder.create();
+                dialog.show();
+
+
             }
         });
         holder.txtEdit.setOnClickListener(new View.OnClickListener() {

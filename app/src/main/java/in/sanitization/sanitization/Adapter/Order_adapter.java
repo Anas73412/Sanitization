@@ -84,25 +84,29 @@ public class Order_adapter extends RecyclerView.Adapter<Order_adapter.MyViewHold
 
         if (mList.getStatus().equals("0")) {
             holder.tv_status.setText(context.getResources().getString(R.string.pending));
-            holder.tv_status.setTextColor(context.getResources().getColor(R.color.red_600));
+            holder.tv_status.setTextColor(context.getResources().getColor(R.color.color_1));
             holder.relative_background.setBackgroundTintList(context.getResources().getColorStateList(R.color.color_1));
             holder.relativetextstatus.setText(context.getResources().getString(R.string.pending));
 
         } else if (mList.getStatus().equals("1")) {
             holder.tv_status.setTextColor(context.getResources().getColor(R.color.green_500));
-            holder.relative_background.setBackgroundTintList(context.getResources().getColorStateList(R.color.color_3));
+            holder.relative_background.setBackgroundTintList(context.getResources().getColorStateList(R.color.green_500));
             holder.tv_status.setText(context.getResources().getString(R.string.confirm));
             holder.relativetextstatus.setText(context.getResources().getString(R.string.confirm));
 
         }
         else if (mList.getStatus().equals("3")) {
-            holder.relative_background.setBackgroundTintList(context.getResources().getColorStateList(R.color.color_2));
+            holder.relative_background.setBackgroundTintList(context.getResources().getColorStateList(R.color.red_600));
             holder.tv_status.setText("Cancelled");
+            holder.tv_status.setTextColor(context.getResources().getColor(R.color.red_600));
             holder.relativetextstatus.setText("Cancelled");
 
         }
         else if (mList.getStatus().equals("4")) {
-            holder.linearLayout.setVisibility(View.GONE);
+            holder.relative_background.setBackgroundTintList(context.getResources().getColorStateList(R.color.color_2));
+            holder.tv_status.setText("Complete");
+            holder.tv_status.setTextColor(context.getResources().getColor(R.color.color_2));
+            holder.relativetextstatus.setText("Complete");
         }
 
         holder.tv_date.setText(mList.getOrder_date());

@@ -94,6 +94,7 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
     TextView tv_dis_name,tv_dis_mobile,tv_area_name,tv_area_mobile;
     LinearLayout lin_area,lin_dis;
     String dis_id="",block_id="";
+    ImageView img_a_status,img_d_status;
     public EditProfileFragment() {
         // Required empty public constructor
     }
@@ -124,6 +125,8 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
         et_state=v.findViewById(R.id.et_state);
         et_district=v.findViewById(R.id.et_district);
         spin_block=v.findViewById(R.id.spin_block);
+        img_a_status=v.findViewById(R.id.a_online);
+        img_d_status=v.findViewById(R.id.d_online);
 
         et_pin=v.findViewById(R.id.et_pincode);
         lin_dis=v.findViewById(R.id.lin_dis);
@@ -533,6 +536,15 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
 
                             tv_dis_name.setText(disArr.getJSONObject(0).getString("user_name").toString());
                             tv_dis_mobile.setText(disArr.getJSONObject(0).getString("user_mobile").toString());
+                            String online_stat = disArr.getJSONObject(0).getString("district_online_status");
+                            if (online_stat.equalsIgnoreCase("1"))
+                            {
+                                img_d_status.setBackgroundTintList(getActivity().getResources().getColorStateList(R.color.green_500));
+                            }
+                            else if (online_stat.equalsIgnoreCase("0"))
+                            {
+                                img_d_status.setBackgroundTintList(getActivity().getResources().getColorStateList(R.color.red_600));
+                            }
                         }
 
                         areaArr=response.getJSONArray("area");
@@ -549,6 +561,16 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
                                      .into(img_area);
                              tv_area_name.setText(areaArr.getJSONObject(0).getString("user_name").toString());
                              tv_area_mobile.setText(areaArr.getJSONObject(0).getString("user_mobile").toString());
+                             String online_stat = areaArr.getJSONObject(0).getString("area_online_status");
+                             if (online_stat.equalsIgnoreCase("1"))
+                             {
+                                img_a_status.setBackgroundTintList(getActivity().getResources().getColorStateList(R.color.green_500));
+                             }
+                             else if (online_stat.equalsIgnoreCase("0"))
+                             {
+                                 img_a_status.setBackgroundTintList(getActivity().getResources().getColorStateList(R.color.red_600));
+                             }
+
                          }
 
 

@@ -403,7 +403,7 @@ if (ConnectivityReceiver.isConnected()) {
 
             @Override
             public void onResponse(JSONArray response) {
-                Log.d("plans", response.toString());
+                Log.d("faqs", response.toString());
                 loadingBar.dismiss();
 
                 if (response != null && response.length() > 0) {

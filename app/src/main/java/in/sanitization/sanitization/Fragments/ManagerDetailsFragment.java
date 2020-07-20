@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -31,11 +32,12 @@ import in.sanitization.sanitization.R;
  * A simple {@link Fragment} subclass.
  */
 public class ManagerDetailsFragment extends Fragment implements View.OnClickListener{
-    ImageView iv_pic,iv_whatsapp,iv_call;
-    TextView tv_name,tv_mobile,tv_email,tv_gen,tv_adhar,tv_code;
+    ImageView iv_pic,iv_whatsapp,iv_call ,img_online_sts;
+    TextView tv_name,tv_mobile,tv_email,tv_gen,tv_adhar,tv_code,tv_online_sts;
     String arr="",type="",mobile="";
     JSONArray jsonArray=null;
     Module module;
+    RelativeLayout rel_online_sts;
     LinearLayout lin_gen,lin_adhar,lin_code ;
 
     String title="";
@@ -66,6 +68,9 @@ public class ManagerDetailsFragment extends Fragment implements View.OnClickList
         lin_gen=v.findViewById(R.id.lin_gen);
         lin_adhar=v.findViewById(R.id.lin_adhar);
         lin_code=v.findViewById(R.id.lin_code);
+        img_online_sts=v.findViewById(R.id.a_online);
+        tv_online_sts=v.findViewById(R.id.tv_online_status);
+        rel_online_sts=v.findViewById(R.id.rel_online_stat);
         module=new Module(getActivity());
 
         arr=getArguments().getString("arr");
@@ -96,6 +101,18 @@ public class ManagerDetailsFragment extends Fragment implements View.OnClickList
                     tv_email.setText("" + jsonArray.getJSONObject(0).getString("user_email").toString());
                     tv_mobile.setText("" + mobile);
                     tv_gen.setText("" + jsonArray.getJSONObject(0).getString("user_gender").toString());
+                    String online_stat = jsonArray.getJSONObject(0).getString("area_online_status");
+                    if (online_stat.equalsIgnoreCase("1"))
+                    {
+                        img_online_sts.setBackgroundTintList(getActivity().getResources().getColorStateList(R.color.green_500));
+                        tv_online_sts.setText("ONLINE");
+
+                    }
+                    else if (online_stat.equalsIgnoreCase("0"))
+                    {
+                        img_online_sts.setBackgroundTintList(getActivity().getResources().getColorStateList(R.color.red_600));
+                        tv_online_sts.setText("OFFLINE");
+                    }
                 }
 
             }
@@ -119,6 +136,18 @@ public class ManagerDetailsFragment extends Fragment implements View.OnClickList
                     tv_email.setText("" + jsonArray.getJSONObject(0).getString("user_email").toString());
                     tv_mobile.setText("" + mobile);
                     tv_gen.setText("" + jsonArray.getJSONObject(0).getString("user_gender").toString());
+                    String online_stat = jsonArray.getJSONObject(0).getString("district_online_status");
+                    if (online_stat.equalsIgnoreCase("1"))
+                    {
+                        img_online_sts.setBackgroundTintList(getActivity().getResources().getColorStateList(R.color.green_500));
+                        tv_online_sts.setText("ONLINE");
+
+                    }
+                    else if (online_stat.equalsIgnoreCase("0"))
+                    {
+                        img_online_sts.setBackgroundTintList(getActivity().getResources().getColorStateList(R.color.red_600));
+                        tv_online_sts.setText("OFFLINE");
+                    }
                 }
 
             } else if (type.equalsIgnoreCase("worker")) {
@@ -126,6 +155,7 @@ public class ManagerDetailsFragment extends Fragment implements View.OnClickList
                 title="Worker";
                 lin_code.setVisibility(View.VISIBLE);
                 lin_adhar.setVisibility(View.VISIBLE);
+                rel_online_sts.setVisibility(View.VISIBLE);
                 lin_gen.setVisibility(View.GONE);
                 JSONObject worker = jsonArray.getJSONObject(0);
                 JSONArray w_ar= new JSONArray(worker.getString("photo"));
