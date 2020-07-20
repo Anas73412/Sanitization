@@ -529,7 +529,7 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
                         Glide.with(getActivity())
                                 .load( BaseUrl.IMG_DISTRICT_URL + disArr.getJSONObject(0).getString("user_photo").toString())
                                 .placeholder( R.drawable.logo)
-
+                                .fitCenter()
                                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                                 .dontAnimate()
                                 .into(img_dis);
@@ -556,6 +556,7 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
                              Glide.with(getActivity())
                                      .load(BaseUrl.IMG_AREA_URL + areaArr.getJSONObject(0).getString("user_photo").toString())
                                      .placeholder(R.drawable.logo)
+                                     .fitCenter()
                                      .diskCacheStrategy(DiskCacheStrategy.ALL)
                                      .dontAnimate()
                                      .into(img_area);

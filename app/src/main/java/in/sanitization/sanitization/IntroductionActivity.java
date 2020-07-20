@@ -16,9 +16,11 @@ import android.widget.Button;
 
 import com.payumoney.sdkui.ui.widgets.CirclePageIndicator;
 
+import me.relex.circleindicator.CircleIndicator;
+
 public class IntroductionActivity extends AppCompatActivity implements View.OnClickListener {
     ViewPager viewPager;
-    CirclePageIndicator pageIndicator;
+    CircleIndicator pageIndicator;
     private int[] layouts;
     private MyViewPagerAdapter myViewPagerAdapter;
     private Button btn_prev, btn_next;
@@ -62,10 +64,10 @@ public class IntroductionActivity extends AppCompatActivity implements View.OnCl
                 {
                     btn_prev.setEnabled(true);
                 }
-                if (position == layouts.length-1)
-                {
-                    startActivity(new Intent(IntroductionActivity.this,LoginActivity.class));
-                }
+//                if (position == layouts.length-1)
+//                {
+//                    startActivity(new Intent(IntroductionActivity.this,LoginActivity.class));
+//                }
             }
 
             @Override
@@ -153,5 +155,7 @@ public class IntroductionActivity extends AppCompatActivity implements View.OnCl
             container.removeView(view);
         }
     }
+
 }
+
 
