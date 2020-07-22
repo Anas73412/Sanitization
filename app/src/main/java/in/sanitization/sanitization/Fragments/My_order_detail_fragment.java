@@ -302,7 +302,7 @@ public class My_order_detail_fragment extends Fragment implements View.OnClickLi
                             tv_p_name.setText(data.getString("plan_name"));
                             tv_price.setText(getResources().getString(R.string.currency) + "" + (data.getString("plan_price")));
                             tv_duration.setText(data.getString("plan_no_of_working_days") + " days");
-                            tv_expire.setText(data.getString("plan_expiry") + " days of Subscription");
+                            tv_expire.setText(data.getString("plan_expiry") + " of Subscription");
                         }
                         if (loc_arr.length() > 0) {
                             JSONObject loc = loc_arr.getJSONObject(0);
