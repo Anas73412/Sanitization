@@ -104,9 +104,9 @@ public class Order_adapter extends RecyclerView.Adapter<Order_adapter.MyViewHold
         }
         else if (mList.getStatus().equals("4")) {
             holder.relative_background.setBackgroundTintList(context.getResources().getColorStateList(R.color.color_2));
-            holder.tv_status.setText("Complete");
+            holder.tv_status.setText("Completed");
             holder.tv_status.setTextColor(context.getResources().getColor(R.color.color_2));
-            holder.relativetextstatus.setText("Complete");
+            holder.relativetextstatus.setText("Completed");
         }
 
         holder.tv_date.setText(mList.getOrder_date());
