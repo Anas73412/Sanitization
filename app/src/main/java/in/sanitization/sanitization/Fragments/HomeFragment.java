@@ -21,6 +21,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,10 +29,15 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.synnapps.carouselview.CarouselView;
+import com.synnapps.carouselview.ImageListener;
+import com.synnapps.carouselview.ViewListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -66,22 +72,26 @@ import in.sanitization.sanitization.util.CustomVolleyJsonRequest;
 import in.sanitization.sanitization.util.LoadingBar;
 import in.sanitization.sanitization.util.RecyclerTouchListener;
 
+import static in.sanitization.sanitization.Config.BaseUrl.IMG_SLIDER_URL;
+
 /**
  * A simple {@link Fragment} subclass.
  */
 public class HomeFragment extends Fragment implements View.OnClickListener {
-    RecyclerView rv_faq;
+
     SliderLayout home_banner;
     TextView txt_contact,txt_message ,txt_about,txt_version,txt_view_more,txt_more_faq;
     Module module ;
     LoadingBar loadingBar ;
     String url = "contact us" ,app_link="";
     int version_code =0 ;
-    FAQAdapter faqAdapter;
+CarouselView carousal1 , carousal2 ;
     ArrayList<Slider_model> carList;
     ArrayList<Slider_model> bannerList;
     ArrayList<BannerModel>banner_list;
     ArrayList<FAQModel>faq_list;
+    FAQAdapter faqAdapter;
+    RecyclerView rv_faq;
     ViewPager viewPager ,viewPager2;
     CarausalAdapter carausalAdapter;
     int current_position=0;
@@ -90,6 +100,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     PackageAdapter packageAdapter;
     ArrayList<PackageModel> list;
      RecyclerView rv_package ;
+     String [] slider1 ,slider2;
     public HomeFragment() {
         // Required empty public constructor
     }
@@ -149,7 +160,21 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         txt_more_faq = view.findViewById(R.id.view_faq);
         viewPager = view.findViewById(R.id.viewPager);
         viewPager2 = view.findViewById(R.id.viewPager2);
+        carousal1 = view.findViewById(R.id.carousel1);
+        carousal2 = view.findViewById(R.id.carousel2);
+        carousal1.setImageListener(imageListener);
+        carousal2.setImageListener(imageListener2);
         txt_contact.setText(Html.fromHtml(url));
+        txt_contact.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Fragment fm = new HelpActivity();
+                FragmentManager fragmentManager =getActivity().getSupportFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.frame, fm)
+                        .addToBackStack(null).commit();
+            }
+        });
+
         loadingBar = new LoadingBar(getActivity());
         ((HomeActivity) getActivity()).setTitle(getResources().getString(R.string.app_name));
         banner_list = new ArrayList<>();
@@ -220,6 +245,9 @@ if (ConnectivityReceiver.isConnected()) {
 //                                url_maps.put("sub_cat", jsonObject.getString("slider_plan"));
                                 url_maps.put("slider_image", BaseUrl.IMG_SLIDER_URL + jsonObject.getString("slider_image"));
                                 listarray.add(url_maps);
+                                carousal1.setPageCount(listarray.size());
+
+
                             }
                             for (final HashMap<String, String> name : listarray) {
                                 CustomSlider textSliderView = new CustomSlider(getActivity());
@@ -296,6 +324,7 @@ if (ConnectivityReceiver.isConnected()) {
                                 model.setStatus(jsonObject.getString("status"));
                                 model.setIs_delete(jsonObject.getString("is_delete"));
                                 bannerList.add(model);
+                                carousal2.setPageCount(bannerList.size());
                                 HashMap<String, String> url_maps = new HashMap<String, String>();
                                 url_maps.put("banner_title", jsonObject.getString("banner_title"));
 //                                url_maps.put("banner_plan", jsonObject.getString("banner_plan"));
@@ -469,6 +498,7 @@ if (ConnectivityReceiver.isConnected()) {
                 loadingBar.dismiss();
                 try
                 {
+                    Log.e("app_data",response.toString());
                   boolean stat = response.getBoolean("responce");
                   if (stat)
                   {
@@ -486,13 +516,16 @@ if (ConnectivityReceiver.isConnected()) {
                             autoSlide();
                             makeGetBannerSliderRequest();
                             getfaqs();
+                            getInfo(txt_contact,BaseUrl.CONTACT);
+                            getInfo(txt_about,BaseUrl.ABOUT_US);
+
 
                         }
                         else
                         {
                             AlertDialog.Builder builder=new AlertDialog.Builder(getActivity());
                             builder.setCancelable(false);
-                            builder.setMessage("The new version of app is available please update to get access.");
+                            builder.setMessage("New version of app is available please update to get access.");
                             builder.setPositiveButton("Update now", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
@@ -544,9 +577,11 @@ if (ConnectivityReceiver.isConnected()) {
         {
             PackageInfo packageInfo=getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(),0);
             int ver_code=packageInfo.versionCode;
+
             if(ver_code == version_code)
             {
                 st=true;
+                txt_version.setText(packageInfo.versionName);
             }
         }
         catch (Exception ex)
@@ -576,4 +611,67 @@ if (ConnectivityReceiver.isConnected()) {
             }
         },250,2500);
     }
+    private void getInfo(final TextView textView , String url )
+    {
+        loadingBar.show();
+        HashMap<String,String> params = new HashMap<>();
+        CustomVolleyJsonRequest jsonRequest = new CustomVolleyJsonRequest(Request.Method.POST,url,params, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    boolean stat = response.getBoolean("responce");
+                    if (stat)
+                    {
+                        loadingBar.dismiss();
+                        JSONArray array = response.getJSONArray("data");
+                        JSONObject object = array.getJSONObject(0);
+                        textView.setText(Html.fromHtml(object.getString("pg_descri")));
+//                        title.setText(Html.fromHtml(object.getString("pg_title")));
+
+                    }
+                } catch (JSONException e) {
+                    loadingBar.dismiss();
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                loadingBar.dismiss();
+                new Module(getActivity()).showToast(error.getMessage());
+            }
+        });
+        AppController.getInstance().addToRequestQueue(jsonRequest);
+    }
+
+    ImageListener imageListener = new ImageListener() {
+        @Override
+        public void setImageForPosition(int position, ImageView imageView) {
+            imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+            Glide.with(getActivity())
+                    .load(IMG_SLIDER_URL + carList.get(position).getSlider_image())
+                    .placeholder(R.drawable.logo)
+                    .crossFade()
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .dontAnimate()
+                    .into(imageView);
+//            imageView.setImageResource(sampleImages[position]);
+        }
+    };
+    ImageListener imageListener2 = new ImageListener() {
+        @Override
+        public void setImageForPosition(int position, ImageView imageView) {
+            imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+            Glide.with(getActivity())
+                    .load(IMG_SLIDER_URL + bannerList.get(position).getSlider_image())
+                    .placeholder(R.drawable.logo)
+                    .crossFade()
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .dontAnimate()
+                    .into(imageView);
+//            imageView.setImageResource(sampleImages[position]);
+        }
+    };
+
 }

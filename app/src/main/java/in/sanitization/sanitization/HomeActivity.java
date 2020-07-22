@@ -23,6 +23,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.material.navigation.NavigationView;
@@ -38,6 +39,7 @@ import in.sanitization.sanitization.Fragments.TermsFragment;
 import in.sanitization.sanitization.util.Session_management;
 
 import static in.sanitization.sanitization.Config.Constants.KEY_MOBILE;
+import static in.sanitization.sanitization.Config.Constants.KEY_NAME;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     NavigationView navigationView;
@@ -45,6 +47,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     Toolbar toolbar;
     Navigation header ;
     TextView txt_name ;
+    ImageView img_edit ;
     Session_management session_management;
     Activity ctx=HomeActivity.this;
 
@@ -79,8 +82,19 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setItemIconTintList(null);
         View header = ((NavigationView) findViewById(R.id.nav_view)).getHeaderView(0);
         txt_name = header.findViewById(R.id.profile_user_name);
-        txt_name.setText(session_management.getUserDetails().get(KEY_MOBILE));
+       img_edit = header.findViewById(R.id.edit_profile);
+
+        txt_name.setText(session_management.getUserDetails().get(KEY_NAME)+"\n"+session_management.getUserDetails().get(KEY_MOBILE));
         navigationView.setNavigationItemSelectedListener(this);
+        img_edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ResetPasswordFragment fm=new ResetPasswordFragment();
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.frame, fm)
+                        .addToBackStack(null).commit();
+            }
+        });
 
         if(savedInstanceState ==null)
         {

@@ -9,24 +9,37 @@
     android:orientation="vertical"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
 
+android:paddingTop="20dp"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
+    <ImageView
+        android:id="@+id/edit_profile"
+        android:layout_width="@dimen/space_25"
+        android:layout_height="@dimen/space_25"
+        android:src="@drawable/icons8_settings_100px"
+        android:tint="@color/white"
+        android:layout_gravity="end"
+        android:layout_margin="@dimen/space_5"/>
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
 
 
-
+<ImageView
+    android:layout_width="70dp"
+    android:layout_height="70dp"
+    android:layout_centerInParent="true"
+    android:src="@drawable/circle_shape"/>
             <de.hdodenhof.circleimageview.CircleImageView
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
                 android:id="@+id/icon"
-                android:scaleType="centerCrop"
                 android:layout_centerInParent="true"
-
-              android:src="@drawable/logo"
+              android:src="@drawable/acc"
                 />
 
-
+</RelativeLayout>
 
 
         <TextView
@@ -34,7 +47,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:paddingTop="@dimen/nav_header_vertical_spacing"
+            android:padding="@dimen/space_5"
             android:text="User Name"
             android:textColor="@color/white"
             android:textSize="20sp"

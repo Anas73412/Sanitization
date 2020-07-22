@@ -16,10 +16,10 @@
             android:layout_height="wrap_content">
             <ImageView
                 android:id="@+id/img_slider"
-                android:scaleType="centerCrop"
+                android:scaleType="fitXY"
                 android:src="@drawable/banner1"
                 android:layout_width="match_parent"
-                android:layout_height="150dp"/>
+                android:layout_height="match_parent"/>
             <in.sanitization.sanitization.Fonts.LatoBLack
                 android:id="@+id/tv_title"
                 android:visibility="gone"

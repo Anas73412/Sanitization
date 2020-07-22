@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item>
+        <shape
+            android:shape="rectangle"
+            >
+            <corners android:radius="150dp"/>
+            <gradient android:startColor="@color/gdnt_top"
+                android:endColor="@color/gdnt_bottom"/>
+        </shape>
+
+    </item>
+    <item
+        android:top="@dimen/dimen_80dp"
+        android:bottom="@dimen/dimen_80dp"
+        android:left="@dimen/dimen_80dp"
+        android:right="@dimen/dimen_80dp">
+       <bitmap android:src="@drawable/businessman"
+
+           android:tintMode="src_over"/>
+    </item>
+
+
+</layer-list>

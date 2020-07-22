@@ -55,6 +55,7 @@ import in.sanitization.sanitization.util.ConnectivityReceiver;
 import in.sanitization.sanitization.util.CustomVolleyJsonRequest;
 import in.sanitization.sanitization.util.LoadingBar;
 import in.sanitization.sanitization.util.Session_management;
+import in.sanitization.sanitization.util.SortArrayListAscendingDescending;
 
 import static in.sanitization.sanitization.Config.BaseUrl.SIGN_UP;
 import static in.sanitization.sanitization.Config.BaseUrl.UPDATE_PROFILE;
@@ -84,7 +85,7 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
     JSONArray disArr,areaArr;
     HashMap<String,Object> hashMap = new HashMap<>();
     ArrayList<String> state_list;
-    ArrayList<String> district_list,block_list ;
+    ArrayList<String> district_list,block_list ,s_blocklist ;
     ArrayList<StateModel> stateModelList;
     ArrayList<DistrictModel> districtModelList;
     ArrayList<BlockModel> blockModelList;
@@ -142,6 +143,7 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
         stateModelList = new ArrayList<>();
         districtModelList = new ArrayList<>();
         blockModelList = new ArrayList<>();
+        s_blocklist = new ArrayList<>();
 
         btn_update.setOnClickListener(this);
         lin_dis.setOnClickListener(this);
@@ -622,7 +624,8 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
                             block_list.add(blockModelList.get(i).getBlock_name().toString());
 
                         }
-                        module.setSpinAdapter(block_list,spin_block,getActivity(),"Select Block");
+                        s_blocklist= new SortArrayListAscendingDescending(block_list).sortAscending();
+                        module.setSpinAdapter(s_blocklist,spin_block,getActivity(),"Select Block");
                         if(flag)
                         {
                             if(!block_id.isEmpty())

@@ -10,6 +10,7 @@
     <de.hdodenhof.circleimageview.CircleImageView
         android:layout_centerInParent="true"
         android:src="@drawable/logo"
+        android:padding="@dimen/space_30"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 

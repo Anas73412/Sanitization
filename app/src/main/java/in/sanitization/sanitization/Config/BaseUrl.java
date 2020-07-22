@@ -44,6 +44,7 @@ public class BaseUrl {
     public static String  ATTEMPT_ORDER_URL = BASE_URL + "index.php/api/submit_order";
     public static String  ADD_COMPLAIN_URL = BASE_URL + "index.php/api/suggestion";
     public static String  GET_COMPLAIN_URL = BASE_URL + "index.php/api/get_all_complaints";
+    public static String  RESET_PASS_URL = BASE_URL + "index.php/api/reset_pass";
 
     //Payment Base Urls
     public static final String PAYMENT_BASE_URL = "https://a2zindia.org/";

@@ -55,6 +55,7 @@ import in.sanitization.sanitization.util.ConnectivityReceiver;
 import in.sanitization.sanitization.util.CustomVolleyJsonRequest;
 import in.sanitization.sanitization.util.LoadingBar;
 import in.sanitization.sanitization.util.Session_management;
+import in.sanitization.sanitization.util.SortArrayListAscendingDescending;
 import in.sanitization.sanitization.util.ToastMsg;
 
 import static in.sanitization.sanitization.Config.BaseUrl.ADD_ADDRESS_URL;
@@ -85,7 +86,7 @@ public class AddAddressFragment extends Fragment implements View.OnClickListener
     EditText et_name,et_number,et_address,et_details,et_pincode;
     Button btn_submit;
     AutoCompleteTextView et_state,et_district;
-    ArrayList<String> state_list,city_list,temp_list,district_list,block_list,tempDisList,tempBlockList;
+    ArrayList<String> state_list,city_list,temp_list,district_list,block_list,tempDisList,tempBlockList ,s_blocklist;
     ToastMsg toastMsg;
     ArrayList<Socity_model> socity_modelList;
     Session_management session_management;
@@ -128,6 +129,7 @@ public class AddAddressFragment extends Fragment implements View.OnClickListener
         btn_submit=v.findViewById(R.id.btn_submit);
         et_state=v.findViewById(R.id.et_state);
         state_list=new ArrayList<>();
+        s_blocklist=new ArrayList<>();
         city_list=new ArrayList<>();
         temp_list=new ArrayList<>();
         tempDisList=new ArrayList<>();
@@ -623,7 +625,8 @@ public class AddAddressFragment extends Fragment implements View.OnClickListener
                             block_list.add(blockModelList.get(i).getBlock_name().toString());
 
                         }
-                        module.setSpinAdapter(block_list,spin_block,getActivity(),"Select Block");
+                        s_blocklist= new SortArrayListAscendingDescending(block_list).sortAscending();
+                        module.setSpinAdapter(s_blocklist,spin_block,getActivity(),"Select Block");
 
                         tempBlockList.clear();
                         tempBlockList.addAll(block_list);

@@ -13,21 +13,43 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="5dp"
+                android:layout_margin="@dimen/space_10"
+                >
             <RelativeLayout
 
                 android:layout_width="match_parent"
-                android:layout_height="155dp"
+                android:layout_height="200dp"
+
                 >
                 <androidx.viewpager.widget.ViewPager
                     android:id="@+id/viewPager"
+                    android:visibility="gone"
                     android:overScrollMode="never"
                     android:clipToPadding="false"
                     android:layout_centerInParent="true"
                     android:foregroundGravity="center"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
+                <com.synnapps.carouselview.CarouselView
+                    android:id="@+id/carousel1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:fillColor="#FFFFFFFF"
+                    app:pageColor="#00000000"
+                    app:radius="6dp"
+                    app:slideInterval="3000"
+
+                    app:indicatorVisibility="gone"
+                    app:strokeColor="#FF777777"
+                    app:strokeWidth="1dp"/>
+
+
             </RelativeLayout>
+            </androidx.cardview.widget.CardView>
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
@@ -94,7 +116,6 @@
                         android:layout_height="wrap_content"
                         android:paddingLeft="@dimen/space_5"
                         android:paddingRight="@dimen/space_5"
-                        android:text="@string/about_us"
                         android:paddingBottom="@dimen/space_5"
                         />
                 </LinearLayout>
@@ -140,14 +161,14 @@
                             android:layout_height="50dp"
                             android:layout_margin="@dimen/space_10"
                             android:tint="@color/colorAccent"
-                            android:src="@drawable/icons8_mouse_right_click_128px"/>
+                            android:src="@drawable/contct"/>
                         <TextView
                             android:id="@+id/txt_contact"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingLeft="@dimen/space_5"
                             android:paddingRight="@dimen/space_5"
-                            android:text=" About Us "
+                            android:text=""
                             android:autoLink="web"
                             android:textColor="@color/black"
                             android:textSize="16dp"
@@ -164,10 +185,40 @@
                 android:id="@+id/viewPager2"
                 android:overScrollMode="never"
                 android:clipToPadding="false"
+                android:visibility="gone"
                 android:layout_centerInParent="true"
                 android:foregroundGravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="155dp"/>
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="5dp"
+                android:layout_margin="@dimen/space_10"
+                >
+                <RelativeLayout
+
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+
+                    >
+
+                    <com.synnapps.carouselview.CarouselView
+                        android:id="@+id/carousel2"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:fillColor="#FFFFFFFF"
+                        app:pageColor="#00000000"
+                        app:radius="6dp"
+                        app:slideInterval="3000"
+
+                        app:indicatorVisibility="gone"
+                        app:strokeColor="#FF777777"
+                        app:strokeWidth="1dp"/>
+
+
+                </RelativeLayout>
+            </androidx.cardview.widget.CardView>
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 app:cardCornerRadius="@dimen/space_5"
@@ -175,6 +226,7 @@
                 android:layout_marginLeft="@dimen/space_5"
                 android:layout_marginRight="@dimen/space_5"
                 android:padding="@dimen/space_5"
+                android:visibility="gone"
                 android:layout_height="wrap_content">
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -183,6 +235,7 @@
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:visibility="gone"
                         >
                         <ImageView
                             android:id="@+id/m_img"
@@ -227,10 +280,12 @@
                 android:layout_marginLeft="@dimen/space_5"
                 android:layout_marginRight="@dimen/space_5"
                 android:padding="@dimen/space_5"
+                android:visibility="gone"
                 android:layout_height="wrap_content">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+
                     android:orientation="vertical">
                     <TextView
 
@@ -308,7 +363,7 @@
                         android:layout_height="wrap_content"
                         android:paddingLeft="@dimen/space_5"
                         android:paddingRight="@dimen/space_5"
-                        android:text="v 1.1 "
+                        android:text=""
                         android:gravity="center"
                         android:textSize="14dp"
 

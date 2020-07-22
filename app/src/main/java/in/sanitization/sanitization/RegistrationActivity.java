@@ -43,6 +43,7 @@ import in.sanitization.sanitization.networkconnectivity.NoInternetConnection;
 import in.sanitization.sanitization.util.ConnectivityReceiver;
 import in.sanitization.sanitization.util.CustomVolleyJsonRequest;
 import in.sanitization.sanitization.util.LoadingBar;
+import in.sanitization.sanitization.util.SortArrayListAscendingDescending;
 import in.sanitization.sanitization.util.ToastMsg;
 
 import static in.sanitization.sanitization.Config.BaseUrl.SIGN_UP;
@@ -57,7 +58,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     Module module;
     LoadingBar loadingBar ;
     ArrayList<String> state_list;
-    ArrayList<String> district_list,block_list ;
+    ArrayList<String> district_list,block_list ,s_blocklist;
     ArrayList<StateModel> stateModelList;
     ArrayList<DistrictModel> districtModelList;
     ArrayList<BlockModel> blockModelList;
@@ -92,6 +93,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         district_list = new ArrayList<>();
         state_list = new ArrayList<>();
         block_list = new ArrayList<>();
+        s_blocklist = new ArrayList<>();
         stateModelList = new ArrayList<>();
         districtModelList = new ArrayList<>();
         blockModelList = new ArrayList<>();
@@ -157,7 +159,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                             block_list.add(blockModelList.get(i).getBlock_name().toString());
 
                         }
-                        module.setSpinAdapter(block_list,spin_block,ctx,"Select Block");
+                        s_blocklist= new SortArrayListAscendingDescending(block_list).sortAscending();
+                        module.setSpinAdapter(s_blocklist,spin_block,ctx,"Select Block");
 
 
                     }
@@ -307,7 +310,7 @@ loadingBar.dismiss();
                 et_pass.setError("Enter Password");
                 et_pass.requestFocus();
             }
-            else if(pass.length()<5)
+            else if(pass.length()<6)
             {
                 et_pass.setError("Minimum 6 characters allow");
                 et_pass.requestFocus();
@@ -316,7 +319,7 @@ loadingBar.dismiss();
                 et_con_pass.setError("Enter Password");
                 et_con_pass.requestFocus();
             }
-            else if(cpass.length()<5)
+            else if(cpass.length()<6)
             {
                 et_con_pass.setError("Minimum 6 characters allow");
                 et_con_pass.requestFocus();

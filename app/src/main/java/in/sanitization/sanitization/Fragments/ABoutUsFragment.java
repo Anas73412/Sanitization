@@ -53,8 +53,8 @@ public class ABoutUsFragment extends Fragment {
         textView = view.findViewById(R.id.text);
         title= view.findViewById(R.id.text_title);
         loadingBar = new LoadingBar(getActivity());
+  ((HomeActivity) getActivity()).setTitle("About Us");
 
-        ((HomeActivity) getActivity()).setTitle("About Us");
         if (ConnectivityReceiver.isConnected()) {
             getInfo();
         }
