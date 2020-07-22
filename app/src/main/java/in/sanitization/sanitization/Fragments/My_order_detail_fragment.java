@@ -467,12 +467,15 @@ public class My_order_detail_fragment extends Fragment implements View.OnClickLi
         {
             if(rel_rvcpl.getVisibility()==View.GONE)
             {
+                btn_view.setText("Hide Previous Complaints");
                 getAllComplaints(order_id);
                 rel_rvcpl.setVisibility(View.VISIBLE);
 
             }
             else if(rel_rvcpl.getVisibility()==View.VISIBLE)
             {
+                btn_view.setText("View Previous Complaints");
+
                 rel_rvcpl.setVisibility(View.GONE);
             }
 
@@ -535,7 +538,6 @@ public class My_order_detail_fragment extends Fragment implements View.OnClickLi
                   complainList=gson.fromJson(response.toString(),listType);
                   complainAdapter=new ComplainAdapter(complainList,getActivity());
                   if (complainList.size()>0) {
-                      btn_view.setText("Hide Previous Complaints");
                       rv_complain.setLayoutManager(new LinearLayoutManager(getActivity()));
                       rv_complain.setAdapter(complainAdapter);
                       complainAdapter.notifyDataSetChanged();

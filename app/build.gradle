@@ -58,4 +58,6 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'com.google.android.material:material:1.1.0'
     implementation 'com.fxn769:bubbletabbar:1.0.5'
+    implementation 'me.relex:circleindicator:1.2.2@aar'
+
 }

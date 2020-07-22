@@ -20,7 +20,7 @@
         <activity android:name=".IntroductionActivity"></activity>
         <activity android:name=".ThanksActivity" />
         <activity android:name=".PaymentActivity" />
-        <activity android:name=".SubscriptionActivity" /> <!-- <activity android:name=".HelpActivity" /> -->
+        <activity android:name=".SubscriptionActivity" />
         <activity android:name=".RegistrationActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".HomeActivity" />
@@ -31,7 +31,6 @@
         <activity android:name=".ForgotActivity" />
         <activity android:name=".networkconnectivity.NoInternetConnection" />
         <activity android:name=".Verfication_activity" />
-        <activity android:name=".networkconnectivity.NoInternetConnection" />
         <activity android:name=".SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
