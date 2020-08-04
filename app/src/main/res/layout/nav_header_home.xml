@@ -4,7 +4,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/colorPrimaryDark"
+    android:background="@drawable/gradiant_background"
     android:gravity="center"
     android:orientation="vertical"
     android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -31,7 +31,7 @@ android:paddingTop="20dp"
     android:layout_height="70dp"
     android:layout_centerInParent="true"
     android:src="@drawable/circle_shape"/>
-            <de.hdodenhof.circleimageview.CircleImageView
+            <ImageView
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:id="@+id/icon"

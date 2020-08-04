@@ -28,7 +28,8 @@
     <color name="bg_color">#DDDBDB</color>
     <color name="green_500">#4CAF50</color>
     <color name="red_600">#E53935</color>
-
+    <color name="unread">#E7F3FF</color>
+    <color name="donate_text">#054f93</color>
 
 
 

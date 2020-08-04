@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".DonationActivity">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <include layout="@layout/toolbar_layout"/>
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/all">
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+             <RelativeLayout
+
+                 android:layout_width="match_parent"
+                 android:layout_height="300dp">
+                 <ImageView
+                     android:layout_centerInParent="true"
+                     android:src="@drawable/donation_pic"
+                     android:layout_width="280dp"
+                     android:layout_height="280dp"/>
+             </RelativeLayout>
+                <in.sanitization.sanitization.Fonts.LatoBLack
+                    android:id="@+id/tv_text"
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    android:textSize="@dimen/space_20"
+                    android:text="JOIN THE FIGHT AGAINST COVID-19"
+                    android:textAlignment="gravity"
+                    android:textColor="@color/donate_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+                <in.sanitization.sanitization.Fonts.LatoBLack
+                    android:id="@+id/tv_desc"
+                    android:gravity="center"
+                    android:textSize="@dimen/space_17"
+                    android:text="@string/donate_text"
+                    android:textAlignment="gravity"
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/space_10">
+                <LinearLayout
+                    android:layout_marginTop="@dimen/space_5"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Username"
+                        android:paddingLeft="@dimen/space_10"
+                        android:textColor="#000"
+                        android:textSize="14sp" />
+
+                    <ImageView
+                        android:id="@+id/iconnemail"
+                        android:layout_width="10dp"
+                        android:layout_height="10dp"
+                        android:src="@drawable/icons8_asterisk_30px" />
+
+                </LinearLayout>
+
+
+                <EditText
+                    android:id="@+id/et_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_marginBottom="@dimen/space_5"
+                    android:layout_marginTop="@dimen/space_4"
+                    android:textSize="14sp"
+                    android:hint="Enter Name"
+                    android:paddingLeft="@dimen/space_20"
+                    android:background="@drawable/edittext_layout"
+                    android:ems="10"
+                    android:inputType="text" />
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_height="wrap_content">
+                    <TextView
+
+                        android:id="@+id/tv_pro_phone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#000"
+                        android:paddingLeft="@dimen/space_10"
+                        android:text="Mobile Number"
+                        android:textSize="14sp" />
+
+                    <ImageView
+                        android:id="@+id/iconm"
+                        android:layout_width="10dp"
+                        android:layout_height="10dp"
+                        android:src="@drawable/icons8_asterisk_30px" />
+
+                </LinearLayout>
+
+
+                <EditText
+                    android:hint="Enter Mobile number"
+                    android:id="@+id/et_phone"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="@dimen/space_4"
+                    android:layout_height="45dp"
+                    android:layout_marginBottom="@dimen/space_5"
+                    android:background="@drawable/edittext_layout"
+                    android:ems="10"
+                    android:textSize="14sp"
+
+                    android:paddingLeft="@dimen/space_20"
+                    android:inputType="number"
+                    android:maxLength="15" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:orientation="horizontal"
+                        android:layout_height="wrap_content">
+                        <TextView
+
+                            android:id="@+id/tv_pro_amount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="#000"
+                            android:paddingLeft="@dimen/space_10"
+                            android:text="Amount"
+                            android:textSize="14sp" />
+
+                        <ImageView
+                            android:id="@+id/iconma"
+                            android:layout_width="10dp"
+                            android:layout_height="10dp"
+                            android:src="@drawable/icons8_asterisk_30px" />
+
+                    </LinearLayout>
+
+
+                    <EditText
+                        android:hint="Enter Amount"
+                        android:id="@+id/et_amount"
+                        android:layout_width="match_parent"
+                        android:layout_marginTop="@dimen/space_4"
+                        android:layout_height="45dp"
+                        android:layout_marginBottom="@dimen/space_5"
+                        android:background="@drawable/edittext_layout"
+                        android:ems="10"
+                        android:textSize="14sp"
+
+                        android:paddingLeft="@dimen/space_20"
+                        android:inputType="number"
+                        android:maxLength="15" />
+                    <Button
+                        android:id="@+id/btn_pay"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="Update"
+                        android:layout_marginTop="@dimen/space_20"
+                        android:background="@drawable/button_background"
+                        android:textColor="#fff"
+                        android:textSize="@dimen/space_16"/>
+            </LinearLayout>
+
+            </LinearLayout>
+        </ScrollView>
+
+    </LinearLayout>
+
+</RelativeLayout>

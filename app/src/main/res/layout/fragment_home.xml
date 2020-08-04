@@ -130,6 +130,7 @@
                 android:layout_marginLeft="@dimen/space_5"
                 android:layout_marginRight="@dimen/space_5"
                 android:padding="@dimen/space_5"
+                android:visibility="gone"
                 android:layout_height="wrap_content">
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -220,13 +221,14 @@
                 </RelativeLayout>
             </androidx.cardview.widget.CardView>
             <androidx.cardview.widget.CardView
+                android:id="@+id/card_donation"
                 android:layout_width="match_parent"
                 app:cardCornerRadius="@dimen/space_5"
                 android:layout_marginTop="@dimen/space_5"
                 android:layout_marginLeft="@dimen/space_5"
                 android:layout_marginRight="@dimen/space_5"
                 android:padding="@dimen/space_5"
-                android:visibility="gone"
+           android:visibility="gone"
                 android:layout_height="wrap_content">
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -266,10 +268,18 @@
                         android:layout_margin="@dimen/space_5"
                         />
                     <ImageView
-                        android:src="@drawable/banner1"
+                        android:id="@+id/iv_banner"
                         android:layout_width="match_parent"
                         android:scaleType="fitXY"
-                        android:layout_height="100dp"/>
+                        android:layout_height="150dp"/>
+
+                    <Button
+                        android:id="@+id/btn_donate"
+                        android:textColor="@color/white"
+                        android:text="Donate Now!"
+                        android:background="@color/donate_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 

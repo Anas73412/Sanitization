@@ -1,19 +1,15 @@
 package in.sanitization.sanitization;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,12 +22,12 @@ import com.payumoney.sdkui.ui.utils.PayUmoneyFlowManager;
 
 import org.json.JSONObject;
 
-import java.text.DecimalFormat;
 import java.util.HashMap;
 
-import in.sanitization.sanitization.Config.BaseUrl;
 import in.sanitization.sanitization.Config.Module;
+import in.sanitization.sanitization.networkconnectivity.NoInternetConnection;
 import in.sanitization.sanitization.payment.ServiceWrapper;
+import in.sanitization.sanitization.util.ConnectivityReceiver;
 import in.sanitization.sanitization.util.CustomVolleyJsonRequest;
 import in.sanitization.sanitization.util.LoadingBar;
 import in.sanitization.sanitization.util.Session_management;
@@ -39,25 +35,26 @@ import in.sanitization.sanitization.util.ToastMsg;
 import retrofit2.Call;
 import retrofit2.Callback;
 
+import static in.sanitization.sanitization.Config.BaseUrl.ADD_DONATION_URL;
 import static in.sanitization.sanitization.Config.Constants.KEY_EMAIL;
 import static in.sanitization.sanitization.Config.Constants.KEY_ID;
 import static in.sanitization.sanitization.Config.Constants.KEY_MOBILE;
 import static in.sanitization.sanitization.Config.Constants.KEY_NAME;
 import static in.sanitization.sanitization.Fragments.HomeFragment.gst;
+import static in.sanitization.sanitization.Fragments.HomeFragment.min_donation_amount;
 
-public class PaymentActivity extends AppCompatActivity implements View.OnClickListener{
-    Activity ctx=PaymentActivity.this;
+public class DonationActivity extends AppCompatActivity implements View.OnClickListener {
+    Activity ctx=DonationActivity.this;
     Module module;
     LoadingBar loadingBar;
     ImageView iv_back;
     TextView tv_title;
     ToastMsg toastMsg;
     String user_id="";
-    TextView tv_rev_name,tv_rev_mobile,tv_rev_pincode,tv_rev_address,tvItems,tvprice,tvMrp,tvDiscount,tvSubTotal,tvGst;
-    RelativeLayout rel_order;
-    float tot ;
-    String loc_id="",rev_name,rev_mobile,rev_address,rev_state,rev_city,rev_pincode,rev_soc_id,plan_id,plan_name,mrp,price,working_days,plan_expiry;
     Session_management session_management;
+    EditText et_name,et_phone,et_amount;
+    Button btn_pay;
+
     //payments
     PayUmoneySdkInitializer.PaymentParam.Builder builder = new PayUmoneySdkInitializer.PaymentParam.Builder();
     //declare paymentParam object
@@ -66,162 +63,159 @@ public class PaymentActivity extends AppCompatActivity implements View.OnClickLi
     String TAG ="PaymentActivity", txnid ="", amount ="", phone ="",
             prodname ="", firstname ="", email ="",
             merchantId ="7123249", merchantkey="FEM9jhFe";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_payment);
+        setContentView(R.layout.activity_donation);
         initViews();
     }
 
     private void initViews() {
         module=new Module(ctx);
-        toastMsg=new ToastMsg(ctx);
-
         loadingBar=new LoadingBar(ctx);
         iv_back=findViewById(R.id.iv_back);
         tv_title=findViewById(R.id.tv_title);
-
-        iv_back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
-        tv_title.setText("Order Details");
-        tv_rev_name=findViewById(R.id.tv_rev_name);
-        tv_rev_mobile=findViewById(R.id.tv_rev_mobile);
-        tv_rev_pincode=findViewById(R.id.tv_rev_pincode);
-        tv_rev_address=findViewById(R.id.tv_rev_address);
-        tvItems=findViewById(R.id.tvItems);
-        tvprice=findViewById(R.id.tvprice);
-        tvMrp=findViewById(R.id.tvMrp);
-        tvGst=findViewById(R.id.tvGst);
+        toastMsg=new ToastMsg(ctx);
         session_management=new Session_management(ctx);
-        tvDiscount=findViewById(R.id.tvDiscount);
-        tvSubTotal=findViewById(R.id.tvSubTotal);
-        rel_order=findViewById(R.id.rel_order);
-        loc_id=getIntent().getStringExtra("loc_id");
-        rev_name=getIntent().getStringExtra("name");
-        rev_mobile=getIntent().getStringExtra("mobile");
-        rev_soc_id=getIntent().getStringExtra("socity_id");
-        rev_pincode=getIntent().getStringExtra("pincode");
-        rev_address=getIntent().getStringExtra("address");
-        rev_state=getIntent().getStringExtra("state");
-        rev_city=getIntent().getStringExtra("city");
-        plan_id=getIntent().getStringExtra("plan_id");
-        plan_name=getIntent().getStringExtra("plan_name");
-        working_days=getIntent().getStringExtra("working_days");
-        plan_expiry=getIntent().getStringExtra("plan_expiry");
-        mrp=getIntent().getStringExtra("mrp");
-        price=getIntent().getStringExtra("price");
-        rel_order.setOnClickListener(this);
-        module=new Module(ctx);
-        tv_rev_name.setText(rev_name);
-        tv_rev_mobile.setText(rev_mobile);
-        tv_rev_pincode.setText(rev_pincode);
-        String address=rev_address+"\n "+rev_state+" ("+rev_pincode+")";
-        tv_rev_address.setText(address);
 
-        tvItems.setText("1");
-        tvprice.setText(getResources().getString(R.string.currency)+" "+price);
-        tvMrp.setText(getResources().getString(R.string.currency)+" "+mrp);
-        float dmrp=Float.parseFloat(mrp);
-        float dprice=Float.parseFloat(price);
-        int dis=(int)(dmrp-dprice);
-        if(dis<=0)
-        {
-            tvDiscount.setText("No Discount");
-        }
-        else
-        {
-            tvDiscount.setText("-"+getResources().getString(R.string.currency)+" "+dis);
-        }
-
-        DecimalFormat precision = new DecimalFormat("0.0");
-        tot =  Float.parseFloat(precision.format(dprice+module.getGSt(gst,price))+"0");
-
-        tvSubTotal.setText(getResources().getString(R.string.currency)+" "+ tot+"0");
-        tvGst.setText(getResources().getString(R.string.currency)+" "+precision.format(module.getGSt(gst,price))+"0");
-
-
+        tv_title.setText("Donate Now");
+        et_amount=findViewById(R.id.et_amount);
+        et_phone=findViewById(R.id.et_phone);
+        et_name=findViewById(R.id.et_name);
+        btn_pay=findViewById(R.id.btn_pay);
+        btn_pay.setOnClickListener(this);
+        iv_back.setOnClickListener(this);
+        user_id=session_management.getUserDetails().get(KEY_ID);
+       et_name.setText(session_management.getUserDetails().get(KEY_NAME));
+        et_phone.setText(session_management.getUserDetails().get(KEY_MOBILE));
 
     }
 
     @Override
     public void onClick(View v) {
-        if(v.getId() == R.id.rel_order)
+        if(v.getId() == R.id.iv_back)
         {
-            module.showToast("Please wait..");
-             user_id=session_management.getUserDetails().get(KEY_ID);
-            txnid=module.getUniqueId("a2z");
-            amount=String.valueOf(tot);
+            finish();
+        }
+        else if(v.getId() == R.id.btn_pay)
+        {
+            boolean valid=true;
+            String name=et_name.getText().toString().trim();
+            String mobile=et_phone.getText().toString().trim();
+            String amt=et_amount.getText().toString().trim();
+            if(name == null || name.isEmpty())
+            {
+                valid=false;
+                et_name.setError("Enter Name");
+                et_name.requestFocus();
+            }
+            if(mobile == null || mobile.isEmpty())
+            {
+                valid=false;
+                et_phone.setError("Enter Mobile Number");
+                et_phone.requestFocus();
+            }
+            if(mobile.length()<10)
+            {
+                valid=false;
+                et_phone.setError("Invalid Mobile Number");
+                et_phone.requestFocus();
+            }
+            if(amt == null || amt.isEmpty()||Integer.parseInt(amt)==0)
+            {
+                valid=false;
+                et_amount.setError("Enter Some amount");
+                et_amount.requestFocus();
+            }
+
+            if(valid)
+            {
+                if(ConnectivityReceiver.isConnected())
+                {
+                    if(min_donation_amount>Integer.parseInt(amt))
+                    {
+                        toastMsg.toastIconError("Minimum Amount is "+amt);
+                    }
+                    else
+                    {
+                        float tot=Float.parseFloat(et_amount.getText().toString().trim());
+                        module.showToast("Please wait..");
+                        user_id=session_management.getUserDetails().get(KEY_ID);
+                        txnid=module.getUniqueId("a2z");
+                        amount=String.valueOf(tot);
 //            amount="12";
-            phone=session_management.getUserDetails().get(KEY_MOBILE);
-            prodname=plan_name;
-            firstname=session_management.getUserDetails().get(KEY_NAME);
-            email=session_management.getUserDetails().get(KEY_EMAIL);
+                        phone=mobile;
+                        prodname="A2z INDIA COVID-19 FUND";
+                        firstname=name;
+                        email=session_management.getUserDetails().get(KEY_EMAIL);
 
 //            attemptOrder(user_id,"paid",loc_id,txnid,plan_id,plan_name,mrp,price,gst, String.valueOf(tot),plan_expiry,module.getCurrentDate(),working_days);
-            startpay();
+                        startpay();
+//                        addDonationRequest(user_id,name,mobile,amt,txnid);
+                    }
+
+                }
+                else{
+                    Intent intent=new Intent(ctx, NoInternetConnection.class);
+                    startActivity(intent);
+                }
+
+            }
 
         }
     }
 
-    private void attemptOrder(String user_id, String payment_status,String loc_id, String trans_id, String plan_id, String plan_name, String mrp, String price,String gst,String gross, String plan_expiry, String currentDate,String working_days) {
+    private void addDonationRequest(String user_id, String name, final String mobile, String amt,String txnid) {
         loadingBar.show();
         HashMap<String,String> params=new HashMap<>();
         params.put("user_id",user_id);
-        params.put("payment",payment_status);
-        params.put("trans_id",trans_id);
-        params.put("package_id",plan_id);
-        params.put("package_name",plan_name);
-        params.put("package_mrp",mrp);
-        params.put("package_price",price);
-        params.put("gst",gst);
-        params.put("gross_amount",gross);
-        params.put("package_duration",plan_expiry);
-        params.put("order_date",currentDate);
-        params.put("location_id",loc_id);
-        params.put("no_of_working_days",working_days);
-        Log.e("paramssss",""+params.toString());
-        CustomVolleyJsonRequest request=new CustomVolleyJsonRequest(Request.Method.POST, BaseUrl.ATTEMPT_ORDER_URL, params, new Response.Listener<JSONObject>() {
+        params.put("name",name);
+        params.put("mobile",mobile);
+        params.put("amount",amt);
+        params.put("txn_id",txnid);
+        Log.e(TAG,""+params.toString());
+
+        CustomVolleyJsonRequest jsonRequest=new CustomVolleyJsonRequest(Request.Method.POST,  ADD_DONATION_URL, params,new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
+
                 loadingBar.dismiss();
-                try {
-                    boolean resp=response.getBoolean("responce");
-                    if(resp)
-                    {
-                        String msg=response.getString("data");
-                        Intent intent=new Intent(ctx,ThanksActivity.class);
-                        intent.putExtra("type","pay");
-                        intent.putExtra("msg",msg);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(intent);
+              try {
+                  boolean resp=response.getBoolean("responce");
+                  if(resp)
+                  {
+                      toastMsg.toastIconSuccess(response.getString("message"));
+                      String url=response.getString("url");
+                      Intent intent=new Intent(ctx,ThanksActivity.class);
+                      intent.putExtra("type","donate");
+                      intent.putExtra("msg","Thank You for your contribution");
+                      intent.putExtra("url",url);
+                      intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                      intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                      intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                      startActivity(intent);
+                  }
+                  else
+                  {
+                      toastMsg.toastIconSuccess(response.getString("error"));
 
-                    }
-                    else
-                    {
-                         toastMsg.toastIconError("Something Went Wrong");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    ex.printStackTrace();
-                    toastMsg.toastIconError("Something Went Wrong");
-                }
+                  }
 
+              }catch (Exception ex)
+              {
+                  ex.printStackTrace();
+              }
             }
-        }, new Response.ErrorListener() {
+        }     , new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 loadingBar.dismiss();
                 module.errMessage(error);
             }
         });
-        AppController.getInstance().addToRequestQueue(request);
+
+        AppController.getInstance().addToRequestQueue(jsonRequest);
     }
 
     private void startpay() {
@@ -268,14 +262,14 @@ public class PaymentActivity extends AppCompatActivity implements View.OnClickLi
                 Log.e(TAG, "hash res "+response.body());
                 String merchantHash= response.body();
                 if (merchantHash.isEmpty() || merchantHash.equals("")) {
-                    Toast.makeText(PaymentActivity.this, "Could not generate hash", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ctx, "Could not generate hash", Toast.LENGTH_SHORT).show();
                     Log.e(TAG, "hash empty");
                 } else {
                     // mPaymentParams.setMerchantHash(merchantHash);
                     paymentParam.setMerchantHash(merchantHash);
                     // Invoke the following function to open the checkout page.
                     // PayUmoneyFlowManager.startPayUMoneyFlow(paymentParam, StartPaymentActivity.this,-1, true);
-                    PayUmoneyFlowManager.startPayUMoneyFlow(paymentParam, PaymentActivity.this, R.style.AppTheme_Green, false);
+                    PayUmoneyFlowManager.startPayUMoneyFlow(paymentParam, ctx, R.style.AppTheme_Green, false);
                 }
             }
 
@@ -307,8 +301,7 @@ public class PaymentActivity extends AppCompatActivity implements View.OnClickLi
                 if(transactionResponse.getTransactionStatus().equals( TransactionResponse.TransactionStatus.SUCCESSFUL )){
 
                     Log.e("taransactionsdsadasd",""+transactionResponse.getTransactionDetails().toString());
-                    attemptOrder(user_id,"paid",loc_id,txnid,plan_id,plan_name,mrp,price,gst, String.valueOf(tot),plan_expiry,module.getCurrentDate(),working_days);
-
+                    addDonationRequest(user_id,et_name.getText().toString().trim(),et_phone.getText().toString().trim(),amount,txnid);
 //                    addTranscation(tv_points.getText().toString(),tv_amt.getText().toString(),sessionManagment.getUserDetails().get(KEY_ID),txnid,"success");
                     //Success Transaction
                 } else{
@@ -332,3 +325,4 @@ public class PaymentActivity extends AppCompatActivity implements View.OnClickLi
 
 
 }
+

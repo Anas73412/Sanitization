@@ -7,6 +7,7 @@ import android.content.pm.PackageInfo;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -21,6 +22,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -58,9 +60,11 @@ import in.sanitization.sanitization.AppController;
 import in.sanitization.sanitization.Config.BaseUrl;
 import in.sanitization.sanitization.Config.Module;
 import in.sanitization.sanitization.CustomSlider;
+import in.sanitization.sanitization.DonationActivity;
 import in.sanitization.sanitization.HomeActivity;
 import in.sanitization.sanitization.Model.BannerModel;
 import in.sanitization.sanitization.Model.FAQModel;
+import in.sanitization.sanitization.Model.NotificationModel;
 import in.sanitization.sanitization.Model.PackageModel;
 import in.sanitization.sanitization.Model.Slider_model;
 import in.sanitization.sanitization.PackageDetails;
@@ -70,6 +74,7 @@ import in.sanitization.sanitization.util.ConnectivityReceiver;
 import in.sanitization.sanitization.util.CustomVolleyJsonArrayRequest;
 import in.sanitization.sanitization.util.CustomVolleyJsonRequest;
 import in.sanitization.sanitization.util.LoadingBar;
+import in.sanitization.sanitization.util.NotificationHandler;
 import in.sanitization.sanitization.util.RecyclerTouchListener;
 
 import static in.sanitization.sanitization.Config.BaseUrl.IMG_SLIDER_URL;
@@ -79,19 +84,24 @@ import static in.sanitization.sanitization.Config.BaseUrl.IMG_SLIDER_URL;
  */
 public class HomeFragment extends Fragment implements View.OnClickListener {
 
+    CardView card_donation;
+    ImageView iv_banner;
+    Button btn_donate;
+    public static int min_donation_amount=0;
     SliderLayout home_banner;
     TextView txt_contact,txt_message ,txt_about,txt_version,txt_view_more,txt_more_faq;
     Module module ;
     LoadingBar loadingBar ;
     String url = "contact us" ,app_link="";
     int version_code =0 ;
+    NotificationHandler notificationHandler;
 CarouselView carousal1 , carousal2 ;
     ArrayList<Slider_model> carList;
     ArrayList<Slider_model> bannerList;
     ArrayList<BannerModel>banner_list;
     ArrayList<FAQModel>faq_list;
     FAQAdapter faqAdapter;
-    RecyclerView rv_faq;
+//    RecyclerView rv_faq;
     ViewPager viewPager ,viewPager2;
     CarausalAdapter carausalAdapter;
     int current_position=0;
@@ -149,7 +159,7 @@ CarouselView carousal1 , carousal2 ;
     }
     private void initViews(View view) {
 
-        rv_faq=view.findViewById(R.id.rv_faq);
+//        rv_faq=view.findViewById(R.id.rv_faq);
 //        home_slider = view.findViewById(R.id.slider);
 //        home_banner = view.findViewById(R.id.banner);
         txt_about= view.findViewById(R.id.txt_about);
@@ -165,6 +175,11 @@ CarouselView carousal1 , carousal2 ;
         carousal1.setImageListener(imageListener);
         carousal2.setImageListener(imageListener2);
         txt_contact.setText(Html.fromHtml(url));
+        card_donation=view.findViewById(R.id.card_donation);
+        iv_banner=view.findViewById(R.id.iv_banner);
+        btn_donate=view.findViewById(R.id.btn_donate);
+        btn_donate.setOnClickListener(this);
+        card_donation.setOnClickListener(this);
         txt_contact.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -175,6 +190,7 @@ CarouselView carousal1 , carousal2 ;
             }
         });
 
+        notificationHandler=new NotificationHandler(getActivity());
         loadingBar = new LoadingBar(getActivity());
         ((HomeActivity) getActivity()).setTitle(getResources().getString(R.string.app_name));
         banner_list = new ArrayList<>();
@@ -184,6 +200,7 @@ CarouselView carousal1 , carousal2 ;
         module = new Module(getActivity());
         list=new ArrayList<>();
         rv_package=view.findViewById(R.id.rv_package);
+        rv_package.setNestedScrollingEnabled(false);
         txt_view_more.setOnClickListener(this);
         txt_more_faq.setOnClickListener(this);
 if (ConnectivityReceiver.isConnected()) {
@@ -442,9 +459,9 @@ if (ConnectivityReceiver.isConnected()) {
                     Type listType = new TypeToken<List<FAQModel>>() {
                     }.getType();
                   faq_list = gson.fromJson(response.toString(), listType);
-                    rv_faq.setLayoutManager(new LinearLayoutManager(getActivity()));
+//                    rv_faq.setLayoutManager(new LinearLayoutManager(getActivity()));
                     faqAdapter = new FAQAdapter(getActivity(),faq_list);
-                    rv_faq.setAdapter(faqAdapter);
+//                    rv_faq.setAdapter(faqAdapter);
                     faqAdapter.notifyDataSetChanged();
 
                 }
@@ -485,6 +502,15 @@ if (ConnectivityReceiver.isConnected()) {
             fragmentManager.beginTransaction().replace(R.id.frame, fm)
                     .addToBackStack(null).commit();
         }
+        else if(i == R.id.card_donation)
+        {
+            Intent intent=new Intent(getActivity(), DonationActivity.class);
+            startActivity(intent);
+        }else if(i == R.id.btn_donate)
+        {
+            Intent intent=new Intent(getActivity(), DonationActivity.class);
+            startActivity(intent);
+        }
     }
     public void getAppSettingData()
     {
@@ -507,6 +533,26 @@ if (ConnectivityReceiver.isConnected()) {
 
                         version_code=Integer.parseInt(obj.getString("version"));
                         app_link=obj.getString("app_link");
+                        String donate_image=obj.getString("donation_image");
+                        String donation_status=obj.getString("donation_status");
+                        min_donation_amount=Integer.parseInt(obj.getString("min_donation"));
+
+                        if(donation_status.equals("1"))
+                        {
+                            if(card_donation.getVisibility() == View.GONE)
+                            {
+                                card_donation.setVisibility(View.VISIBLE);
+                            }
+                            if(donate_image != null || !(donate_image.isEmpty())) {
+                                Glide.with(getActivity())
+                                        .load(BaseUrl.IMG_EXTRA_URL + donate_image.toString())
+                                        .placeholder(R.drawable.logo)
+                                        .fitCenter()
+                                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                        .dontAnimate()
+                                        .into(iv_banner);
+                            }
+                        }
                         gst=obj.getString("gst");
 
                         if(getUpdaterInfo())
@@ -515,8 +561,9 @@ if (ConnectivityReceiver.isConnected()) {
                             makeGetSliderRequest();
                             autoSlide();
                             makeGetBannerSliderRequest();
-                            getfaqs();
-                            getInfo(txt_contact,BaseUrl.CONTACT);
+                            getAllNotifications();
+//                            getfaqs();
+//                            getInfo(txt_contact,BaseUrl.CONTACT);
                             getInfo(txt_about,BaseUrl.ABOUT_US);
 
 
@@ -674,4 +721,35 @@ if (ConnectivityReceiver.isConnected()) {
         }
     };
 
+    private void getAllNotifications() {
+        HashMap<String,String> params=new HashMap<>();
+        CustomVolleyJsonArrayRequest arrayRequest=new CustomVolleyJsonArrayRequest(Request.Method.POST, BaseUrl.NOTIFICATIONS_URL, params, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                try {
+                    ArrayList<NotificationModel> list=new ArrayList<>();
+                    Gson gson=new Gson();
+                    Type typeList=new TypeToken<List<NotificationModel>>(){}.getType();
+                    list=gson.fromJson(response.toString(),typeList);
+                    if(!(list.size()<=0)) {
+                        int allNotifications = list.size();
+                        int readNotifications = notificationHandler.getNotificationCount();
+                        int unreadNotifcations = allNotifications - readNotifications;
+                        ((HomeActivity)getActivity()).setNotificationCounter(unreadNotifcations);
+                    }
+
+
+                }catch (Exception ex){
+                    ex.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                module.errMessage(error);
+            }
+        });
+        AppController.getInstance().addToRequestQueue(arrayRequest);
+    }
 }

@@ -8,6 +8,7 @@ public class BaseUrl {
     public static final String IMG_WORKER_URL =BASE_URL+"uploads/workers/" ;
     public static final String IMG_DISTRICT_URL =BASE_URL+"uploads/district/" ;
     public static final String IMG_AREA_URL =BASE_URL+"uploads/area/" ;
+    public static final String IMG_EXTRA_URL =BASE_URL+"uploads/extra/" ;
     public static final String GET_PLANS =BASE_URL+"index.php/api/get_plans" ;
     public static final String GET_BANNERS =BASE_URL+"index.php/api/get_banners" ;
     public static final String GET_SLIDER_URL =BASE_URL+"index.php/api/get_sliders" ;
@@ -45,6 +46,8 @@ public class BaseUrl {
     public static String  ADD_COMPLAIN_URL = BASE_URL + "index.php/api/suggestion";
     public static String  GET_COMPLAIN_URL = BASE_URL + "index.php/api/get_all_complaints";
     public static String  RESET_PASS_URL = BASE_URL + "index.php/api/reset_pass";
+    public static String  NOTIFICATIONS_URL = BASE_URL + "index.php/api/get_notification";
+    public static String  ADD_DONATION_URL = BASE_URL + "index.php/api/add_donation";
 
     //Payment Base Urls
     public static final String PAYMENT_BASE_URL = "https://a2zindia.org/";

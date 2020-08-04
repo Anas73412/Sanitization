@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.menu.ActionMenuItem;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.GravityCompat;
@@ -11,6 +12,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.app.Activity;
 import android.content.Context;
@@ -20,22 +22,43 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.google.android.material.navigation.NavigationView;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import org.json.JSONArray;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import in.sanitization.sanitization.Adapter.NotificationAdapter;
+import in.sanitization.sanitization.Config.BaseUrl;
+import in.sanitization.sanitization.Config.Module;
 import in.sanitization.sanitization.Fragments.ABoutUsFragment;
 import in.sanitization.sanitization.Fragments.ContactFragment;
 import in.sanitization.sanitization.Fragments.EditProfileFragment;
 import in.sanitization.sanitization.Fragments.HelpActivity;
 import in.sanitization.sanitization.Fragments.HomeFragment;
 import in.sanitization.sanitization.Fragments.MyOrders;
+import in.sanitization.sanitization.Fragments.NotificationFragment;
 import in.sanitization.sanitization.Fragments.PrivacyFragment;
 import in.sanitization.sanitization.Fragments.TermsFragment;
+import in.sanitization.sanitization.Model.NotificationModel;
+import in.sanitization.sanitization.util.ConnectivityReceiver;
+import in.sanitization.sanitization.util.CustomVolleyJsonArrayRequest;
+import in.sanitization.sanitization.util.NotificationHandler;
 import in.sanitization.sanitization.util.Session_management;
 
 import static in.sanitization.sanitization.Config.Constants.KEY_MOBILE;
@@ -46,10 +69,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     DrawerLayout drawer;
     Toolbar toolbar;
     Navigation header ;
-    TextView txt_name ;
+    TextView txt_name,totalNtificationCount;
     ImageView img_edit ;
     Session_management session_management;
     Activity ctx=HomeActivity.this;
+    Module module;
+    NotificationHandler notificationHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,13 +84,16 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitle(getResources().getString(R.string.app_name));
+        module=new Module(ctx);
+        notificationHandler=new NotificationHandler(ctx);
        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
    session_management=new Session_management(ctx);
         final ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
-        toggle.syncState();
         toggle.getDrawerArrowDrawable().setColor(getResources().getColor(R.color.black));
+        toggle.syncState();
+
 //        Drawable drawable = ResourcesCompat.getDrawable(getResources(), R.drawable.drawer_icon, getTheme());
 //        toggle.setHomeAsUpIndicator(drawable);
 //        toggle.setToolbarNavigationClickListener(new View.OnClickListener() {
@@ -83,8 +111,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         View header = ((NavigationView) findViewById(R.id.nav_view)).getHeaderView(0);
         txt_name = header.findViewById(R.id.profile_user_name);
        img_edit = header.findViewById(R.id.edit_profile);
+       ImageView iv_icon = header.findViewById(R.id.icon);
 
-        txt_name.setText(session_management.getUserDetails().get(KEY_NAME)+"\n"+session_management.getUserDetails().get(KEY_MOBILE));
+        txt_name.setText(session_management.getUserDetails().get(KEY_NAME).toUpperCase()+"\n"+session_management.getUserDetails().get(KEY_MOBILE));
+//        if(session_management.getUserDetails().get(KEY_))
         navigationView.setNavigationItemSelectedListener(this);
         img_edit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -146,7 +176,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
 
+
+    }
 
     public void addFragment(Fragment fm, Bundle args)
     {
@@ -232,5 +267,52 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         }
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(final Menu menu) {
+//        return super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.home,menu);
+        final MenuItem notif_item=menu.findItem(R.id.action_notification);
+        notif_item.setVisible(true);
+         View count=notif_item.getActionView();
+        count.setOnClickListener(new View.OnClickListener() {
+        @Override
+          public void onClick(View v) {
+menu.performIdentifierAction(notif_item.getItemId(),0);
+
+         }
+        });
+        totalNtificationCount = (TextView) count.findViewById(R.id.actionbar_notifcation_textview);
+//        totalNtificationCount.setText("" + db_cart.getCartCount());
+        totalNtificationCount.setText("");
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_notification) {
+//             notificationHandler.clearNotifications();
+            Fragment fm=new NotificationFragment();
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.frame, fm)
+                    .addToBackStack(null).commit();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
+    public void setNotificationCounter(int tot)
+    {
+        if (tot <= 0) {
+            if (totalNtificationCount.getVisibility() == View.VISIBLE)
+                totalNtificationCount.setVisibility(View.GONE);
+
+        } else {
+            if (totalNtificationCount.getVisibility() == View.GONE) {
+                totalNtificationCount.setVisibility(View.VISIBLE);
+            }
+            totalNtificationCount.setText("" + tot);
+        }
     }
 }
