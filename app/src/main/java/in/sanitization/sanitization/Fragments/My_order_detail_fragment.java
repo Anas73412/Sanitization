@@ -60,6 +60,7 @@ import in.sanitization.sanitization.Model.ComplainModel;
 import in.sanitization.sanitization.Model.KeyValuePairModel;
 import in.sanitization.sanitization.Model.My_order_detail_model;
 import in.sanitization.sanitization.PackageDetails;
+import in.sanitization.sanitization.PaymentActivity;
 import in.sanitization.sanitization.R;
 import in.sanitization.sanitization.networkconnectivity.NoInternetConnection;
 import in.sanitization.sanitization.util.ConnectivityReceiver;
@@ -83,8 +84,8 @@ public class My_order_detail_fragment extends Fragment implements View.OnClickLi
     private static String TAG = My_order_detail_fragment.class.getSimpleName();
     Module module;
     private TextView tv_p_name ,tv_expire,tv_duration ,tv_price,tv_status,tv_desc,tv_r_name,tv_r_mobile,tv_address,
-            w_mobile,w_name,w_email ,tv_date,tv_id,tv_tot,tv_gst;
-    private RelativeLayout btn_cancle;
+            w_mobile,w_name,w_email ,tv_date,tv_id,tv_tot,tv_gst,tv_chkexpire;
+    private RelativeLayout btn_cancle,rel_reorder;
     private RecyclerView rv_logs,rv_detail_order,rv_complain;
     ImageView plan_img , w_img ,iv_logs ,log_icon;
     List<String> image_list;
@@ -102,6 +103,10 @@ public class My_order_detail_fragment extends Fragment implements View.OnClickLi
     EditText et_remark;
     ArrayList<ComplainModel> complainList;
     ComplainAdapter complainAdapter;
+    //Plan Expire
+    CardView card_expire;
+    String reLocId="",reName="",reMobile="",reAddress="",reState="",rePlan_id="",rePlaeNm="",reWorlingDays="",rePlanEx="",reMrp="",rePrice="",rePincode="";
+
     public My_order_detail_fragment() {
         // Required empty public constructor
     }
@@ -140,6 +145,8 @@ public class My_order_detail_fragment extends Fragment implements View.OnClickLi
         dialog.setCanceledOnTouchOutside(false);
 
         rv_logs= v.findViewById(R.id.rv_logs);
+        tv_chkexpire= v.findViewById(R.id.tv_chkexpire);
+        card_expire= v.findViewById(R.id.card_expire);
         rv_complain= v.findViewById(R.id.rv_complain);
         rel_rvlogs= v.findViewById(R.id.rel_rvlogs);
         rel_rvcpl= v.findViewById(R.id.rel_rvcpl);
@@ -163,6 +170,7 @@ public class My_order_detail_fragment extends Fragment implements View.OnClickLi
         tv_r_name= v.findViewById(R.id.r_name);
         tv_p_name= v.findViewById(R.id.name);
         w_email= v.findViewById(R.id.w_email);
+        rel_reorder= v.findViewById(R.id.rel_reorder);
         w_mobile= v.findViewById(R.id.w_mobile);
         w_name= v.findViewById(R.id.w_name);
         btn_complaints= v.findViewById(R.id.btn_complaints);
@@ -171,14 +179,18 @@ public class My_order_detail_fragment extends Fragment implements View.OnClickLi
        btn_cancle= v.findViewById(R.id.btn_order_detail_cancle);
         worker_id =getArguments().getString("worker_id");
         package_id =getArguments().getString("package_id");
+        rePlan_id=package_id;
         location_id =getArguments().getString("location_id");
+        reLocId=location_id;
         user_id =getArguments().getString("user_id");
         order_id =getArguments().getString("order_id");
        date =getArguments().getString("date");
         time =getArguments().getString("time");
         status =getArguments().getString("status");
         name =getArguments().getString("r_name");
+        reName=name;
        mobile =getArguments().getString("r_mobile");
+       reMobile=mobile;
        tv_id.setText("A2Z_ID"+order_id);
        tv_date.setText(date);
        tv_r_name.setText(name);
@@ -186,6 +198,7 @@ public class My_order_detail_fragment extends Fragment implements View.OnClickLi
        rel_log.setOnClickListener(this);
        btn_complaints.setOnClickListener(this);
        btn_view.setOnClickListener(this);
+        rel_reorder.setOnClickListener(this);
         DecimalFormat precision = new DecimalFormat("0.0");
        gst_per=  new Module(getActivity()).getGSt(getArguments().getString("gst"),getArguments().getString("package_price"));
       tv_tot.setText(getActivity().getResources().getString(R.string.currency)+getArguments().getString("total"));
@@ -218,6 +231,41 @@ public class My_order_detail_fragment extends Fragment implements View.OnClickLi
 
         card_worker.setOnClickListener(this);
 
+    }
+
+    private void setExpiryBlock(String date,String d) {
+        String[] dt=date.split(" ");
+        int days=module.getDateDiff(dt[0].toString())-Integer.parseInt(d);
+        Log.e("asdasd",""+days+"\n"+dt[0].toString());
+
+        if(days>-4)
+        {
+            if(card_expire.getVisibility()==View.GONE)
+                card_expire.setVisibility(View.VISIBLE);
+
+            if(days>=0)
+            {
+                tv_chkexpire.setText("Your plan has expired");
+            }
+            else
+            {
+
+                if(days==-1){
+                    tv_chkexpire.setText("Your plan will expire in "+1+" day");
+                }
+                else if(days == -2){
+                    tv_chkexpire.setText("Your plan will expire in "+2+" days");
+                }else if(days == -3){
+                    tv_chkexpire.setText("Your plan will expire in "+3+" days");
+                }
+
+            }
+        }
+        else
+        {
+            if(card_expire.getVisibility()==View.VISIBLE)
+                card_expire.setVisibility(View.GONE);
+        }
     }
 
     // alertdialog for cancle order
@@ -253,7 +301,7 @@ public class My_order_detail_fragment extends Fragment implements View.OnClickLi
 
 
 
-    private void getDetails(String location_id, String plan_id, final String worker_id,String order_id)
+    private void getDetails(final String location_id, String plan_id, final String worker_id, String order_id)
     {
         loadingBar.show();
 
@@ -300,9 +348,17 @@ public class My_order_detail_fragment extends Fragment implements View.OnClickLi
 
                             tv_desc.setText(data.getString("plan_description"));
                             tv_p_name.setText(data.getString("plan_name"));
+                            rePlaeNm=data.getString("plan_name");
                             tv_price.setText(getResources().getString(R.string.currency) + "" + (data.getString("plan_price")));
-                            tv_duration.setText(data.getString("plan_no_of_working_days") + " days");
-                            tv_expire.setText(data.getString("plan_expiry") + " of Subscription");
+                            rePrice=data.getString("plan_price");
+                            reMrp=data.getString("plan_mrp");
+                            tv_duration.setText(data.getString("plan_no_of_working_days"));
+                            reWorlingDays=data.getString("plan_no_of_working_days");
+                            tv_expire.setText(data.getString("plan_expiry") + " from Subscription");
+                            rePlanEx=data.getString("plan_expiry");
+                            String[] exp=data.getString("plan_expiry").toString().split(" ");
+                            setExpiryBlock(date,exp[0].toString());
+
                         }
                         if (loc_arr.length() > 0) {
                             JSONObject loc = loc_arr.getJSONObject(0);
@@ -310,6 +366,9 @@ public class My_order_detail_fragment extends Fragment implements View.OnClickLi
                                     + "\nBlock : " + loc.getString("block_name")
                                     + "\n District : " + loc.getString("district_name")
                                     + "\n State : " + loc.getString("state") + " ( " + loc.getString("pincode") + ")");
+                           reAddress=loc.getString("address");
+                           reState=loc.getString("state");
+                           rePincode=loc.getString("pincode");
 
                         }
 
@@ -481,6 +540,32 @@ public class My_order_detail_fragment extends Fragment implements View.OnClickLi
 
 
         }
+        else if(v.getId() == R.id.rel_reorder)
+        {
+            reorder();   
+        }
+    }
+
+    private void reorder() {
+        Intent bundle=new Intent(getActivity(), PaymentActivity.class);
+
+        bundle.putExtra("plan_id",rePlan_id);
+        bundle.putExtra("plan_name",rePlaeNm);
+        bundle.putExtra("mrp",reMrp);
+        bundle.putExtra("price",rePrice);
+        bundle.putExtra("loc_id",reLocId);
+        bundle.putExtra("address",reAddress);
+        bundle.putExtra("name",reName);
+        bundle.putExtra("pincode",rePincode);
+        bundle.putExtra("mobile",reMobile);
+        bundle.putExtra("state",reState);
+        bundle.putExtra("city","");
+        bundle.putExtra("socity_id","");
+        bundle.putExtra("plan_expiry",rePlanEx);
+        bundle.putExtra("working_days",reWorlingDays);
+//        Log.e("addreess_fragment",""+addressMap.toString());
+        startActivity(bundle);
+
     }
 
     private void addComplaints(String user_id, String order_id, String complain) {

@@ -80,6 +80,7 @@ public class NotificationFragment extends Fragment {
         toastMsg=new ToastMsg(getActivity());
         loadingBar=new LoadingBar(getActivity());
         notificationHandler=new NotificationHandler(getActivity());
+        ((HomeActivity)getActivity()).setTitle("All Notifications");
         list=new ArrayList<>();
         getAllNotifications();
 

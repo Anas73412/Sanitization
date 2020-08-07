@@ -112,8 +112,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         txt_name = header.findViewById(R.id.profile_user_name);
        img_edit = header.findViewById(R.id.edit_profile);
        ImageView iv_icon = header.findViewById(R.id.icon);
-
         txt_name.setText(session_management.getUserDetails().get(KEY_NAME).toUpperCase()+"\n"+session_management.getUserDetails().get(KEY_MOBILE));
+
+
 //        if(session_management.getUserDetails().get(KEY_))
         navigationView.setNavigationItemSelectedListener(this);
         img_edit.setOnClickListener(new View.OnClickListener() {
@@ -182,6 +183,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
 
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+       }
 
     public void addFragment(Fragment fm, Bundle args)
     {
@@ -314,5 +320,11 @@ menu.performIdentifierAction(notif_item.getItemId(),0);
             }
             totalNtificationCount.setText("" + tot);
         }
+    }
+
+    public void setUserName()
+    {
+        txt_name.setText(session_management.getUserDetails().get(KEY_NAME).toUpperCase()+"\n"+session_management.getUserDetails().get(KEY_MOBILE));
+
     }
 }

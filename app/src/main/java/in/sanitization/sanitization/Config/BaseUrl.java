@@ -48,6 +48,7 @@ public class BaseUrl {
     public static String  RESET_PASS_URL = BASE_URL + "index.php/api/reset_pass";
     public static String  NOTIFICATIONS_URL = BASE_URL + "index.php/api/get_notification";
     public static String  ADD_DONATION_URL = BASE_URL + "index.php/api/add_donation";
+    public static String  GET_DONOR_DETAILS = BASE_URL + "index.php/api/get_donor_details";
 
     //Payment Base Urls
     public static final String PAYMENT_BASE_URL = "https://a2zindia.org/";

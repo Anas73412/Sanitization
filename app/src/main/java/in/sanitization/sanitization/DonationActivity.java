@@ -1,41 +1,82 @@
 package in.sanitization.sanitization;
 
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.FileProvider;
 
+import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.payumoney.core.PayUmoneySdkInitializer;
 import com.payumoney.core.entity.TransactionResponse;
 import com.payumoney.sdkui.ui.utils.PayUmoneyFlowManager;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 
+import in.sanitization.sanitization.Config.BaseUrl;
 import in.sanitization.sanitization.Config.Module;
+import in.sanitization.sanitization.Model.ResponseModel;
+import in.sanitization.sanitization.Remote.FileUtil;
+import in.sanitization.sanitization.Remote.RetrofitClient;
+import in.sanitization.sanitization.Remote.UploadPhotoApi;
 import in.sanitization.sanitization.networkconnectivity.NoInternetConnection;
 import in.sanitization.sanitization.payment.ServiceWrapper;
 import in.sanitization.sanitization.util.ConnectivityReceiver;
+import in.sanitization.sanitization.util.CustomVolleyJsonArrayRequest;
 import in.sanitization.sanitization.util.CustomVolleyJsonRequest;
 import in.sanitization.sanitization.util.LoadingBar;
 import in.sanitization.sanitization.util.Session_management;
 import in.sanitization.sanitization.util.ToastMsg;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
+import retrofit2.Retrofit;
 
 import static in.sanitization.sanitization.Config.BaseUrl.ADD_DONATION_URL;
+import static in.sanitization.sanitization.Config.BaseUrl.GET_DONOR_DETAILS;
 import static in.sanitization.sanitization.Config.Constants.KEY_EMAIL;
 import static in.sanitization.sanitization.Config.Constants.KEY_ID;
 import static in.sanitization.sanitization.Config.Constants.KEY_MOBILE;
@@ -47,13 +88,18 @@ public class DonationActivity extends AppCompatActivity implements View.OnClickL
     Activity ctx=DonationActivity.this;
     Module module;
     LoadingBar loadingBar;
-    ImageView iv_back;
+    ImageView iv_back,img_pic;
     TextView tv_title;
     ToastMsg toastMsg;
     String user_id="";
     Session_management session_management;
     EditText et_name,et_phone,et_amount;
     Button btn_pay;
+    RelativeLayout rel_select;
+    String imageFilePath;
+    Uri imageUri;
+    int image_flag=0;
+    String img_url="";
 
     //payments
     PayUmoneySdkInitializer.PaymentParam.Builder builder = new PayUmoneySdkInitializer.PaymentParam.Builder();
@@ -69,6 +115,7 @@ public class DonationActivity extends AppCompatActivity implements View.OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_donation);
         initViews();
+        getDonorDetails();
     }
 
     private void initViews() {
@@ -84,10 +131,13 @@ public class DonationActivity extends AppCompatActivity implements View.OnClickL
         et_phone=findViewById(R.id.et_phone);
         et_name=findViewById(R.id.et_name);
         btn_pay=findViewById(R.id.btn_pay);
+        img_pic=findViewById(R.id.img_pic);
+        rel_select=findViewById(R.id.rel_select);
+        img_pic.setOnClickListener(this);
         btn_pay.setOnClickListener(this);
         iv_back.setOnClickListener(this);
         user_id=session_management.getUserDetails().get(KEY_ID);
-       et_name.setText(session_management.getUserDetails().get(KEY_NAME));
+        et_name.setText(session_management.getUserDetails().get(KEY_NAME));
         et_phone.setText(session_management.getUserDetails().get(KEY_MOBILE));
 
     }
@@ -97,6 +147,10 @@ public class DonationActivity extends AppCompatActivity implements View.OnClickL
         if(v.getId() == R.id.iv_back)
         {
             finish();
+        }
+        else if(v.getId() == R.id.img_pic)
+        {
+            selectImage();
         }
         else if(v.getId() == R.id.btn_pay)
         {
@@ -149,9 +203,17 @@ public class DonationActivity extends AppCompatActivity implements View.OnClickL
                         prodname="A2z INDIA COVID-19 FUND";
                         firstname=name;
                         email=session_management.getUserDetails().get(KEY_EMAIL);
+                        if(img_url.isEmpty() && image_flag==0)
+                        {
+                            module.showToast("Please select image first");
+                        }
+                        else
+                        {
+                         startpay();
+                        }
 
 //            attemptOrder(user_id,"paid",loc_id,txnid,plan_id,plan_name,mrp,price,gst, String.valueOf(tot),plan_expiry,module.getCurrentDate(),working_days);
-                        startpay();
+//                        startpay();
 //                        addDonationRequest(user_id,name,mobile,amt,txnid);
                     }
 
@@ -301,7 +363,8 @@ public class DonationActivity extends AppCompatActivity implements View.OnClickL
                 if(transactionResponse.getTransactionStatus().equals( TransactionResponse.TransactionStatus.SUCCESSFUL )){
 
                     Log.e("taransactionsdsadasd",""+transactionResponse.getTransactionDetails().toString());
-                    addDonationRequest(user_id,et_name.getText().toString().trim(),et_phone.getText().toString().trim(),amount,txnid);
+//                    addDonationRequest(user_id,et_name.getText().toString().trim(),et_phone.getText().toString().trim(),amount,txnid);
+                    addPost(user_id,et_name.getText().toString().trim(),et_phone.getText().toString().trim(),amount,txnid,img_url);
 //                    addTranscation(tv_points.getText().toString(),tv_amt.getText().toString(),sessionManagment.getUserDetails().get(KEY_ID),txnid,"success");
                     //Success Transaction
                 } else{
@@ -321,8 +384,392 @@ public class DonationActivity extends AppCompatActivity implements View.OnClickL
                 Log.d(TAG, "Both objects are null!");
             }*/
         }
+
+        if (resultCode == RESULT_OK) {
+
+            if (requestCode == 1) {
+                Matrix matrix = new Matrix();
+                try {
+                    ExifInterface exif = new ExifInterface(imageFilePath);
+                    int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, 1);
+                    switch (orientation) {
+                        case ExifInterface.ORIENTATION_ROTATE_90:
+                            matrix.postRotate(90);
+                            break;
+                        case ExifInterface.ORIENTATION_ROTATE_180:
+                            matrix.postRotate(180);
+                            break;
+                        case ExifInterface.ORIENTATION_ROTATE_270:
+                            matrix.postRotate(270);
+                            break;
+                    }
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                Uri selectedImage =(Uri.fromFile(new File(imageFilePath)));
+                imageUri=selectedImage;
+                image_flag=1;
+                InputStream imageStream = null;
+                try {
+                    imageStream =getContentResolver().openInputStream(selectedImage);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+                final Bitmap imagebitmap = BitmapFactory.decodeStream(imageStream);
+//                bmThumbnail=imagebitmap;
+                Bitmap rotatedBitmap = Bitmap.createBitmap(imagebitmap, 0, 0, imagebitmap.getWidth(), imagebitmap.getHeight(), matrix, true);
+
+                Bitmap  resized = Bitmap.createScaledBitmap(rotatedBitmap,(int)(rotatedBitmap.getWidth()*0.7), (int)(rotatedBitmap.getHeight()*0.7), true);
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                resized.compress(Bitmap.CompressFormat.JPEG, 20, baos);
+
+//                image_byte_array = baos.toByteArray();
+                rel_select.setVisibility(View.GONE);
+                img_pic.setImageBitmap(resized);
+
+//                Save_Image();
+
+            }
+
+            else if (requestCode == 2) {
+                Uri selectedImage = data.getData();
+                imageUri=selectedImage;
+                image_flag=1;
+                InputStream imageStream = null;
+                try {
+                    imageStream =getContentResolver().openInputStream(selectedImage);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+                final Bitmap imagebitmap = BitmapFactory.decodeStream(imageStream);
+                String path=getPath(selectedImage);
+                Matrix matrix = new Matrix();
+                ExifInterface exif = null;
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                    try {
+                        imageFilePath=path;
+                        exif = new ExifInterface(imageFilePath);
+                        int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, 1);
+                        switch (orientation) {
+                            case ExifInterface.ORIENTATION_ROTATE_90:
+                                matrix.postRotate(90);
+                                break;
+                            case ExifInterface.ORIENTATION_ROTATE_180:
+                                matrix.postRotate(180);
+                                break;
+                            case ExifInterface.ORIENTATION_ROTATE_270:
+                                matrix.postRotate(270);
+                                break;
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                Bitmap rotatedBitmap = Bitmap.createBitmap(imagebitmap, 0, 0, imagebitmap.getWidth(), imagebitmap.getHeight(), matrix, true);
+
+
+                Bitmap  resized = Bitmap.createScaledBitmap(rotatedBitmap,(int)(rotatedBitmap.getWidth()*0.5), (int)(rotatedBitmap.getHeight()*0.5), true);
+
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                resized.compress(Bitmap.CompressFormat.JPEG, 20, baos);
+
+//                image_byte_array = baos.toByteArray();
+                rel_select.setVisibility(View.GONE);
+                img_pic.setImageBitmap(resized);
+
+            }
+
+        }
     }
 
+    private void selectImage() {
 
+        final CharSequence[] options = { "Take Photo", "Choose from Gallery","Cancel" };
+
+
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(ctx,R.style.AlertDialogCustom);
+
+        builder.setTitle("Add Photo!");
+
+        builder.setItems(options, new DialogInterface.OnClickListener() {
+
+            @RequiresApi(api = Build.VERSION_CODES.M)
+            @Override
+
+            public void onClick(DialogInterface dialog, int item) {
+
+                if (options[item].equals("Take Photo"))
+
+                {
+                    if(check_permissions())
+                        img_url="";
+                        openCameraIntent();
+
+
+                }
+
+                else if (options[item].equals("Choose from Gallery"))
+
+                {
+
+                    if(check_permissions()) {
+                        img_url="";
+                        Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                        startActivityForResult(intent, 2);
+                    }
+                }
+
+                else if (options[item].equals("Cancel")) {
+
+                    dialog.dismiss();
+
+                }
+
+            }
+
+        });
+
+        builder.show();
+
+    }
+
+    private void openCameraIntent() {
+        Intent pictureIntent = new Intent(
+                MediaStore.ACTION_IMAGE_CAPTURE);
+        if(pictureIntent.resolveActivity(getPackageManager()) != null){
+            //Create a file to store the image
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException ex) {
+                // Error occurred while creating the File
+
+            }
+            if (photoFile != null) {
+                Uri photoURI = FileProvider.getUriForFile(getApplicationContext(), getPackageName()+".fileprovider", photoFile);
+                pictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                startActivityForResult(pictureIntent, 1);
+            }
+        }
+    }
+
+    private File createImageFile() throws IOException {
+        String timeStamp =
+                new SimpleDateFormat("yyyyMMdd_HHmmss",
+                        Locale.getDefault()).format(new Date());
+        String imageFileName = "IMG_" + timeStamp + "_";
+        File storageDir =
+                getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        imageFilePath = image.getAbsolutePath();
+
+        return image;
+    }
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    public boolean check_permissions() {
+
+        String[] PERMISSIONS = {
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.CAMERA
+        };
+
+        if (!hasPermissions(ctx, PERMISSIONS)) {
+            requestPermissions(PERMISSIONS, 2);
+        }else {
+
+            return true;
+        }
+
+        return false;
+    }
+
+    public static boolean hasPermissions(Context context, String... permissions) {
+        if (context != null && permissions != null) {
+            for (String permission : permissions) {
+                if (ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public  String getPath(Uri uri ) {
+        String result = null;
+        String[] proj = { MediaStore.Images.Media.DATA };
+        Cursor cursor = getContentResolver( ).query( uri, proj, null, null, null );
+        if(cursor != null){
+            if ( cursor.moveToFirst( ) ) {
+                int column_index = cursor.getColumnIndexOrThrow( proj[0] );
+                result = cursor.getString( column_index );
+            }
+            cursor.close( );
+        }
+        if(result == null) {
+            result = "Not found";
+        }
+        return result;
+    }
+
+    public void addPost(String user_id, String name, final String mobile, String amt,String txnid,String img_url)
+    {
+        loadingBar.show();
+        File file=null;
+        RequestBody requestFile = null;
+        MultipartBody.Part multipartBody = null;
+        try {
+            file = FileUtil.from(ctx, imageUri);
+            requestFile = RequestBody.create(MediaType.parse("multipart/form-data"),
+                    file);
+
+            multipartBody = MultipartBody.Part.createFormData("photo",
+                    file.getName(),requestFile);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        RequestBody reqUserId = RequestBody.create(MediaType.parse("text/plain"), user_id);
+        RequestBody reqName = RequestBody.create(MediaType.parse("text/plain"), name);
+        RequestBody reqMobile = RequestBody.create(MediaType.parse("text/plain"), mobile);
+        RequestBody reqAmount = RequestBody.create(MediaType.parse("text/plain"), amt);
+        RequestBody reqTxnId = RequestBody.create(MediaType.parse("text/plain"), txnid);
+        RequestBody reqImgUrl = RequestBody.create(MediaType.parse("text/plain"), img_url);
+
+        Retrofit retrofit= RetrofitClient.getRetrofitInstance();
+        UploadPhotoApi postApi=retrofit.create(UploadPhotoApi.class);
+        Call<ResponseModel> call=postApi.uploadPhoto(reqUserId,reqName,reqMobile,reqAmount,reqTxnId,reqImgUrl,multipartBody);
+        call.enqueue(new Callback<ResponseModel>() {
+            @Override
+            public void onResponse(Call<ResponseModel> call, retrofit2.Response<ResponseModel> response) {
+                loadingBar.dismiss();
+                try {
+                    if(response.code()==200){
+                        ResponseModel model=response.body();
+                        Log.e(TAG,""+model.isResponce()+"\n"+model.getUrl()+"\n"+model.getMessage());
+
+                        if(model.isResponce())
+                        {
+                            toastMsg.toastIconSuccess(model.getMessage());
+                            String url=model.getUrl();
+                            Intent intent=new Intent(ctx,ThanksActivity.class);
+                            intent.putExtra("type","donate");
+                            intent.putExtra("msg","Thank You for your contribution");
+                            intent.putExtra("url",url);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent);
+                        }
+                        else
+                        {
+                            toastMsg.toastIconError(model.getMessage());
+                        }
+
+                    }
+
+                }
+                catch (Exception ex){
+                    ex.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseModel> call, Throwable t) {
+                loadingBar.dismiss();
+                Log.e(TAG,""+t.getMessage().toString());
+                module.showToast("Something Went Wrong \n Try again later");
+            }
+        });
+//        Call<ResponseBody> call=postApi.uploadPhoto(reqUserId,reqName,reqMobile,reqAmount,reqTxnId,reqImgUrl,multipartBody);
+//        call.enqueue(new Callback<ResponseBody>() {
+//            @Override
+//            public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
+//                 loadingBar.dismiss();
+//                if(response.code()==200)
+//                {
+//                   Log.e("asdasd",""+response.body().toString());
+//                    toastMsg.toastIconSuccess(response.getString("message"));
+//                    String url=response.getString("url");
+//                    Intent intent=new Intent(ctx,ThanksActivity.class);
+//                    intent.putExtra("type","donate");
+//                    intent.putExtra("msg","Thank You for your contribution");
+//                    intent.putExtra("url",url);
+//                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                    startActivity(intent);
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<ResponseBody> call, Throwable t) {
+//                loadingBar.dismiss();
+//                Log.e(TAG,""+t.getMessage().toString());
+//            }
+//        });
+
+    }
+
+    public void getDonorDetails(){
+        loadingBar.show();
+        HashMap<String,String> params=new HashMap<>();
+        params.put("user_id",session_management.getUserDetails().get(KEY_ID));
+        CustomVolleyJsonArrayRequest arrayRequest=new CustomVolleyJsonArrayRequest(Request.Method.POST, GET_DONOR_DETAILS, params, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                loadingBar.dismiss();
+                Log.e("resoneee",""+response.toString());
+              try {
+
+
+                  if(response.length()<=0)
+                  {
+                      if(rel_select.getVisibility()==View.GONE)
+                      {
+                          rel_select.setVisibility(View.VISIBLE);
+                      }
+                  }
+                  else{
+                      if(rel_select.getVisibility()==View.VISIBLE)
+                      {
+                          rel_select.setVisibility(View.GONE);
+                      }
+                      image_flag=2;
+                      img_url=response.getJSONObject(0).getString("photo").toString();
+                      Glide.with(ctx)
+                              .load( BaseUrl.IMG_EXTRA_URL + img_url.toString())
+                              .placeholder( R.drawable.logo)
+                              .fitCenter()
+                              .diskCacheStrategy(DiskCacheStrategy.ALL)
+                              .dontAnimate()
+                              .into(img_pic);
+
+                  }
+
+              }
+              catch (Exception ex)
+              {
+                  ex.printStackTrace();
+              }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                loadingBar.dismiss();
+                module.errMessage(error);
+            }
+        });
+        AppController.getInstance().addToRequestQueue(arrayRequest);
+    }
 }
 

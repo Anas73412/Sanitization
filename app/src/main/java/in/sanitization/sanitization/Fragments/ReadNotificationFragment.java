@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import in.sanitization.sanitization.HomeActivity;
 import in.sanitization.sanitization.R;
 
 public class ReadNotificationFragment extends Fragment {
@@ -30,6 +31,7 @@ public class ReadNotificationFragment extends Fragment {
     private void initViews(View v) {
         tv_desc=v.findViewById(R.id.tv_desc);
         tv_title=v.findViewById(R.id.tv_title);
+        ((HomeActivity)getActivity()).setTitle("Notification");
         tv_title.setText(Html.fromHtml(getArguments().getString("title")));
         tv_desc.setText(Html.fromHtml(getArguments().getString("desc")));
     }

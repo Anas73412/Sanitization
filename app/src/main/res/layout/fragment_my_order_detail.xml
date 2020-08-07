@@ -16,6 +16,57 @@
             android:orientation="vertical"
             android:layout_marginBottom="@dimen/space_20">
             <androidx.cardview.widget.CardView
+                android:visibility="gone"
+                android:id="@+id/card_expire"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                card_view:cardElevation="@dimen/space_3"
+                card_view:cardUseCompatPadding="true"
+                card_view:cardCornerRadius="4dp"
+                android:layout_marginLeft="@dimen/space_10"
+                android:layout_marginRight="@dimen/space_10"
+                android:layout_marginTop="@dimen/space_10"
+                >
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:background="@color/red_600"
+                    >
+                    <in.sanitization.sanitization.Fonts.LatoBLack
+                        android:layout_centerInParent="true"
+                        android:id="@+id/tv_chkexpire"
+                        android:textAlignment="center"
+                        android:textSize="@dimen/space_20"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/white"/>
+
+                </RelativeLayout>
+                    <RelativeLayout
+                        android:id="@+id/rel_reorder"
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:background="@color/green_500"
+                        >
+                        <in.sanitization.sanitization.Fonts.LatoBLack
+                            android:layout_centerInParent="true"
+                            android:textAlignment="center"
+                            android:textSize="@dimen/space_16"
+                            android:text="ReOrder Now!"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/white"/>
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
 
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

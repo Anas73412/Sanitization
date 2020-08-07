@@ -386,60 +386,13 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
 
 
     }
-//    private void getcities(String state) {
-//
-//        Map<String, String> params = new HashMap<String, String>();
-//        params.put("state",state);
-//        city_list.clear();
-//        final CustomVolleyJsonRequest jsonObjReq = new CustomVolleyJsonRequest(Request.Method.POST,
-//                BaseUrl.GET_CITY, params, new Response.Listener<JSONObject>() {
-//
-//            @Override
-//            public void onResponse(JSONObject response) {
-//                Log.e("city", response.toString());
-//                try {
-//                    boolean status = response.getBoolean("responce");
-//                    if (status)
-//                    {
-//                        JSONArray data = response.getJSONArray("data");
-//                        for (int i = 0 ; i <data.length();i++)
-//                        {
-//                            JSONObject object = data.getJSONObject(i);
-//                            city_list.add(object.get("city_name").toString());
-//
-//                        }
-//                        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
-//                                getActivity(), android.R.layout.simple_list_item_1,city_list);
-//                        et_city.setAdapter(arrayAdapter);
-//                        et_city.setThreshold(1);
-//
-//                    }
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }, new Response.ErrorListener() {
-//
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//
-//                String msg=module.VolleyErrorMessage(error);
-//                if(!msg.equals(""))
-//                {
-//                    Toast.makeText(ctx,""+msg,Toast.LENGTH_LONG).show();
-//                }
-//            }
-//        });
-//
-//        // Adding request to request queue
-//        AppController.getInstance().addToRequestQueue(jsonObjReq,"plans");
-//
-//    }
+
 
     private void updateProfile(String id , final String name, final String email, final String state , final String district, final String block , final String pincode, final String address )
     {
         loadingBar.show();
         HashMap<String,String> params=new HashMap<>();
+        id=session_management.getUserDetails().get(KEY_ID);
         params.put("user_id",id);
         params.put("name",name);
         params.put("email",email);
@@ -467,6 +420,7 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
                         fragmentManager.beginTransaction().replace(R.id.frame, fm)
                                 .addToBackStack(null).commit();
                         session_management.updateProfile(name,email,state,module.getDistrictId(districtModelList,district),module.getBlockId(blockModelList,block),pincode,address);
+                        ((HomeActivity)getActivity()).setUserName();
 
                     }
                     else

@@ -62,5 +62,8 @@ dependencies {
     implementation 'me.relex:circleindicator:1.2.2@aar'
     implementation 'com.synnapps:carouselview:0.1.5'
     implementation 'com.artjimlop:altex-image-downloader:0.0.4'
+    implementation 'com.squareup.retrofit2:converter-scalars:2.5.0'
+
+
 
 }
