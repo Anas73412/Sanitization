@@ -77,7 +77,7 @@ public class ThanksActivity extends AppCompatActivity {
         btn_download.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                downloadCertificate(url,session_management.getUserDetails().get(KEY_NAME),session_management.getUserDetails().get(KEY_ID));
+                downloadCertificate(url+".jpg",session_management.getUserDetails().get(KEY_NAME),session_management.getUserDetails().get(KEY_ID));
             }
         });
 

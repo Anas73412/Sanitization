@@ -200,7 +200,7 @@ public class DonationActivity extends AppCompatActivity implements View.OnClickL
                         amount=String.valueOf(tot);
 //            amount="12";
                         phone=mobile;
-                        prodname="A2z INDIA COVID-19 FUND";
+                        prodname="A2Z INDIA COVID-19 FUND";
                         firstname=name;
                         email=session_management.getUserDetails().get(KEY_EMAIL);
                         if(img_url.isEmpty() && image_flag==0)
@@ -209,12 +209,12 @@ public class DonationActivity extends AppCompatActivity implements View.OnClickL
                         }
                         else
                         {
-                         startpay();
+//                         startpay();
+                            addPost(user_id,et_name.getText().toString().trim(),et_phone.getText().toString().trim(),amount,txnid,img_url);
+//
                         }
 
-//            attemptOrder(user_id,"paid",loc_id,txnid,plan_id,plan_name,mrp,price,gst, String.valueOf(tot),plan_expiry,module.getCurrentDate(),working_days);
-//                        startpay();
-//                        addDonationRequest(user_id,name,mobile,amt,txnid);
+
                     }
 
                 }
@@ -344,7 +344,7 @@ public class DonationActivity extends AppCompatActivity implements View.OnClickL
     }
 
 
-    @Override
+        @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 // PayUMoneySdk: Success -- payuResponse{"id":225642,"mode":"CC","status":"success","unmappedstatus":"captured","key":"9yrcMzso","txnid":"223013","transaction_fee":"20.00","amount":"20.00","cardCategory":"domestic","discount":"0.00","addedon":"2018-12-31 09:09:43","productinfo":"a2z shop","firstname":"kamal","email":"kamal.bunkar07@gmail.com","phone":"9144040888","hash":"b22172fcc0ab6dbc0a52925ebbd0297cca6793328a8dd1e61ef510b9545d9c851600fdbdc985960f803412c49e4faa56968b3e70c67fe62eaed7cecacdfdb5b3","field1":"562178","field2":"823386","field3":"2061","field4":"MC","field5":"167227964249","field6":"00","field7":"0","field8":"3DS","field9":" Verification of Secure Hash Failed: E700 -- Approved -- Transaction Successful -- Unable to be determined--E000","payment_source":"payu","PG_TYPE":"AXISPG","bank_ref_no":"562178","ibibo_code":"VISA","error_code":"E000","Error_Message":"No Error","name_on_card":"payu","card_no":"401200XXXXXX1112","is_seamless":1,"surl":"https://www.payumoney.com/sandbox/payment/postBackParam.do","furl":"https://www.payumoney.com/sandbox/payment/postBackParam.do"}

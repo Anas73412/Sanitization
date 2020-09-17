@@ -1,10 +1,22 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="in.sanitization.sanitization.Fragments.PrivacyFragment">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageView
+            android:layout_width="match_parent"
+            android:src="@drawable/back"
+            android:alpha=".5"
+            android:layout_height="match_parent"/>
+    </RelativeLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -37,9 +49,8 @@
                 android:layout_height="wrap_content"/>
         </RelativeLayout>
 
-        <androidx.cardview.widget.CardView
+        <RelativeLayout
             android:layout_width="match_parent"
-            app:cardCornerRadius="@dimen/space_5"
             android:layout_marginTop="@dimen/space_10"
             android:layout_marginLeft="@dimen/space_5"
             android:layout_marginRight="@dimen/space_5"
@@ -73,7 +84,7 @@
                     android:layout_height="wrap_content"
                     android:paddingLeft="@dimen/space_5"
                     android:paddingRight="@dimen/space_5"
-
+                   android:textColor="@color/black"
                     android:paddingBottom="@dimen/space_5"
 
 
@@ -81,6 +92,7 @@
 
                     />
             </LinearLayout>
-        </androidx.cardview.widget.CardView>
+        </RelativeLayout>
     </LinearLayout>
-</ScrollView>
+    </ScrollView>
+</RelativeLayout>
